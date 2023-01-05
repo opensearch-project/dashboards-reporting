@@ -36,14 +36,14 @@ jobs:
           path: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
 
       - name: OpenSearch Dashboards Plugin Bootstrap
-        uses: nick-invision/retry@v1
+        uses: nick-fields/retry@v1
         with:
           timeout_minutes: 30
           max_attempts: 3
           command: yarn osd bootstrap
 
       - name: Test
-        uses: nick-invision/retry@v1
+        uses: nick-fields/retry@v1
         with:
           timeout_minutes: 30
           max_attempts: 3
@@ -100,14 +100,14 @@ jobs:
           path: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
 
       - name: OpenSearch Dashboards Plugin Bootstrap
-        uses: nick-invision/retry@v1
+        uses: nick-fields/retry@v1
         with:
           timeout_minutes: 30
           max_attempts: 3
           command: yarn osd bootstrap
 
       - name: Test
-        uses: nick-invision/retry@v1
+        uses: nick-fields/retry@v1
         with:
           timeout_minutes: 30
           max_attempts: 3
@@ -152,14 +152,14 @@ jobs:
           path: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
 
       - name: OpenSearch Dashboards Plugin Bootstrap
-        uses: nick-invision/retry@v1
+        uses: nick-fields/retry@v1
         with:
           timeout_minutes: 30
           max_attempts: 3
           command: yarn osd bootstrap
 
       - name: Test
-        uses: nick-invision/retry@v1
+        uses: nick-fields/retry@v1
         with:
           timeout_minutes: 30
           max_attempts: 3
