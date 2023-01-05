@@ -87,8 +87,6 @@ Please see [developer guide](DEVELOPER_GUIDE.md).
 
 OpenSearch Dashboards Reports integration with [Notifications](https://github.com/opensearch-project/notifications) is currently in progress. Tracking [here](https://github.com/opensearch-project/dashboards-reports/issues/72)
 
-## Troubleshooting
-
 ### Fail to launch Chromium
 
 There could be two reasons for this problem
