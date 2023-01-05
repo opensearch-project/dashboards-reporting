@@ -43,14 +43,14 @@ jobs:
           unzip chromium-linux-x64.zip
           rm chromium-linux-x64.zip
       - name: OpenSearch Dashboards Plugin Bootstrap
-        uses: nick-invision/retry@v1
+        uses: nick-fields/retry@v1
         with:
           timeout_minutes: 30
           max_attempts: 3
           command: yarn osd bootstrap
 
       - name: Test
-        uses: nick-invision/retry@v1
+        uses: nick-fields/retry@v1
         with:
           timeout_minutes: 30
           max_attempts: 3
@@ -134,14 +134,14 @@ jobs:
           rd chromium-windows-x64.zip
           rd chromium-windows-x64
       - name: OpenSearch Dashboards Plugin Bootstrap
-        uses: nick-invision/retry@v1
+        uses: nick-fields/retry@v1
         with:
           timeout_minutes: 30
           max_attempts: 3
           command: yarn osd bootstrap
 
       - name: Test
-        uses: nick-invision/retry@v1
+        uses: nick-fields/retry@v1
         with:
           timeout_minutes: 30
           max_attempts: 3
@@ -201,14 +201,14 @@ jobs:
           unzip chromium-macos-x64.zip
           rm chromium-macos-x64.zip
       - name: OpenSearch Dashboards Plugin Bootstrap
-        uses: nick-invision/retry@v1
+        uses: nick-fields/retry@v1
         with:
           timeout_minutes: 30
           max_attempts: 3
           command: yarn osd bootstrap
 
       - name: Test
-        uses: nick-invision/retry@v1
+        uses: nick-fields/retry@v1
         with:
           timeout_minutes: 30
           max_attempts: 3
