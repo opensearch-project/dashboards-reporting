@@ -87,14 +87,6 @@ Please see [developer guide](DEVELOPER_GUIDE.md).
 
 OpenSearch Dashboards Reports integration with [Notifications](https://github.com/opensearch-project/notifications) is currently in progress. Tracking [here](https://github.com/opensearch-project/dashboards-reports/issues/72)
 
-### Fail to launch Chromium
-
-There could be two reasons for this problem
-
-1. You are not having the correct version of headless-chrome matching to the OS that your OpenSearch Dashboards is running. Different versions of headless-chrome can be found [here](https://github.com/opensearch-project/dashboards-reports/releases/tag/chromium-1.12.0.0)
-
-2. Missing additional dependencies. Please refer to [additional dependencies section](./dashboards-reports/rendering-engine/headless-chrome/README.md#additional-libaries) to install required dependencies according to your operating system.
-
 ## Code of Conduct
 
 This project has adopted the [Amazon Open Source Code of Conduct](CODE_OF_CONDUCT.md). For more information see the [Code of Conduct FAQ](https://aws.github.io/code-of-conduct-faq), or contact [opensource-codeofconduct@amazon.com](mailto:opensource-codeofconduct@amazon.com) with any additional questions or comments.
