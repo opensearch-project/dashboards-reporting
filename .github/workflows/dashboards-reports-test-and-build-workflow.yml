@@ -190,9 +190,9 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
 
-      - name: Checkout Plugin	
-        uses: actions/checkout@v1	
-        with:	
+      - name: Checkout Plugin
+        uses: actions/checkout@v1
+        with:
           path: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
 
       - name: Add Chromium Binary to Reporting for Testing
@@ -212,3 +212,22 @@ jobs:
         with:
           timeout_minutes: 30
           max_attempts: 3
+          command: yarn test
+
+      - name: Build Artifact
+        run: |
+          yarn build
+          cd build
+          mkdir -p ./macos-x64/opensearch-dashboards/${{ env.PLUGIN_NAME }}
+          mv ./${{ env.PLUGIN_NAME }}-*.zip ./macos-x64/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}-macos-x64.zip
+          cd macos-x64
+          wget https://github.com/opensearch-project/dashboards-reports/releases/download/chromium-1.12.0.0/chromium-macos-x64.zip
+          unzip chromium-macos-x64.zip -d ./opensearch-dashboards/${{ env.PLUGIN_NAME }}
+          zip -ur ./${{ env.ARTIFACT_NAME }}-*.zip ./opensearch-dashboards
+          mv ./${{ env.ARTIFACT_NAME }}-*.zip ..
+          cd ..
+      - name: Upload Artifact For MacOS x64
+        uses: actions/upload-artifact@v1
+        with:
+          name: dashboards-reports-macosx-x64
+          path: ./build/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}-macos-x64.zip
