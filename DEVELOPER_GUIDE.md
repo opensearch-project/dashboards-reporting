@@ -24,13 +24,10 @@ another JDK installation, e.g. `RUNTIME_JAVA_HOME=/usr/lib/jvm/jdk-8`.
 1. Create a `plugins` directory inside the OpenSearch Dashboards source code directory, if `plugins` directory doesn't exist.
 1. Check out this package from version control into the `plugins` directory.
    ```
-   git clone git@github.com:opensearch-project/dashboards-reports.git plugins --no-checkout
    cd plugins
-   echo 'dashboards-reports/*' >> .git/info/sparse-checkout
-   git config core.sparseCheckout true
-   git checkout dev
+   git clone https://github.com/opensearch-project/dashboards-reporting.git
    ```
-1. Run `yarn osd bootstrap` inside `OpenSearch-Dashboards/plugins/dashboards-reports`.
+1. Run `yarn osd bootstrap` inside `OpenSearch-Dashboards/plugins/dashboards-reporting`.
 
 Ultimately, your directory structure should look like this:
 
@@ -39,14 +36,14 @@ Ultimately, your directory structure should look like this:
 .
 ├── OpenSearch-Dashboards
 │   └──plugins
-│      └── dashboards-reports
+│      └── dashboards-reporting
 ```
 
 ## Build
 
 To build the plugin's distributable zip simply run `yarn build`.
 
-Example output: `./build/reports-dashboards-0.0.1.zip`
+Example output: `./build/reports-dashboards-*.zip`
 
 ## Run
 
