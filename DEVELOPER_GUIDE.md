@@ -24,7 +24,7 @@ another JDK installation, e.g. `RUNTIME_JAVA_HOME=/usr/lib/jvm/jdk-8`.
 1. Create a `plugins` directory inside the OpenSearch Dashboards source code directory, if `plugins` directory doesn't exist.
 1. Check out this package from version control into the `plugins/dashboards-reporting` directory.
    ```
-   git clone git@github.com:opensearch-project/dashboards-reporting.git plugins
+   git clone https://github.com/opensearch-project/dashboards-reporting.git plugins/dashboards-reporting
    git checkout main
    ```
 1. Run `yarn osd bootstrap` inside `OpenSearch-Dashboards/plugins/dashboards-reporting`.
