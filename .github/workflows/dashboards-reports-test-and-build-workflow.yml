@@ -67,7 +67,7 @@ jobs:
           name: dashboards-reports-linux
           path: ./build/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}.zip
 
-windows-build:
+  windows-build:
     runs-on: windows-latest
     steps:
 
