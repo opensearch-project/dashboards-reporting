@@ -35,13 +35,6 @@ jobs:
         with:	
           path: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
 
-      - name: Add Chromium Binary to Reporting for Testing
-        run: |
-          sudo apt update
-          sudo apt install -y libnss3-dev fonts-liberation libfontconfig1
-          wget https://github.com/opendistro-for-elasticsearch/kibana-reports/releases/download/chromium-1.12.0.0/chromium-linux-x64.zip 
-          unzip chromium-linux-x64.zip
-          rm chromium-linux-x64.zip
       - name: OpenSearch Dashboards Plugin Bootstrap
         uses: nick-fields/retry@v1
         with:
@@ -66,33 +59,13 @@ jobs:
       - name: Build Artifact
         run: |
           yarn build
-          cd build
-          mkdir -p ./{linux-x64,linux-arm64}/opensearch-dashboards/${{ env.PLUGIN_NAME }}
-          cp ./${{ env.PLUGIN_NAME }}-*.zip ./linux-x64/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}-linux-x64.zip
-          cp ./${{ env.PLUGIN_NAME }}-*.zip ./linux-arm64/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}-linux-arm64.zip
-          cd linux-x64
-          wget https://github.com/opensearch-project/dashboards-reports/releases/download/chromium-1.12.0.0/chromium-linux-x64.zip
-          unzip chromium-linux-x64.zip -d ./opensearch-dashboards/${{ env.PLUGIN_NAME }}
-          zip -ur ./${{ env.ARTIFACT_NAME }}-*.zip ./opensearch-dashboards
-          mv ./${{ env.ARTIFACT_NAME }}-*.zip ..
-          cd ..
-          cd linux-arm64
-          wget https://github.com/opensearch-project/dashboards-reports/releases/download/chromium-1.12.0.0/chromium-linux-arm64.zip
-          unzip chromium-linux-arm64.zip -d ./opensearch-dashboards/${{ env.PLUGIN_NAME }}
-          zip -ur ./${{ env.ARTIFACT_NAME }}-*.zip ./opensearch-dashboards
-          mv ./${{ env.ARTIFACT_NAME }}-*.zip ..
-          cd ..
-      - name: Upload Artifact For Linux x64
-        uses: actions/upload-artifact@v1
-        with:
-          name: dashboards-reports-linux-x64
-          path: ./build/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}-linux-x64.zip
+          mv ./build/*.zip ./build/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}.zip
 
-      - name: Upload Artifact For Linux arm64
+      - name: Upload Artifact For Linux
         uses: actions/upload-artifact@v1
         with:
-          name: dashboards-reports-linux-arm64
-          path: ./build/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}-linux-arm64.zip
+          name: dashboards-reports-linux
+          path: ./build/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}.zip
 
   windows-build:
     runs-on: windows-latest
@@ -108,6 +81,42 @@ jobs:
           repository: opensearch-project/Opensearch-Dashboards
           ref: ${{ env.OPENSEARCH_VERSION }}
           path: OpenSearch-Dashboards
+
+      - name: Get node version
+        id: versions_step
+        run:
+          echo "::set-output name=node_version::$(node -p "(require('../OpenSearch-Dashboards/package.json').engines.node).match(/[.0-9]+/)[0]")"
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ steps.versions_step.outputs.node_version }}
+          registry-url: 'https://registry.npmjs.org'
+
+
+      - name: Checkout Plugin	
+        uses: actions/checkout@v1	
+        with:	
+          path: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
+
+      - name: OpenSearch Dashboards Plugin Bootstrap
+        uses: nick-fields/retry@v1
+        with:
+          timeout_minutes: 30
+          max_attempts: 3
+          command: yarn osd bootstrap
+
+      - name: Test
+        uses: nick-fields/retry@v1
+        with:
+          timeout_minutes: 30
+          max_attempts: 3
+          command: yarn test
+
+      - name: Build Artifact
+        run: |
+          yarn build
+          mv ./build/*.zip ./build/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}.zip
 
       - name: Get node version
         id: versions_step
@@ -165,8 +174,8 @@ jobs:
       - name: Upload Artifact For Windows
         uses: actions/upload-artifact@v1
         with:
-          name: dashboards-reports-windows-x64
-          path: ./build/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}-windows-x64.zip
+          name: dashboards-reports-windows
+          path: ./build/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}.zip
 
   macos-build:
     runs-on: macos-latest
@@ -190,16 +199,11 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
 
-      - name: Checkout Plugin
-        uses: actions/checkout@v1
-        with:
+      - name: Checkout Plugin	
+        uses: actions/checkout@v1	
+        with:	
           path: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
 
-      - name: Add Chromium Binary to Reporting for Testing
-        run: |
-          wget https://github.com/opendistro-for-elasticsearch/kibana-reports/releases/download/chromium-1.12.0.0/chromium-macos-x64.zip 
-          unzip chromium-macos-x64.zip
-          rm chromium-macos-x64.zip
       - name: OpenSearch Dashboards Plugin Bootstrap
         uses: nick-fields/retry@v1
         with:
@@ -217,17 +221,10 @@ jobs:
       - name: Build Artifact
         run: |
           yarn build
-          cd build
-          mkdir -p ./macos-x64/opensearch-dashboards/${{ env.PLUGIN_NAME }}
-          mv ./${{ env.PLUGIN_NAME }}-*.zip ./macos-x64/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}-macos-x64.zip
-          cd macos-x64
-          wget https://github.com/opensearch-project/dashboards-reports/releases/download/chromium-1.12.0.0/chromium-macos-x64.zip
-          unzip chromium-macos-x64.zip -d ./opensearch-dashboards/${{ env.PLUGIN_NAME }}
-          zip -ur ./${{ env.ARTIFACT_NAME }}-*.zip ./opensearch-dashboards
-          mv ./${{ env.ARTIFACT_NAME }}-*.zip ..
-          cd ..
-      - name: Upload Artifact For MacOS x64
+          mv ./build/*.zip ./build/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}.zip
+
+      - name: Upload Artifact For MacOS
         uses: actions/upload-artifact@v1
         with:
-          name: dashboards-reports-macosx-x64
-          path: ./build/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}-macos-x64.zip
+          name: dashboards-reports-macosx
+          path: ./build/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}.zip

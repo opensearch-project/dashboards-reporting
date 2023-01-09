@@ -57,16 +57,8 @@ export enum DELIVERY_TYPE {
   channel = 'Channel',
 }
 
-export enum SELECTOR {
-  dashboard = '#dashboardViewport',
-  visualization = '.visEditor__content',
-  notebook = '.euiPageBody',
-}
-
 // https://www.elastic.co/guide/en/elasticsearch/reference/6.8/search-request-from-size.html
 export const DEFAULT_MAX_SIZE = 10000;
-
-export const DEFAULT_REPORT_HEADER = '<h1>OpenSearch Dashboards Reports</h1>';
 
 export const SECURITY_CONSTANTS = {
   TENANT_LOCAL_STORAGE_KEY: 'opendistro::security::tenant::show_popup',
@@ -79,19 +71,13 @@ export const EXTRA_HEADERS = [
   'x-forwarded-for',
 ];
 
-export const converter = new Showdown.Converter({
-  tables: true,
-  simplifiedAutoLink: true,
-  strikethrough: true,
-  tasklists: true,
-  noHeaderId: true,
-});
-
 const BLOCKED_KEYWORD = 'BLOCKED_KEYWORD';
 const ipv4Regex = /(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?):([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])/g
 const ipv6Regex = /(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))/g;
 const localhostRegex = /localhost:([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])/g;
 const iframeRegex = /iframe/g;
+
+export const ALLOWED_HOSTS = /^(0|0.0.0.0|127.0.0.1|localhost|(.*\.)?(opensearch.org|aws.a2z.com))$/;
 
 export const replaceBlockedKeywords = (htmlString: string) => {
   // replace <ipv4>:<port>
@@ -105,8 +91,6 @@ export const replaceBlockedKeywords = (htmlString: string) => {
   return htmlString;
 }
 
-export const CHROMIUM_PATH = `${__dirname}/../../../.chromium/headless_shell`;
-  
 
 /**
  * Metric constants

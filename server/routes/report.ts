@@ -38,6 +38,7 @@ export default function (router: IRouter, config: ReportingConfig) {
           timezone: schema.maybe(schema.string()),
           dateFormat: schema.maybe(schema.string()),
           csvSeparator: schema.maybe(schema.string()),
+          allowLeadingWildcards: schema.maybe(schema.string()),
         }),
       },
     },
@@ -74,6 +75,8 @@ export default function (router: IRouter, config: ReportingConfig) {
           body: {
             data: reportData.dataUrl,
             filename: reportData.fileName,
+            reportId: reportData.reportId,
+            queryUrl: reportData.queryUrl,
           },
         });
       } catch (error) {
@@ -98,6 +101,7 @@ export default function (router: IRouter, config: ReportingConfig) {
           timezone: schema.string(),
           dateFormat: schema.string(),
           csvSeparator: schema.string(),
+          allowLeadingWildcards: schema.string(),
         }),
       },
     },
@@ -141,6 +145,8 @@ export default function (router: IRouter, config: ReportingConfig) {
           body: {
             data: reportData.dataUrl,
             filename: reportData.fileName,
+            reportId: reportData.reportId,
+            queryUrl: reportData.queryUrl,
           },
         });
       } catch (error) {
@@ -164,6 +170,7 @@ export default function (router: IRouter, config: ReportingConfig) {
           timezone: schema.string(),
           dateFormat: schema.string(),
           csvSeparator: schema.string(),
+          allowLeadingWildcards: schema.string(),
         }),
       },
     },
@@ -212,6 +219,8 @@ export default function (router: IRouter, config: ReportingConfig) {
           body: {
             data: reportData.dataUrl,
             filename: reportData.fileName,
+            reportId: reportData.reportId,
+            queryUrl: reportData.queryUrl,
           },
         });
       } catch (error) {
