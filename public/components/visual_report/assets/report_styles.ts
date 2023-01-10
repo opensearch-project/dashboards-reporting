@@ -1,7 +1,17 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+export const reportingStyle = `
 html,
 body {
   margin: 0;
   padding: 0;
+}
+
+iframe, embed, object {
+  display: none !important;
 }
 
 /*  nice padding + matches Kibana default UI colors you could also set this to inherit if
@@ -209,3 +219,4 @@ body {
   padding: 6px 13px;
   border: 1px solid #c8ccd0;
 }
+`;
