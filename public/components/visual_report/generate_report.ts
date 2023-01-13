@@ -161,6 +161,8 @@ export const generateReport = async (id: string, forceDelay = 15000) => {
     footer
   );
   return html2canvas(document.body, {
+    scrollX: 0,
+    scrollY: 0,
     windowWidth: width,
     windowHeight: height,
     width,
