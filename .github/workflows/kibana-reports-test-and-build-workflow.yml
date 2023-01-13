@@ -10,9 +10,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Plugin
-        uses: actions/checkout@v1
-
       - name: Checkout Kibana
         uses: actions/checkout@v1
         with:
@@ -25,24 +22,24 @@ jobs:
         with:
           node-version: '10.22.0'
 
-      - name: Move Kibana Reports to Plugins Dir
-        run: |
-          mkdir -p ../kibana/plugins
-          mv kibana-reports ../kibana/plugins/${{ env.PLUGIN_NAME }}
+      - name: Checkout Plugin
+        uses: actions/checkout@v1
+        with:
+          path: kibana/plugins/${{ env.PLUGIN_NAME }}
 
       - name: Kibana Plugin Bootstrap
-        uses: nick-invision/retry@v1
+        uses: nick-fields/retry@v1
         with:
           timeout_minutes: 30
           max_attempts: 3
-          command: cd ../kibana/plugins/${{ env.PLUGIN_NAME }}; yarn kbn bootstrap
+          command: yarn kbn bootstrap
 
       - name: Test
-        uses: nick-invision/retry@v1
+        uses: nick-fields/retry@v1
         with:
           timeout_minutes: 30
           max_attempts: 3
-          command: cd ../kibana/plugins/${{ env.PLUGIN_NAME }}; yarn test --coverage
+          command: yarn test --coverage
 
       - name: Uploads coverage
         uses: codecov/codecov-action@v1
@@ -51,23 +48,11 @@ jobs:
 
       - name: Build Artifact
         run: |
-          cd ../kibana/plugins/${{ env.PLUGIN_NAME }}
           yarn build
+          mv ./build/*.zip ./build/${{ env.PLUGIN_NAME }}-${{ env.OD_VERSION }}.zip || true
 
-      - name: Upload Artifact For Linux x64
+      - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
-          name: kibana-reports-linux-x64
-          path: ../kibana/plugins/${{ env.PLUGIN_NAME }}/build/${{ env.PLUGIN_NAME }}-${{ env.OD_VERSION }}.zip
-
-      - name: Upload Artifact For Linux arm64
-        uses: actions/upload-artifact@v1
-        with:
-          name: kibana-reports-linux-arm64
-          path: ../kibana/plugins/${{ env.PLUGIN_NAME }}/build/${{ env.PLUGIN_NAME }}-${{ env.OD_VERSION }}.zip
-
-      - name: Upload Artifact For Windows
-        uses: actions/upload-artifact@v1
-        with:
-          name: kibana-reports-windows-x64
-          path: ../kibana/plugins/${{ env.PLUGIN_NAME }}/build/${{ env.PLUGIN_NAME }}-${{ env.OD_VERSION }}.zip
+          name: kibana-reports
+          path: ./build/${{ env.PLUGIN_NAME }}-${{ env.OD_VERSION }}.zip
