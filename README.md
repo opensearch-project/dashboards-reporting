@@ -17,18 +17,7 @@ OpenSearch Dashboards Reports allows ‘Report Owner’ (engineers, including bu
 
 ## Contributing
 
-We welcome you to get involved in development, documentation, testing the OpenSearch Dashboards reports plugin. See our [CONTRIBUTING.md](./CONTRIBUTING.md) and join in.
-
-## Setup & Build
-
-Complete OpenSearch Dashboards Report feature is composed of 2 plugins.
-
-- [OpenSearch Dashboards reports plugin](./dashboards-reports/README.md)
-- OpenSearch Reports scheduler plugin
-
-## Notifications Integration
-
-OpenSearch Dashboards Reports integration with [Notifications](https://github.com/opensearch-project/notifications) is currently in progress. Tracking [here](https://github.com/opensearch-project/dashboards-reports/issues/72)
+See [developer guide](DEVELOPER_GUIDE.md) and [how to contribute to this project](../CONTRIBUTING.md).
 
 ## Code of Conduct
 
