@@ -2397,10 +2397,10 @@ decode-uri-component@^0.2.0:
   resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.2.tgz#e69dbe25d37941171dd540e024c444cd5188e1e9"
   integrity sha512-FqUYQ+8o158GyGTrMFJms9qh3CqTKvAqgqsTnkLI8sKu0028orqBhxNMFkFen0zGyg6epACD32pjVk58ngIErQ==
 
-deeks@2.2.6:
-  version "2.2.6"
-  resolved "https://registry.yarnpkg.com/deeks/-/deeks-2.2.6.tgz#7fc4c07c4251e1deb7e919fd14734fea151dc8b2"
-  integrity sha512-KlfWy96oUxxfAEC8q8QVoik++6yWsTYT9Cm5S6nUddLciZaOy7WDfcFbVCyeHKFO44ptWxtz7sQd9Upm4SGf4g==
+deeks@2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/deeks/-/deeks-2.6.1.tgz#ee852ab76d5b4ca4bcfda34ba55660c40b92f505"
+  integrity sha512-PZrpz5xLo2JPZa3L+kqMMMdZU5pRwMysTM1xd6pLhNtgQw4Iq3wbF2QWaQTVh+HRq9Yg4rcjDIJ+scfGLxmsjQ==
 
 deep-is@~0.1.3:
   version "0.1.3"
@@ -2463,10 +2463,10 @@ diffie-hellman@^5.0.0:
     miller-rabin "^4.0.0"
     randombytes "^2.0.0"
 
-doc-path@2.0.4, doc-path@2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/doc-path/-/doc-path-2.1.2.tgz#08344d188619a6ff7c6631e462362dd720e4e81f"
-  integrity sha512-saM17czrIb4jYLsS5728OKbCa/WQ3xVctkGiMixOHz3X1VYsRn/Q5xPMxE1A5WN+XHHLWak34mMMjmAKRgMLeA==
+doc-path@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/doc-path/-/doc-path-3.1.0.tgz#4e1b5ba445d02e6b8f5bc122e8af43e659463d14"
+  integrity sha512-Pv2hLQbUM8du5681lTWIYk0OtVBmNhMAeZNGeFhMMJBIR89Nw4XesBwee1Xtlfk83n71tn0Y6VsJOn4d3qIiTw==
 
 dom-helpers@^5.0.1:
   version "5.2.0"
@@ -4174,13 +4174,13 @@ jsesc@^2.5.1:
   resolved "https://registry.yarnpkg.com/jsesc/-/jsesc-2.5.2.tgz#80564d2e483dacf6e8ef209650a67df3f0c283a4"
   integrity sha512-OYu7XEzjkCQ3C5Ps3QIZsQfNpqoJyZZA99wd9aWd05NCtC5pWOkShK2mkL6HXQR6/Cy2lbNdPlZBpuQHXE63gA==
 
-json-2-csv@^3.7.6:
-  version "3.7.6"
-  resolved "https://registry.yarnpkg.com/json-2-csv/-/json-2-csv-3.7.6.tgz#2a88b323b8986f31dcd4ef785b3bfb3521d42899"
-  integrity sha512-um9bT7CgI77f/m5G/V5uRKz9UruFQFijD5Fh+EAnr5QowOJpdIk1ya37KSq1MxjBnJgvmpqCnI7ZjsvyTYiW0w==
+json-2-csv@^3.20.0:
+  version "3.20.0"
+  resolved "https://registry.yarnpkg.com/json-2-csv/-/json-2-csv-3.20.0.tgz#8d9a7ad8a296016dbeb43eb76c03e66ac26d9136"
+  integrity sha512-IbqUB+yaycVNB/q2fiY5kyRjy5kRiEXqvNvGlxM5L0Bfi0RdvklVHc4t9MfeYF1GsZVpZWDBs9LdWmSjsQ8jvg==
   dependencies:
-    deeks "2.2.6"
-    doc-path "2.0.4"
+    deeks "2.6.1"
+    doc-path "3.1.0"
 
 json-parse-better-errors@^1.0.2:
   version "1.0.2"
