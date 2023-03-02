@@ -160,12 +160,11 @@ export const getOpenSearchData = (
 };
 
 //Convert the data to Csv format
-export const convertToCSV = async (dataset, selectedFields, csvSeparator) => {
+export const convertToCSV = async (dataset, csvSeparator) => {
   let convertedData: any = [];
   const options = {
     delimiter: { field: csvSeparator, eol: '\n' },
     emptyFieldValue: ' ',
-    keys: selectedFields,
   };
   await converter.json2csvAsync(dataset[0], options).then((csv) => {
     convertedData = csv;

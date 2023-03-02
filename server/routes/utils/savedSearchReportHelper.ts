@@ -262,6 +262,6 @@ async function generateReportData(
   async function convertOpenSearchDataToCsv() {
     const dataset: any = [];
     dataset.push(getOpenSearchData(arrayHits, report, params, dateFormat));
-    return await convertToCSV(dataset, report._source.selectedFields, csvSeparator);
+    return await convertToCSV(dataset, csvSeparator);
   }
 }
