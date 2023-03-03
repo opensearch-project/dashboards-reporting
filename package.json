@@ -26,7 +26,7 @@
     "jest-fetch-mock": "^3.0.3",
     "jquery": "^3.5.0",
     "jsdom": "16.5.0",
-    "json-2-csv": "^3.7.6",
+    "json-2-csv": "^3.20.0",
     "jspdf": "^2.5.1",
     "react-addons-test-utils": "^15.6.2",
     "react-id-generator": "^3.0.1",
@@ -65,7 +65,7 @@
   },
   "resolutions": {
     "trim": "^1.0.0",
-    "doc-path": "2.1.2",
+    "doc-path": "3.1.0",
     "y18n": "^5.0.5",
     "lodash": "^4.17.21",
     "path-parse": "^1.0.7",
