@@ -355,7 +355,7 @@ describe('test create saved search report', () => {
     );
 
     expect(dataUrl).toEqual(
-      'geoip.country_iso_code,geoip.location.lon,geoip.location.lat,geoip.city_name\n' +
+      'geoip\\.country_iso_code,geoip\\.location\\.lon,geoip\\.location\\.lat,geoip\\.city_name\n' +
         'GB,-0.1,51.5, \n' +
         'US,-74,40.8,New York'
     );
