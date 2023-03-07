@@ -5,6 +5,7 @@
 
 import createDOMPurify from 'dompurify';
 import html2canvas from 'html2canvas';
+import { createWorker } from 'tesseract.js';
 import { v1 as uuidv1 } from 'uuid';
 import { ReportSchemaType } from '../../../server/model';
 import { uiSettingsService } from '../utils/settings_service';
@@ -15,20 +16,6 @@ import {
   SELECTOR,
   VISUAL_REPORT_TYPE,
 } from './constants';
-
-const readStreamToPdf = async (stream: string) => {
-  let link = document.createElement('a');
-  let url = stream;
-  if (typeof link.download !== 'string') {
-    window.open(url, '_blank');
-    return;
-  }
-  link.download = 'test.pdf';
-  link.href = url;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-};
 
 const waitForSelector = (selector: string, timeout = 30000) => {
   return Promise.race([
@@ -212,22 +199,35 @@ export const generateReport = async (id: string, forceDelay = 15000) => {
       link.href = canvas.toDataURL();
       link.click();
     } else {
-      http
-        .post('../api/reporting/ocrReport', {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            data: canvas.toDataURL(),
-          }),
-        })
-        .then((r) => {
-          console.log('❗r:', r);
-          readStreamToPdf(r.data);
-        })
-        .catch((r) => {
-          console.error('❗r:', r);
-        });
+      const worker = await createWorker({
+        workerPath: '../api/reporting/tesseract.js/dist/worker.min.js',
+        langPath: '../api/reporting/tesseract-lang-data',
+        corePath: '../api/reporting/tesseract.js-core/tesseract-core.wasm.js',
+      });
+      await worker.loadLanguage('eng');
+      await worker.initialize('eng');
+      const {
+        data: { text, pdf },
+      } = await worker
+        .recognize(
+          canvas.toDataURL(),
+          { pdfTitle: fileName},
+          { pdf: true }
+        )
+        .catch((e) => console.error('recognize', e));
+      await worker.terminate();
+
+      const blob = new Blob([new Uint8Array(pdf)], { type: 'application/pdf' });
+      const link = document.createElement('a');
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', fileName);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
       /* const orient = canvas.width > canvas.height ? 'landscape' : 'portrait';
       const pdf = new jsPDF(orient, 'px', [canvas.width, canvas.height]);
       pdf.addImage(canvas, 'JPEG', 0, 0, canvas.width, canvas.height);
