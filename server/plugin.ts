@@ -3,23 +3,24 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { schema } from '@osd/config-schema';
 import {
-  PluginInitializerContext,
   CoreSetup,
   CoreStart,
-  Plugin,
-  Logger,
   ILegacyClusterClient,
+  Logger,
+  Plugin,
+  PluginInitializerContext,
 } from '../../../src/core/server';
 import opensearchReportsPlugin from './backend/opensearch-reports-plugin';
+import { NotificationsPlugin } from './clusters/notificationsPlugin';
+import { buildConfig, ReportingConfigType } from './config';
+import { ReportingConfig } from './config/config';
+import registerRoutes from './routes';
 import {
   ReportsDashboardsPluginSetup,
   ReportsDashboardsPluginStart,
 } from './types';
-import registerRoutes from './routes';
-import { NotificationsPlugin } from './clusters/notificationsPlugin';
-import { buildConfig, ReportingConfigType } from './config';
-import { ReportingConfig } from './config/config';
 
 export interface ReportsPluginRequestContext {
   logger: Logger;
@@ -48,6 +49,16 @@ export class ReportsDashboardsPlugin
 
   public async setup(core: CoreSetup) {
     this.logger.debug('reports-dashboards: Setup');
+
+    core.uiSettings.register({
+      'reporting:useOcr': {
+        name: 'Reporting use OCR on PDF',
+        value: false,
+        description:
+          'Whether to run optical character recognition on PDF reports to make text selectable',
+        schema: schema.boolean(),
+      },
+    });
 
     try {
       const config = await buildConfig(
