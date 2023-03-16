@@ -58,7 +58,9 @@ const removeNonReportElements = (
   reportSource: VISUAL_REPORT_TYPE
 ) => {
   // remove buttons
-  doc.querySelectorAll("button[class^='euiButton']:not(.visLegend__button)").forEach((e) => e.remove());
+  doc
+    .querySelectorAll("button[class^='euiButton']:not(.visLegend__button)")
+    .forEach((e) => e.remove());
   // remove top navBar
   doc.querySelectorAll("[class^='euiHeader']").forEach((e) => e.remove());
   // remove visualization editor
@@ -66,7 +68,6 @@ const removeNonReportElements = (
     doc.querySelector('[data-test-subj="splitPanelResizer"]')?.remove();
     doc.querySelector('.visEditor__collapsibleSidebar')?.remove();
   }
-  doc.body.style.paddingTop = '0px';
 };
 
 const addReportHeader = (doc: Document, header: string) => {
@@ -97,8 +98,10 @@ const addReportFooter = (doc: Document, footer: string) => {
 
 const addReportStyle = (doc: Document, style: string) => {
   const styleElement = document.createElement('style');
+  styleElement.className = 'reportInjectedStyles';
   styleElement.innerHTML = style;
   doc.getElementsByTagName('head')[0].appendChild(styleElement);
+  doc.body.style.paddingTop = '0px';
 };
 
 const computeHeight = (height: number, header: string, footer: string) => {
@@ -123,8 +126,8 @@ export const generateReport = async (id: string, forceDelay = 15000) => {
   );
   const format =
     report.report_definition.report_params.core_params.report_format;
-  const reportSource = (report.report_definition.report_params
-    .report_source as unknown) as VISUAL_REPORT_TYPE;
+  const reportSource = report.report_definition.report_params
+    .report_source as unknown as VISUAL_REPORT_TYPE;
   const headerInput = report.report_definition.report_params.core_params.header;
   const footerInput = report.report_definition.report_params.core_params.footer;
   const header = headerInput
@@ -154,6 +157,19 @@ export const generateReport = async (id: string, forceDelay = 15000) => {
       );
   }
   await timeout(forceDelay);
+  document
+    .querySelectorAll<HTMLSpanElement>('span:not([data-html2canvas-ignore])')
+    .forEach((el) => {
+      if (!el.closest('.globalFilterItem'))
+        el.style.width = el.offsetWidth + 30 + 'px'
+      });
+  document
+    .querySelectorAll<HTMLSpanElement>('span.globalFilterItem:not([data-html2canvas-ignore])')
+    .forEach((el) => (el.style.width = el.offsetWidth + 5 + 'px'));
+  addReportHeader(document, header);
+  addReportFooter(document, footer);
+  addReportStyle(document, reportingStyle);
+  await timeout(1000);
 
   const width = document.documentElement.scrollWidth;
   const height = computeHeight(
@@ -171,11 +187,13 @@ export const generateReport = async (id: string, forceDelay = 15000) => {
     imageTimeout: 30000,
     useCORS: true,
     removeContainer: false,
+    allowTaint: true,
+    foreignObjectRendering: true,
     onclone: function (documentClone) {
       removeNonReportElements(documentClone, reportSource);
-      addReportHeader(documentClone, header);
+      /* addReportHeader(documentClone, header);
       addReportFooter(documentClone, footer);
-      addReportStyle(documentClone, reportingStyle);
+      addReportStyle(documentClone, reportingStyle); */
     },
   }).then(async function (canvas) {
     // TODO remove this and 'removeContainer: false' when https://github.com/niklasvh/html2canvas/pull/2949 is merged
@@ -234,5 +252,13 @@ export const generateReport = async (id: string, forceDelay = 15000) => {
       pdf.save(fileName);
     }
     return true;
+  })
+  .finally(() => {
+    document
+      .querySelectorAll<HTMLSpanElement>('span:not(.data-html2canvas-ignore)')
+      .forEach((el) => (el.style.width = ''));
+    document.querySelectorAll('.reportWrapper').forEach((e) => e.remove());
+    document.querySelectorAll('.reportInjectedStyles').forEach((e) => e.remove());
+    document.body.style.paddingTop = '';
   });
 };
