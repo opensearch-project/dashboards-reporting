@@ -119,6 +119,7 @@ const computeHeight = (height: number, header: string, footer: string) => {
 
 export const generateReport = async (id: string, forceDelay = 15000) => {
   const http = uiSettingsService.getHttpClient();
+  const useForeignObjectRendering = false;
   const DOMPurify = createDOMPurify(window);
 
   const report = await http.get<ReportSchemaType>(
@@ -157,19 +158,26 @@ export const generateReport = async (id: string, forceDelay = 15000) => {
       );
   }
   await timeout(forceDelay);
-  document
-    .querySelectorAll<HTMLSpanElement>('span:not([data-html2canvas-ignore])')
-    .forEach((el) => {
-      if (!el.closest('.globalFilterItem'))
-        el.style.width = el.offsetWidth + 30 + 'px'
+
+  // Style changes onclone does not work with foreign object rendering enabled.
+  // Additionally increase span width to prevent text being truncated
+  if (useForeignObjectRendering) {
+    document
+      .querySelectorAll<HTMLSpanElement>('span:not([data-html2canvas-ignore])')
+      .forEach((el) => {
+        if (!el.closest('.globalFilterItem'))
+          el.style.width = el.offsetWidth + 30 + 'px';
       });
-  document
-    .querySelectorAll<HTMLSpanElement>('span.globalFilterItem:not([data-html2canvas-ignore])')
-    .forEach((el) => (el.style.width = el.offsetWidth + 5 + 'px'));
-  addReportHeader(document, header);
-  addReportFooter(document, footer);
-  addReportStyle(document, reportingStyle);
-  await timeout(1000);
+    document
+      .querySelectorAll<HTMLSpanElement>(
+        'span.globalFilterItem:not([data-html2canvas-ignore])'
+      )
+      .forEach((el) => (el.style.width = el.offsetWidth + 5 + 'px'));
+    addReportHeader(document, header);
+    addReportFooter(document, footer);
+    addReportStyle(document, reportingStyle);
+    await timeout(1000);
+  }
 
   const width = document.documentElement.scrollWidth;
   const height = computeHeight(
@@ -188,77 +196,86 @@ export const generateReport = async (id: string, forceDelay = 15000) => {
     useCORS: true,
     removeContainer: false,
     allowTaint: true,
-    foreignObjectRendering: true,
+    foreignObjectRendering: useForeignObjectRendering,
     onclone: function (documentClone) {
       removeNonReportElements(documentClone, reportSource);
-      /* addReportHeader(documentClone, header);
-      addReportFooter(documentClone, footer);
-      addReportStyle(documentClone, reportingStyle); */
-    },
-  }).then(async function (canvas) {
-    // TODO remove this and 'removeContainer: false' when https://github.com/niklasvh/html2canvas/pull/2949 is merged
-    document
-      .querySelectorAll<HTMLIFrameElement>('.html2canvas-container')
-      .forEach((e) => {
-        const iframe = e.contentWindow;
-        if (e) {
-          e.src = 'about:blank';
-          if (iframe) {
-            iframe.document.write('');
-            iframe.document.clear();
-            iframe.close();
-          }
-          e.remove();
-        }
-      });
-
-    if (format === 'png') {
-      const link = document.createElement('a');
-      link.download = fileName;
-      link.href = canvas.toDataURL();
-      link.click();
-    } else if (uiSettingsService.get('reporting:useOcr')) {
-      const worker = await createWorker({
-        workerPath: '../api/reporting/tesseract.js/dist/worker.min.js',
-        langPath: '../api/reporting/tesseract-lang-data',
-        corePath: '../api/reporting/tesseract.js-core/tesseract-core.wasm.js',
-      });
-      await worker.loadLanguage('eng');
-      await worker.initialize('eng');
-      const {
-        data: { text, pdf },
-      } = await worker
-        .recognize(canvas.toDataURL(), { pdfTitle: fileName }, { pdf: true })
-        .catch((e) => console.error('recognize', e));
-      await worker.terminate();
-
-      const blob = new Blob([new Uint8Array(pdf)], {
-        type: 'application/pdf',
-      });
-      const link = document.createElement('a');
-      if (link.download !== undefined) {
-        const url = URL.createObjectURL(blob);
-        link.setAttribute('href', url);
-        link.setAttribute('download', fileName);
-        link.style.visibility = 'hidden';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+      if (!useForeignObjectRendering) {
+        addReportHeader(documentClone, header);
+        addReportFooter(documentClone, footer);
+        addReportStyle(documentClone, reportingStyle);
       }
-    } else {
-      const orient = canvas.width > canvas.height ? 'landscape' : 'portrait';
-      const pdf = new jsPDF(orient, 'px', [canvas.width, canvas.height]);
-      pdf.addImage(canvas, 'JPEG', 0, 0, canvas.width, canvas.height);
-      pdf.save(fileName);
-    }
-    return true;
+    },
   })
-  .finally(() => {
-    document
-      .querySelectorAll<HTMLSpanElement>('span:not(.data-html2canvas-ignore)')
-      .forEach((el) => (el.style.width = ''));
-    document.querySelectorAll('.reportWrapper').forEach((e) => e.remove());
-    document.querySelectorAll('.reportInjectedStyles').forEach((e) => e.remove());
-    document.body.style.paddingTop = '';
-  });
+    .then(async function (canvas) {
+      // TODO remove this and 'removeContainer: false' when https://github.com/niklasvh/html2canvas/pull/2949 is merged
+      document
+        .querySelectorAll<HTMLIFrameElement>('.html2canvas-container')
+        .forEach((e) => {
+          const iframe = e.contentWindow;
+          if (e) {
+            e.src = 'about:blank';
+            if (iframe) {
+              iframe.document.write('');
+              iframe.document.clear();
+              iframe.close();
+            }
+            e.remove();
+          }
+        });
+
+      if (format === 'png') {
+        const link = document.createElement('a');
+        link.download = fileName;
+        link.href = canvas.toDataURL();
+        link.click();
+      } else if (uiSettingsService.get('reporting:useOcr')) {
+        const worker = await createWorker({
+          workerPath: '../api/reporting/tesseract.js/dist/worker.min.js',
+          langPath: '../api/reporting/tesseract-lang-data',
+          corePath: '../api/reporting/tesseract.js-core/tesseract-core.wasm.js',
+        });
+        await worker.loadLanguage('eng');
+        await worker.initialize('eng');
+        const {
+          data: { text, pdf },
+        } = await worker
+          .recognize(canvas.toDataURL(), { pdfTitle: fileName }, { pdf: true })
+          .catch((e) => console.error('recognize', e));
+        await worker.terminate();
+
+        const blob = new Blob([new Uint8Array(pdf)], {
+          type: 'application/pdf',
+        });
+        const link = document.createElement('a');
+        if (link.download !== undefined) {
+          const url = URL.createObjectURL(blob);
+          link.setAttribute('href', url);
+          link.setAttribute('download', fileName);
+          link.style.visibility = 'hidden';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+      } else {
+        const orient = canvas.width > canvas.height ? 'landscape' : 'portrait';
+        const pdf = new jsPDF(orient, 'px', [canvas.width, canvas.height]);
+        pdf.addImage(canvas, 'JPEG', 0, 0, canvas.width, canvas.height);
+        pdf.save(fileName);
+      }
+      return true;
+    })
+    .finally(() => {
+      if (useForeignObjectRendering) {
+        document
+          .querySelectorAll<HTMLSpanElement>(
+            'span:not(.data-html2canvas-ignore)'
+          )
+          .forEach((el) => (el.style.width = ''));
+        document.querySelectorAll('.reportWrapper').forEach((e) => e.remove());
+        document
+          .querySelectorAll('.reportInjectedStyles')
+          .forEach((e) => e.remove());
+        document.body.style.paddingTop = '';
+      }
+    });
 };
