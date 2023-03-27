@@ -57,7 +57,7 @@ const removeNonReportElements = (
   reportSource: VISUAL_REPORT_TYPE
 ) => {
   // remove buttons
-  doc.querySelectorAll("[class^='euiButton']").forEach((e) => e.remove());
+  doc.querySelectorAll("button[class^='euiButton']:not(.visLegend__button)").forEach((e) => e.remove());
   // remove top navBar
   doc.querySelectorAll("[class^='euiHeader']").forEach((e) => e.remove());
   // remove visualization editor
