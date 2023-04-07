@@ -119,7 +119,7 @@ const computeHeight = (height: number, header: string, footer: string) => {
 
 export const generateReport = async (id: string, forceDelay = 15000) => {
   const http = uiSettingsService.getHttpClient();
-  const useForeignObjectRendering = true;
+  const useForeignObjectRendering = uiSettingsService.get('reporting:useFOR');
   const DOMPurify = createDOMPurify(window);
 
   const report = await http.get<ReportSchemaType>(

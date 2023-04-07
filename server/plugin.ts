@@ -58,6 +58,13 @@ export class ReportsDashboardsPlugin
           'Whether to run optical character recognition on PDF reports to make text selectable',
         schema: schema.boolean(),
       },
+      'reporting:useFOR': {
+        name: 'Reporting use ForeignObject rendering',
+        value: true,
+        description:
+          'Whether to use ForeignObject rendering when generating reports. If it causes issues, try disabling this option.',
+        schema: schema.boolean(),
+      },
     });
 
     try {
