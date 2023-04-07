@@ -115,6 +115,7 @@ export default function (router: IRouter) {
           '..',
           '..',
           'common',
+          'tesseract',
           'eng.traineddata.gz'
         );
         const file = await fs.promises.readFile(filePath);
