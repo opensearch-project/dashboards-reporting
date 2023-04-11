@@ -14,7 +14,7 @@
     "cypress:run": "cypress run",
     "cypress:open": "cypress open",
     "plugin-helpers": "node ../../scripts/plugin_helpers",
-    "postinstall": "node ./scripts/patch-html2canvas.js"
+    "postinstall": "node ./scripts/postinstall.js"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
