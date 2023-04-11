@@ -14,7 +14,7 @@
     "cypress:run": "cypress run",
     "cypress:open": "cypress open",
     "plugin-helpers": "node ../../scripts/plugin_helpers",
-    "postinstall": "node ./scripts/patch-html2canvas.js"
+    "postinstall": "node ./scripts/postinstall.js"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
@@ -38,7 +38,8 @@
     "react-router-dom": "^5.3.0",
     "react-toast-notifications": "^2.4.0",
     "set-interval-async": "1.0.33",
-    "showdown": "^1.9.1"
+    "showdown": "^1.9.1",
+    "tesseract.js": "^4.0.2"
   },
   "devDependencies": {
     "@elastic/eslint-import-resolver-kibana": "link:../../packages/osd-eslint-import-resolver-opensearch-dashboards",
