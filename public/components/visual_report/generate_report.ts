@@ -6,6 +6,7 @@
 import createDOMPurify from 'dompurify';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { createWorker } from 'tesseract.js';
 import { v1 as uuidv1 } from 'uuid';
 import { ReportSchemaType } from '../../../server/model';
 import { uiSettingsService } from '../utils/settings_service';
@@ -57,7 +58,9 @@ const removeNonReportElements = (
   reportSource: VISUAL_REPORT_TYPE
 ) => {
   // remove buttons
-  doc.querySelectorAll("button[class^='euiButton']:not(.visLegend__button)").forEach((e) => e.remove());
+  doc
+    .querySelectorAll("button[class^='euiButton']:not(.visLegend__button)")
+    .forEach((e) => e.remove());
   // remove top navBar
   doc.querySelectorAll("[class^='euiHeader']").forEach((e) => e.remove());
   // remove visualization editor
@@ -65,7 +68,6 @@ const removeNonReportElements = (
     doc.querySelector('[data-test-subj="splitPanelResizer"]')?.remove();
     doc.querySelector('.visEditor__collapsibleSidebar')?.remove();
   }
-  doc.body.style.paddingTop = '0px';
 };
 
 const addReportHeader = (doc: Document, header: string) => {
@@ -96,8 +98,10 @@ const addReportFooter = (doc: Document, footer: string) => {
 
 const addReportStyle = (doc: Document, style: string) => {
   const styleElement = document.createElement('style');
+  styleElement.className = 'reportInjectedStyles';
   styleElement.innerHTML = style;
   doc.getElementsByTagName('head')[0].appendChild(styleElement);
+  doc.body.style.paddingTop = '0px';
 };
 
 const computeHeight = (height: number, header: string, footer: string) => {
@@ -115,6 +119,7 @@ const computeHeight = (height: number, header: string, footer: string) => {
 
 export const generateReport = async (id: string, forceDelay = 15000) => {
   const http = uiSettingsService.getHttpClient();
+  const useForeignObjectRendering = uiSettingsService.get('reporting:useFOR');
   const DOMPurify = createDOMPurify(window);
 
   const report = await http.get<ReportSchemaType>(
@@ -154,6 +159,26 @@ export const generateReport = async (id: string, forceDelay = 15000) => {
   }
   await timeout(forceDelay);
 
+  // Style changes onclone does not work with foreign object rendering enabled.
+  // Additionally increase span width to prevent text being truncated
+  if (useForeignObjectRendering) {
+    document
+      .querySelectorAll<HTMLSpanElement>('span:not([data-html2canvas-ignore])')
+      .forEach((el) => {
+        if (!el.closest('.globalFilterItem'))
+          el.style.width = el.offsetWidth + 30 + 'px';
+      });
+    document
+      .querySelectorAll<HTMLSpanElement>(
+        'span.globalFilterItem:not([data-html2canvas-ignore])'
+      )
+      .forEach((el) => (el.style.width = el.offsetWidth + 5 + 'px'));
+    addReportHeader(document, header);
+    addReportFooter(document, footer);
+    addReportStyle(document, reportingStyle);
+    await timeout(1000);
+  }
+
   const width = document.documentElement.scrollWidth;
   const height = computeHeight(
     document.documentElement.scrollHeight,
@@ -170,40 +195,87 @@ export const generateReport = async (id: string, forceDelay = 15000) => {
     imageTimeout: 30000,
     useCORS: true,
     removeContainer: false,
+    allowTaint: true,
+    foreignObjectRendering: useForeignObjectRendering,
     onclone: function (documentClone) {
       removeNonReportElements(documentClone, reportSource);
-      addReportHeader(documentClone, header);
-      addReportFooter(documentClone, footer);
-      addReportStyle(documentClone, reportingStyle);
+      if (!useForeignObjectRendering) {
+        addReportHeader(documentClone, header);
+        addReportFooter(documentClone, footer);
+        addReportStyle(documentClone, reportingStyle);
+      }
     },
-  }).then(function (canvas) {
-    // TODO remove this and 'removeContainer: false' when https://github.com/niklasvh/html2canvas/pull/2949 is merged
-    document
-      .querySelectorAll<HTMLIFrameElement>('.html2canvas-container')
-      .forEach((e) => {
-        const iframe = e.contentWindow;
-        if (e) {
-          e.src = 'about:blank';
-          if (iframe) {
-            iframe.document.write('');
-            iframe.document.clear();
-            iframe.close();
+  })
+    .then(async function (canvas) {
+      // TODO remove this and 'removeContainer: false' when https://github.com/niklasvh/html2canvas/pull/2949 is merged
+      document
+        .querySelectorAll<HTMLIFrameElement>('.html2canvas-container')
+        .forEach((e) => {
+          const iframe = e.contentWindow;
+          if (e) {
+            e.src = 'about:blank';
+            if (iframe) {
+              iframe.document.write('');
+              iframe.document.clear();
+              iframe.close();
+            }
+            e.remove();
           }
-          e.remove();
-        }
-      });
+        });
 
-    if (format === 'png') {
-      const link = document.createElement('a');
-      link.download = fileName;
-      link.href = canvas.toDataURL();
-      link.click();
-    } else {
-      const orient = canvas.width > canvas.height ? 'landscape' : 'portrait';
-      const pdf = new jsPDF(orient, 'px', [canvas.width, canvas.height]);
-      pdf.addImage(canvas, 'JPEG', 0, 0, canvas.width, canvas.height);
-      pdf.save(fileName);
-    }
-    return true;
-  });
+      if (format === 'png') {
+        const link = document.createElement('a');
+        link.download = fileName;
+        link.href = canvas.toDataURL();
+        link.click();
+      } else if (uiSettingsService.get('reporting:useOcr')) {
+        const worker = await createWorker({
+          workerPath: '../api/reporting/tesseract.js/dist/worker.min.js',
+          langPath: '../api/reporting/tesseract-lang-data',
+          corePath: '../api/reporting/tesseract.js-core/tesseract-core.wasm.js',
+        });
+        await worker.loadLanguage('eng');
+        await worker.initialize('eng');
+        const {
+          data: { text, pdf },
+        } = await worker
+          .recognize(canvas.toDataURL(), { pdfTitle: fileName }, { pdf: true })
+          .catch((e) => console.error('recognize', e));
+        await worker.terminate();
+
+        const blob = new Blob([new Uint8Array(pdf)], {
+          type: 'application/pdf',
+        });
+        const link = document.createElement('a');
+        if (link.download !== undefined) {
+          const url = URL.createObjectURL(blob);
+          link.setAttribute('href', url);
+          link.setAttribute('download', fileName);
+          link.style.visibility = 'hidden';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+      } else {
+        const orient = canvas.width > canvas.height ? 'landscape' : 'portrait';
+        const pdf = new jsPDF(orient, 'px', [canvas.width, canvas.height]);
+        pdf.addImage(canvas, 'JPEG', 0, 0, canvas.width, canvas.height);
+        pdf.save(fileName);
+      }
+      return true;
+    })
+    .finally(() => {
+      if (useForeignObjectRendering) {
+        document
+          .querySelectorAll<HTMLSpanElement>(
+            'span:not(.data-html2canvas-ignore)'
+          )
+          .forEach((el) => (el.style.width = ''));
+        document.querySelectorAll('.reportWrapper').forEach((e) => e.remove());
+        document
+          .querySelectorAll('.reportInjectedStyles')
+          .forEach((e) => e.remove());
+        document.body.style.paddingTop = '';
+      }
+    });
 };
