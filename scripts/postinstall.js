@@ -5,6 +5,8 @@
 
 // @ts-check
 // workaround for Safari support before https://github.com/niklasvh/html2canvas/pull/2911 is merged
+const https = require('https');
+const fs = require('fs');
 const replace = require('replace-in-file');
 
 const options = {
@@ -31,3 +33,16 @@ try {
     error
   );
 }
+
+// download tesseract model
+const modelFile = fs.createWriteStream(__dirname + '/../common/tesseract/eng.traineddata.gz');
+https.get(
+  'https://raw.githubusercontent.com/naptha/tessdata/gh-pages/4.0.0_best/eng.traineddata.gz',
+  function (response) {
+    response.pipe(modelFile);
+    modelFile.on('finish', () => {
+      modelFile.close();
+      console.log('Downloaded eng.traineddata.gz for tesseract.js');
+    });
+  }
+);
