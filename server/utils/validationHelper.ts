@@ -22,7 +22,7 @@ export const isValidRelativeUrl = (relativeUrl: string) => {
   ) {
     normalizedRelativeUrl = path.posix.normalize(relativeUrl);
   }
-  
+
   // check pattern
   // ODFE pattern: /app/dashboards#/view/7adfa750-4c81-11e8-b3d7-01146121b73d?_g
   // AES pattern: /_plugin/kibana/app/dashboards#/view/7adfa750-4c81-11e8-b3d7-01146121b73d?_g
@@ -37,7 +37,7 @@ export const isValidRelativeUrl = (relativeUrl: string) => {
 export const regexDuration = /^(-?)P(?=\d|T\d)(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)([DW]))?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+(?:\.\d+)?)S)?)?$/;
 export const regexEmailAddress = /\S+@\S+\.\S+/;
 export const regexReportName = /^[\w\-\s\(\)\[\]\,\_\-+]+$/;
-export const regexRelativeUrl = /^\/(_plugin\/kibana\/|_dashboards\/)?app\/(dashboards|visualize|discover|observability-dashboards|notebooks-dashboards\?view=output_only(&security_tenant=.+)?)(\?security_tenant=.+)?#\/(notebooks\/|view\/|edit\/)?[^\/]+$/;
+export const regexRelativeUrl = /^\/(_plugin\/kibana\/|_dashboards\/)?app\/(dashboards|visualize|discover|observability-dashboards|observability-notebooks|notebooks-dashboards\?view=output_only(&security_tenant=.+)?)(\?security_tenant=.+)?#\/(notebooks\/|view\/|edit\/)?[^\/]+$/;
 
 export const validateReport = async (
   client: ILegacyScopedClusterClient,
@@ -122,7 +122,7 @@ const validateSavedObject = async (
       index: '.kibana',
       id: savedObjectId,
     };
-    exist = await client.callAsCurrentUser('exists', params);  
+    exist = await client.callAsCurrentUser('exists', params);
   }
   if (!exist) {
     throw Error(`saved object with id ${savedObjectId} does not exist`);
