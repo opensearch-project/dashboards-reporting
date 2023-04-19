@@ -95,6 +95,31 @@ const createReportDefinitionNotebookInput: ReportDefinitionSchemaType = {
   },
 }
 
+const createReportDefinitionNotebookPostNavBarInput: ReportDefinitionSchemaType = {
+  report_params: {
+    report_name: 'test notebooks report',
+    report_source: REPORT_TYPE.notebook,
+    description: 'Hi this is your Notebook on demand',
+    core_params: {
+      base_url: `/app/observability-notebooks#/${SAMPLE_SAVED_OBJECT_ID}`,
+      window_width: 1300,
+      window_height: 900,
+      report_format: FORMAT.pdf,
+      time_duration: 'PT5M',
+      origin: 'http://localhost:5601',
+    },
+  },
+  delivery: {
+    configIds: [],
+    title: 'title',
+    textDescription: 'text description',
+    htmlDescription: 'html description'
+  },
+  trigger: {
+    trigger_type: TRIGGER_TYPE.onDemand,
+  },
+}
+
 describe('test input validation', () => {
   test('create report with correct saved object id', async () => {
     const savedObjectIds = [`dashboard:${SAMPLE_SAVED_OBJECT_ID}`];
@@ -139,6 +164,16 @@ describe('test input validation', () => {
     const report = await validateReportDefinition(
       client,
       createReportDefinitionNotebookInput
+    );
+    expect(report).toBeDefined();
+  });
+
+  test('create notebook report definition with notebook base url format', async () => {
+    const savedObjectIds = [`notebook:${SAMPLE_SAVED_OBJECT_ID}`];
+    const client = mockOpenSearchClient(savedObjectIds);
+    const report = await validateReportDefinition(
+      client,
+      createReportDefinitionNotebookPostNavBarInput
     );
     expect(report).toBeDefined();
   });
