@@ -2,9 +2,17 @@
   "id": "reportsDashboards",
   "version": "3.0.0.0",
   "opensearchDashboardsVersion": "3.0.0",
-  "requiredPlugins": ["navigation", "data", "opensearchDashboardsUtils"],
-  "optionalPlugins": ["share"],
+  "requiredPlugins": [
+    "navigation",
+    "data",
+    "opensearchDashboardsUtils"
+  ],
+  "optionalPlugins": [
+    "share"
+  ],
   "server": true,
   "ui": true,
-  "configPath": ["opensearch_reporting"]
+  "configPath": [
+    "opensearch_reporting"
+  ]
 }
