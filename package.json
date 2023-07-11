@@ -79,6 +79,7 @@
     "terser": "^4.8.1",
     "moment": "^2.29.4",
     "loader-utils": "^2.0.3",
-    "yaml": "^2.2.2"
+    "yaml": "^2.2.2",
+    "tough-cookie": "^4.1.3"
   }
 }
