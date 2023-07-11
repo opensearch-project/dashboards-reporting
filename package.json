@@ -8,6 +8,7 @@
     "osd": "node ../../scripts/osd",
     "opensearch": "node ../../scripts/opensearch",
     "lint": "eslint .",
+    "lint:style": "node ../../scripts/stylelint",
     "start": "yarn plugin-helpers start",
     "build": "yarn plugin-helpers build",
     "test": "../../node_modules/.bin/jest --config ./test/jest.config.js",
