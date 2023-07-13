@@ -50,7 +50,11 @@ export const getSelectedFields = async (columns) => {
 
 // Build the OpenSearch query from the meta data
 // is_count is set to 1 if we building the count query but 0 if we building the fetch data query
-export const buildRequestBody = (report: any, allowLeadingWildcards: boolean, is_count: number) => {
+export const buildRequestBody = (
+  report: any,
+  allowLeadingWildcards: boolean,
+  is_count: number
+) => {
   let esbBoolQuery = esb.boolQuery();
   const searchSourceJSON = report._source.searchSourceJSON;
   const savedObjectQuery: Query = JSON.parse(searchSourceJSON).query;
@@ -59,12 +63,12 @@ export const buildRequestBody = (report: any, allowLeadingWildcards: boolean, is
     allowLeadingWildcards: allowLeadingWildcards,
     queryStringOptions: {},
     ignoreFilterIfFieldNotInIndex: false,
-  }
+  };
   const QueryFromSavedObject = buildOpenSearchQuery(
     undefined,
     savedObjectQuery,
     savedObjectFilter,
-    savedObjectConfig,
+    savedObjectConfig
   );
   // Add time range
   if (report._source.timeFieldName && report._source.timeFieldName.length > 0) {
@@ -125,19 +129,24 @@ export const getOpenSearchData = (
       const fields = data.fields;
       // get all the fields of type date and format them to excel format
       for (let dateField of report._source.dateFields) {
-        const dateValue = data._source[dateField];
-        if (dateValue && dateValue.length !== 0) {
-          if (dateValue instanceof Array) {
+        let keys;
+        keys = dateField.split('.');
+        if (keys && keys.length !== 0) {
+          if (keys instanceof Array && keys.length > 1) {
             // loop through array
-            dateValue.forEach((element, index) => {
-              data._source[dateField][index] = moment(
-                fields[dateField][index]
-              ).format(dateFormat);
+            const firstElement = keys[0];
+            keys.forEach((element, index) => {
+              if (index !== 0) {
+                // Skip the first element
+                data._source[firstElement][element] = moment(
+                  fields[dateField]
+                ).format(dateFormat);
+              }
             });
           } else {
             // The fields response always returns an array of values for each field
             // https://www.elastic.co/guide/en/elasticsearch/reference/master/search-fields.html#search-fields-response
-            data._source[dateField] = moment(fields[dateField][0]).format(
+            data._source[keys[0]] = moment(fields[dateField][0]).format(
               dateFormat
             );
           }
