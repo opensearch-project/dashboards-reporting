@@ -37,9 +37,9 @@ jobs:
       - run: node -v
       - run: yarn -v
 
-      - name: Checkout Plugin	
+      - name: Checkout Plugin
         uses: actions/checkout@v1
-        with:	
+        with:
           path: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
 
       - name: OpenSearch Dashboards Plugin Bootstrap
@@ -48,6 +48,11 @@ jobs:
           timeout_minutes: 30
           max_attempts: 3
           command: yarn osd bootstrap
+
+      - name: Run Stylelint
+        run: |
+          cd plugins/${{ env.PLUGIN_NAME }}
+          yarn lint:style
 
       - name: Test
         uses: nick-fields/retry@v1
@@ -106,9 +111,9 @@ jobs:
       - run: node -v
       - run: yarn -v
 
-      - name: Checkout Plugin	
+      - name: Checkout Plugin
         uses: actions/checkout@v1
-        with:	
+        with:
           path: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
 
       - name: OpenSearch Dashboards Plugin Bootstrap
@@ -117,6 +122,11 @@ jobs:
           timeout_minutes: 30
           max_attempts: 3
           command: yarn osd bootstrap
+
+      - name: Run Stylelint
+        run: |
+          cd plugins/${{ env.PLUGIN_NAME }}
+          yarn lint:style
 
       - name: Test
         uses: nick-fields/retry@v1
@@ -130,7 +140,7 @@ jobs:
           yarn build
           mv ./build/*.zip ./build/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}.zip
 
-      
+
       - name: Upload Artifact For Windows
         uses: actions/upload-artifact@v1
         with:
@@ -164,9 +174,9 @@ jobs:
       - run: node -v
       - run: yarn -v
 
-      - name: Checkout Plugin	
+      - name: Checkout Plugin
         uses: actions/checkout@v1
-        with:	
+        with:
           path: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
 
       - name: OpenSearch Dashboards Plugin Bootstrap
@@ -175,6 +185,11 @@ jobs:
           timeout_minutes: 30
           max_attempts: 3
           command: yarn osd bootstrap
+
+      - name: Run Stylelint
+        run: |
+          cd plugins/${{ env.PLUGIN_NAME }}
+          yarn lint:style
 
       - name: Test
         uses: nick-fields/retry@v1
