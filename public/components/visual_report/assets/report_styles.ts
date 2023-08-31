@@ -15,21 +15,14 @@ iframe, embed, object {
   display: none !important;
 }
 
-/*  nice padding + matches Kibana default UI colors you could also set this to inherit if
-      the wrapper gets inserted inside a kibana section. I might also remove the manual text color here as well, potentially */
 .reportWrapper {
   padding: 8px;
-  background-color: #fafbfd;
 }
 
 /* Notice that I'm using an ID of #reportingHeader, and #reportingFooter, instead of a classname (.reportingHeader, .reportingFooter). This is
   in order to force specificity here higher in case any other styles would conflict */
 #reportingHeader,
 #reportingFooter {
-  font-family: 'Inter UI', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-  Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-  'Segoe UI Symbol';
-  background-color: #fff;
   border: 1px solid #d3dae6;
   box-shadow: 0 2px 2px -1px rgba(152, 162, 179, 0.3),
   0 1px 5px -2px rgba(152, 162, 179, 0.3);
@@ -99,11 +92,11 @@ iframe, embed, object {
   margin-bottom: inherit;
 }
 </style>
-  <style>
-    /* mde style sheet*/
-  .mde-preview .mde-preview-content {
-    padding: 10px;
-  }
+<style>
+/* mde style sheet*/
+.mde-preview .mde-preview-content {
+  padding: 10px;
+}
 .mde-preview .mde-preview-content p,
 .mde-preview .mde-preview-content blockquote,
 .mde-preview .mde-preview-content ul,
