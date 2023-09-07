@@ -14,3 +14,4 @@ Compatible with OpenSearch and OpenSearch Dashboards Version 2.10.0
 ### Infrastructure
 * Update backport CI, add PR merged condition ([#169](https://github.com/opensearch-project/dashboards-reporting/pull/169))
 * update search snapshots from upstream ([#173](https://github.com/opensearch-project/dashboards-reporting/pull/173))
+* Point test and build workflow to 2.x branch ([#178](https://github.com/opensearch-project/dashboards-reporting/pull/178))
