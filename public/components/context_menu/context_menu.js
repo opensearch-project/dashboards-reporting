@@ -53,7 +53,7 @@ const generateInContextReport = async (
     reportSource = 'Dashboard';
   } else if (/\/app\/visualize/.test(baseUrl)) {
     reportSource = 'Visualization';
-  } else if (/\/app\/discover/.test(baseUrl)) {
+  } else if (/\/app\/(discover|data-explorer)/.test(baseUrl)) {
     reportSource = 'Saved search';
   }
 
@@ -87,7 +87,7 @@ const generateInContextReport = async (
   };
 
   fetch(
-    `../api/reporting/generateReport?${new URLSearchParams(
+    `${getApiPath()}/reporting/generateReport?${new URLSearchParams(
       uiSettingsService.getSearchParams()
     )}`,
     {
@@ -254,7 +254,7 @@ const checkURLParams = async () => {
 
 const isDiscoverNavMenu = (navMenu) => {
   return (
-    navMenu[0].children.length === 5 &&
+    navMenu[0].children.length === 6 &&
     ($('[data-test-subj="breadcrumb first"]').prop('title') === 'Discover' ||
       $('[data-test-subj="breadcrumb first last"]').prop('title') ===
         'Discover')
@@ -278,7 +278,7 @@ const isVisualizationNavMenu = (navMenu) => {
 function locationHashChanged() {
   const observer = new MutationObserver(function (mutations) {
     const navMenu = document.querySelectorAll(
-      'span.osdTopNavMenu__wrapper > nav.euiHeaderLinks > div.euiHeaderLinks__list'
+      'nav.euiHeaderLinks > div.euiHeaderLinks__list'
     );
     if (
       navMenu &&
@@ -335,8 +335,13 @@ window.onpopstate = history.onpushstate = () => {
   locationHashChanged();
 };
 
+const getApiPath = () => {
+  if (window.location.href.includes('/data-explorer/discover')) return '../../api'
+  return '../api'
+}
+
 async function getTenantInfoIfExists() {
-  const res = await fetch(`../api/v1/multitenancy/tenant`, {
+  const res = await fetch(`${getApiPath()}/v1/multitenancy/tenant`, {
     headers: {
       'Content-Type': 'application/json',
       'osd-xsrf': 'reporting',

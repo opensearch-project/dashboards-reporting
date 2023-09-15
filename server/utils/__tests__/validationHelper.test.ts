@@ -215,6 +215,18 @@ describe('test input validation', () => {
         '/_dashboards/app/visualize&security_tenant=/.%2e/.%2e/.%2e/.%2e/_dashboards?#/view/id',
         false,
       ],
+      [
+        '/app/data-explorer/discover/#/view/571aaf70-4c88-11e8-b3d7-01146121b73d',
+        true,
+      ],
+      [
+        '/app/data-explorer/discover?security_tenant=private#/view/571aaf70-4c88-11e8-b3d7-01146121b73d',
+        true,
+      ],
+      [
+        '/app/discoverLegacy#/view/571aaf70-4c88-11e8-b3d7-01146121b73d',
+        true,
+      ],
     ];
     expect(urls.map((url) => isValidRelativeUrl(url[0]))).toEqual(
       urls.map((url) => url[1])
