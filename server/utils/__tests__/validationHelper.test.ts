@@ -220,6 +220,10 @@ describe('test input validation', () => {
         true,
       ],
       [
+        '/app/data-explorer/discover?security_tenant=private#/view/571aaf70-4c88-11e8-b3d7-01146121b73d',
+        true,
+      ],
+      [
         '/app/discoverLegacy#/view/571aaf70-4c88-11e8-b3d7-01146121b73d',
         true,
       ],
