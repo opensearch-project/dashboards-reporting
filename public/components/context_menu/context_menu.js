@@ -278,7 +278,7 @@ const isVisualizationNavMenu = (navMenu) => {
 function locationHashChanged() {
   const observer = new MutationObserver(function (mutations) {
     const navMenu = document.querySelectorAll(
-      'span.osdTopNavMenu__wrapper > nav.euiHeaderLinks > div.euiHeaderLinks__list'
+      'nav.euiHeaderLinks > div.euiHeaderLinks__list'
     );
     if (
       navMenu &&
