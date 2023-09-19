@@ -336,6 +336,7 @@ window.onpopstate = history.onpushstate = () => {
 };
 
 const getApiPath = () => {
+  if (window.location.href.includes('/data-explorer/discover/')) return '../../../api'
   if (window.location.href.includes('/data-explorer/discover')) return '../../api'
   return '../api'
 }
