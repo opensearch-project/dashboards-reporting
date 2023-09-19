@@ -26,7 +26,7 @@ export const contextMenuViewReports = () =>
 export const getTimeFieldsFromUrl = () => {
   const url = unhashUrl(window.location.href);
 
-  let [, fromDateString, toDateString] = url.match(timeRangeMatcher);
+  let [, fromDateString, toDateString] = url.match(timeRangeMatcher) ?? ["now-15m", "now"];
   fromDateString = decodeURIComponent(fromDateString.replace(/[']+/g, ''));
   // convert time range to from date format in case time range is relative
   const fromDateFormat = dateMath.parse(fromDateString);
