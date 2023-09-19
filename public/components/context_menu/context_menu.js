@@ -57,10 +57,6 @@ const generateInContextReport = async (
     reportSource = 'Saved search';
   }
 
-  console.log( `${getApiPath()}/reporting/generateReport?${new URLSearchParams(
-    uiSettingsService.getSearchParams()
-  )}`)
-
   // create query body
   const contextMenuOnDemandReport = {
     query_url: queryUrl,
@@ -91,7 +87,7 @@ const generateInContextReport = async (
   };
 
   fetch(
-    `../${getApiPath()}/reporting/generateReport?${new URLSearchParams(
+    `${getApiPath()}/reporting/generateReport?${new URLSearchParams(
       uiSettingsService.getSearchParams()
     )}`,
     {
