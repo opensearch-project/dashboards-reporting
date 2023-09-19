@@ -91,7 +91,7 @@ const generateInContextReport = async (
   };
 
   fetch(
-    `../api/reporting/generateReport?${new URLSearchParams(
+    `../${getApiPath()}/reporting/generateReport?${new URLSearchParams(
       uiSettingsService.getSearchParams()
     )}`,
     {
