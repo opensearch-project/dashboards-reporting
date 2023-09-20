@@ -133,10 +133,10 @@ export const getOpenSearchData = (
         let keys;
         keys = dateField.split('.');
         if (keys.length === 1) {
-          data._source[keys] = moment(fields[dateField]).format(dateFormat);
+          data._source[keys] = moment(fields[dateField][0]).format(dateFormat);
         } else {
           let keyElement = keys.shift();
-          keys.push(moment(fields[dateField]).format(dateFormat));
+          keys.push(moment(fields[dateField][0]).format(dateFormat));
           const nestedJSON = arrayToNestedJSON(keys);
           let keyLength = Object.keys(data._source);
           if (tempKeyElement.includes(keyElement) || keyLength.length > 1) {
