@@ -128,27 +128,25 @@ export const getOpenSearchData = (
     for (let data of valueRes.hits) {
       const fields = data.fields;
       // get all the fields of type date and format them to excel format
+      let tempKeyElement: string[] = [];
       for (let dateField of report._source.dateFields) {
         let keys;
         keys = dateField.split('.');
-        if (keys && keys.length !== 0) {
-          if (keys instanceof Array && keys.length > 1) {
-            // loop through array
-            const firstElement = keys[0];
-            keys.forEach((element, index) => {
-              if (index !== 0) {
-                // Skip the first element
-                data._source[firstElement][element] = moment(
-                  fields[dateField]
-                ).format(dateFormat);
-              }
-            });
+        if (keys.length === 1) {
+          data._source[keys] = moment(fields[dateField]).format(dateFormat);
+        } else {
+          let keyElement = keys.shift();
+          keys.push(moment(fields[dateField]).format(dateFormat));
+          const nestedJSON = arrayToNestedJSON(keys);
+          let keyLength = Object.keys(data._source);
+          if (tempKeyElement.includes(keyElement) || keyLength.length > 1) {
+            data._source[keyElement] = {
+              ...data._source[keyElement],
+              ...nestedJSON,
+            };
           } else {
-            // The fields response always returns an array of values for each field
-            // https://www.elastic.co/guide/en/elasticsearch/reference/master/search-fields.html#search-fields-response
-            data._source[keys[0]] = moment(fields[dateField][0]).format(
-              dateFormat
-            );
+            data._source[keyElement] = nestedJSON;
+            tempKeyElement.push(keyElement);
           }
         }
       }
@@ -233,6 +231,18 @@ function sanitize(doc: any) {
     }
   }
   return doc;
+}
+
+function arrayToNestedJSON(arr: string[]) {
+  if (arr.length === 0) {
+    return null;
+  } else if (arr.length === 1) {
+    return arr[0];
+  } else {
+    const key = arr[0];
+    const rest = arr.slice(1);
+    return { [key]: arrayToNestedJSON(rest) };
+  }
 }
 
 const addDocValueFields = (report: any, requestBody: any) => {
