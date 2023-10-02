@@ -14,6 +14,7 @@ import {
   Query,
   OpenSearchQueryConfig,
 } from '../../../../../src/plugins/data/common';
+import { string } from 'joi';
 
 export var metaData = {
   saved_search_id: <string>null,
@@ -118,9 +119,9 @@ export const buildRequestBody = (
 
 // Fetch the data from OpenSearch
 export const getOpenSearchData = (
-  arrayHits,
-  report,
-  params,
+  arrayHits: any,
+  report: { _source: any },
+  params: { excel: any; limit: number },
   dateFormat: string
 ) => {
   let hits: any = [];
@@ -132,13 +133,45 @@ export const getOpenSearchData = (
       for (let dateField of report._source.dateFields) {
         let keys;
         keys = dateField.split('.');
+        const dateValue = data._source[dateField];
+        const fieldDateValue = fields[dateField];
+        // if its not a nested date field
         if (keys.length === 1) {
-          data._source[keys] = moment(fields[dateField][0]).format(dateFormat);
+          // if conditions to determine if the date field's value is an array or a string
+          if (typeof dateValue === 'string') {
+            data._source[keys] = moment(dateValue).format(dateFormat);
+          } else if (
+            fieldDateValue.length !== 0 &&
+            fieldDateValue instanceof Array
+          ) {
+            console.log('entered');
+            fieldDateValue.forEach((element, index) => {
+              data._source[keys][index] = moment(element).format(dateFormat);
+            });
+          } else {
+            data._source[keys] = [];
+          }
+          // else to cover cases with nested date fields
         } else {
           let keyElement = keys.shift();
-          keys.push(moment(fields[dateField][0]).format(dateFormat));
+          // if conditions to determine if the date field's value is an array or a string
+          if (typeof fieldDateValue === 'string') {
+            keys.push(moment(fieldDateValue).format(dateFormat));
+          } else if (
+            fieldDateValue.length !== 0 &&
+            fieldDateValue instanceof Array
+          ) {
+            let tempArray: string[] = [];
+            fieldDateValue.forEach((index) => {
+              tempArray.push(moment(index).format(dateFormat));
+            });
+            keys.push(tempArray);
+          } else {
+            keys.push([]);
+          }
           const nestedJSON = arrayToNestedJSON(keys);
           let keyLength = Object.keys(data._source);
+          // to check if the nested field have anyother keys apart from date field
           if (tempKeyElement.includes(keyElement) || keyLength.length > 1) {
             data._source[keyElement] = {
               ...data._source[keyElement],
@@ -165,6 +198,23 @@ export const getOpenSearchData = (
   }
   return hits;
 };
+
+// function getDataFieldValues (fields, dateField: string, dateFormat: string, data: any, key: string) {
+//   if (typeof fields[dateField] === 'string') {
+//     console.log('does it event enter here?');
+//     data._source[key] = moment(fields[dateField]).format(dateFormat);
+//   } else if (fields[dateField][0] !== undefined) {
+//     console.log('entered');
+//     data._source[key] = moment(fields[dateField][0]).format(
+//       dateFormat
+//     );
+//   } else {
+//     console.log('else is chosen!');
+//     data._source[key] = [];
+//     console.log('data._source inside else: ', data._source);
+//   }
+//   return data._source;
+// }
 
 //Convert the data to Csv format
 export const convertToCSV = async (dataset, csvSeparator) => {
