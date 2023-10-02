@@ -199,23 +199,6 @@ export const getOpenSearchData = (
   return hits;
 };
 
-// function getDataFieldValues (fields, dateField: string, dateFormat: string, data: any, key: string) {
-//   if (typeof fields[dateField] === 'string') {
-//     console.log('does it event enter here?');
-//     data._source[key] = moment(fields[dateField]).format(dateFormat);
-//   } else if (fields[dateField][0] !== undefined) {
-//     console.log('entered');
-//     data._source[key] = moment(fields[dateField][0]).format(
-//       dateFormat
-//     );
-//   } else {
-//     console.log('else is chosen!');
-//     data._source[key] = [];
-//     console.log('data._source inside else: ', data._source);
-//   }
-//   return data._source;
-// }
-
 //Convert the data to Csv format
 export const convertToCSV = async (dataset, csvSeparator) => {
   let convertedData: any = [];
