@@ -903,7 +903,6 @@ describe('test create saved search report', () => {
           'products.created_on': '2023-04-26T04:34:32Z',
         }
       ),
-      // }),
       hit(
         {
           'geoip.country_iso_code': 'US',
@@ -919,7 +918,6 @@ describe('test create saved search report', () => {
           'products.created_on': '2023-04-26T04:34:32Z',
         }
       ),
-      // }),
     ];
     const client = mockOpenSearchClient(
       hits,

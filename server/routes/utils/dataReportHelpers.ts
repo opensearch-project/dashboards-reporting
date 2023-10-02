@@ -144,7 +144,6 @@ export const getOpenSearchData = (
             fieldDateValue.length !== 0 &&
             fieldDateValue instanceof Array
           ) {
-            console.log('entered');
             fieldDateValue.forEach((element, index) => {
               data._source[keys][index] = moment(element).format(dateFormat);
             });
