@@ -8,7 +8,7 @@ Compatible with OpenSearch and OpenSearch Dashboards Version 2.11.0
 
 ### Bug Fixes
 
-* fix date-format in csv export ([#148](https://github.com/opensearch-project/dashboards-reporting/pull/148))
+* fix date-format in csv export ([#148](https://github.com/opensearch-project/dashboards-reporting/pull/148)) ([#211](https://github.com/opensearch-project/dashboards-reporting/pull/211))
 
 ### Maintenance
 
