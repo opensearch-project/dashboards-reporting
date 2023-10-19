@@ -33,5 +33,4 @@ export const uiSettingsService = {
     };
   },
   getHttpClient: () => http,
-  getApplication: () => application,
 };
