@@ -22,10 +22,7 @@ const getReportSourceURL = (baseURI) => {
   return reportSourceId;
 };
 
-export const contextMenuViewReports = () => {
-  applicationService.getApplication().navigateToApp(PLUGIN_ID);
-
-}
+export const contextMenuViewReports = () => applicationService.getApplication().navigateToApp(PLUGIN_ID);
 
 export const getTimeFieldsFromUrl = () => {
   const url = unhashUrl(window.location.href);
