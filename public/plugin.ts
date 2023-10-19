@@ -18,6 +18,7 @@ import { i18n } from '@osd/i18n';
 import './components/context_menu/context_menu';
 import { PLUGIN_ID, PLUGIN_NAME } from '../common';
 import { uiSettingsService } from './components/utils/settings_service';
+import { applicationService } from './components/utils/application_service';
 
 export class ReportsDashboardsPlugin
   implements Plugin<ReportsDashboardsPluginSetup, ReportsDashboardsPluginStart>
@@ -57,6 +58,7 @@ export class ReportsDashboardsPlugin
   }
 
   public start(core: CoreStart): ReportsDashboardsPluginStart {
+    applicationService.init(core.application);
     return {};
   }
 
