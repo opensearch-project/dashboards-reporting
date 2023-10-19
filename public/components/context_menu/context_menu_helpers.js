@@ -13,6 +13,8 @@ import {
 } from './context_menu_ui';
 import { timeRangeMatcher } from '../utils/utils';
 import { unhashUrl } from '../../../../../src/plugins/opensearch_dashboards_utils/public';
+import { PLUGIN_ID } from '../../../common';
+import { applicationService } from '../utils/application_service';
 
 const getReportSourceURL = (baseURI) => {
   const url = baseURI.substr(0, baseURI.indexOf('?'));
@@ -20,8 +22,7 @@ const getReportSourceURL = (baseURI) => {
   return reportSourceId;
 };
 
-export const contextMenuViewReports = () =>
-  window.location.assign('reports-dashboards#/');
+export const contextMenuViewReports = () => applicationService.getApplication().navigateToApp(PLUGIN_ID);
 
 export const getTimeFieldsFromUrl = () => {
   const url = unhashUrl(window.location.href);
