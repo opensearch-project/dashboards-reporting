@@ -32,7 +32,8 @@ export async function createSavedSearchReport(
   csvSeparator: string,
   allowLeadingWildcards: boolean,
   isScheduledTask: boolean = true,
-  logger: Logger
+  logger: Logger,
+  timezone: string
 ): Promise<CreateReportResultType> {
   const params = report.report_definition.report_params;
   const reportFormat = params.core_params.report_format;
@@ -46,7 +47,8 @@ export async function createSavedSearchReport(
     csvSeparator,
     allowLeadingWildcards,
     isScheduledTask,
-    logger
+    logger,
+    timezone
   );
 
   const curTime = new Date();
@@ -134,7 +136,8 @@ async function generateReportData(
   csvSeparator: string,
   allowLeadingWildcards: boolean,
   isScheduledTask: boolean,
-  logger: Logger
+  logger: Logger,
+  timezone: string
 ) {
   let opensearchData: any = {};
   const arrayHits: any = [];
@@ -261,7 +264,7 @@ async function generateReportData(
   // Parse OpenSearch data and convert to CSV
   async function convertOpenSearchDataToCsv() {
     const dataset: any = [];
-    dataset.push(getOpenSearchData(arrayHits, report, params, dateFormat));
+    dataset.push(getOpenSearchData(arrayHits, report, params, dateFormat, timezone));
     return await convertToCSV(dataset, csvSeparator);
   }
 }
