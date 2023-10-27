@@ -85,6 +85,7 @@
     "word-wrap": "^1.2.4",
     "@cypress/request": "^3.0.0",
     "@babel/traverse": "^7.23.2",
-    "debug": "^4.3.4"
+    "debug": "^4.3.4",
+    "browserify-sign": "^4.2.2"
   }
 }
