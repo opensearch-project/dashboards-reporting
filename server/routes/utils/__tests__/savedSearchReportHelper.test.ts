@@ -44,6 +44,7 @@ const input = {
 };
 
 const mockDateFormat = 'MM/DD/YYYY h:mm:ss.SSS a';
+const mockTimezone = 'UTC';
 
 /**
  * Max result window size in OpenSearch index settings.
@@ -66,7 +67,8 @@ describe('test create saved search report', () => {
       ',',
       true,
       undefined,
-      mockLogger
+      mockLogger,
+      mockTimezone
     );
     expect(fileName).toContain(`test report table order_`);
   }, 20000);
@@ -79,7 +81,8 @@ describe('test create saved search report', () => {
       ',',
       true,
       undefined,
-      mockLogger
+      mockLogger,
+      mockTimezone
     );
     expect(csvReport.fileName).toContain('.csv');
 
@@ -91,7 +94,8 @@ describe('test create saved search report', () => {
       ',',
       true,
       undefined,
-      mockLogger
+      mockLogger,
+      mockTimezone
     );
     expect(xlsxReport.fileName).toContain('.xlsx');
   }, 20000);
@@ -106,7 +110,8 @@ describe('test create saved search report', () => {
       ',',
       true,
       undefined,
-      mockLogger
+      mockLogger,
+      mockTimezone
     );
     expect(dataUrl).toEqual('');
   }, 20000);
@@ -192,7 +197,8 @@ describe('test create saved search report', () => {
       ',',
       true,
       undefined,
-      mockLogger
+      mockLogger,
+      mockTimezone
     );
 
     expect(dataUrl).toEqual(
@@ -370,7 +376,8 @@ describe('test create saved search report', () => {
       ',',
       true,
       undefined,
-      mockLogger
+      mockLogger,
+      mockTimezone
     );
 
     expect(dataUrl).toEqual(
@@ -473,7 +480,8 @@ describe('test create saved search report', () => {
       ',',
       true,
       undefined,
-      mockLogger
+      mockLogger,
+      mockTimezone
     );
 
     expect(dataUrl).toEqual('category,customer_gender\n' + 'c1,Male');
@@ -633,7 +641,8 @@ describe('test create saved search report', () => {
       ',',
       true,
       undefined,
-      mockLogger
+      mockLogger,
+      mockTimezone
     );
 
     expect(dataUrl).toEqual(
@@ -745,7 +754,8 @@ describe('test create saved search report', () => {
       ',',
       true,
       undefined,
-      mockLogger
+      mockLogger,
+      mockTimezone
     );
 
     expect(dataUrl).toEqual(
@@ -812,7 +822,8 @@ describe('test create saved search report', () => {
       ',',
       true,
       undefined,
-      mockLogger
+      mockLogger,
+      mockTimezone
     );
 
     expect(dataUrl).toEqual(
@@ -876,7 +887,8 @@ describe('test create saved search report', () => {
       '|',
       true,
       undefined,
-      mockLogger
+      mockLogger,
+      mockTimezone
     );
 
     expect(dataUrl).toEqual(
@@ -930,7 +942,8 @@ describe('test create saved search report', () => {
       ',',
       true,
       undefined,
-      mockLogger
+      mockLogger,
+      mockTimezone
     );
 
     expect(dataUrl).toEqual(
@@ -1021,7 +1034,8 @@ describe('test create saved search report', () => {
       ',',
       true,
       undefined,
-      mockLogger
+      mockLogger,
+      mockTimezone
     );
 
     expect(dataUrl).toEqual(
@@ -1118,7 +1132,8 @@ describe('test create saved search report', () => {
       ',',
       true,
       undefined,
-      mockLogger
+      mockLogger,
+      mockTimezone
     );
 
     expect(dataUrl).toEqual(
@@ -1185,7 +1200,8 @@ test('create report for data set contains null field value', async () => {
     ',',
     true,
     undefined,
-    mockLogger
+    mockLogger,
+    mockTimezone
   );
 
   expect(dataUrl).toEqual(
@@ -1282,7 +1298,8 @@ test('create report for data set with metadata fields', async () => {
     ',',
     true,
     undefined,
-    mockLogger
+    mockLogger,
+    mockTimezone
   );
 
   expect(dataUrl).toEqual(
@@ -1292,6 +1309,61 @@ test('create report for data set with metadata fields', async () => {
       'c3,Male,nameofindex,someid\n' +
       'c4,Male,nameofindex,someid\n' +
       'c5,Male,nameofindex,someid'
+  );
+}, 20000);
+
+test('create report with Etc/GMT-2 Timezone', async () => {
+  const hits = [
+    hit(
+      { category: 'c1', customer_gender: 'Ma', order_date: [] },
+      { order_date: [] }
+    ),
+    hit(
+      {
+        category: 'c2',
+        customer_gender: 'le',
+        order_date: ['2021-12-16T14:04:55'],
+      },
+      { order_date: ['2021-12-16T14:04:55'] }
+    ),
+    hit(
+      {
+        category: 'c3',
+        customer_gender: 'he',
+        order_date: ['2021-12-17T14:04:55', '2021-12-18T14:04:55'],
+      },
+      { order_date: ['2021-12-17T14:04:55', '2021-12-18T14:04:55'] }
+    ),
+    hit(
+      {
+        category: 'c4',
+        customer_gender: 'te',
+        order_date: '2021-12-19T14:04:55',
+      },
+      { order_date: ['2021-12-19T14:04:55'] }
+    ),
+  ];
+  const client = mockOpenSearchClient(
+    hits,
+    '"category", "customer_gender", "order_date"'
+  );
+  const { dataUrl } = await createSavedSearchReport(
+    input,
+    client,
+    mockDateFormat,
+    ',',
+    true,
+    undefined,
+    mockLogger,
+    "Etc/GMT-2"
+  );
+
+  expect(dataUrl).toEqual(
+    'category,customer_gender,order_date\n' +
+      'c1,Ma,[]\n' +
+      'c2,le,"[""12/16/2021 4:04:55.000 pm""]"\n' +
+      'c3,he,"[""12/17/2021 4:04:55.000 pm"",""12/18/2021 4:04:55.000 pm""]"\n' +
+      'c4,te,12/19/2021 4:04:55.000 pm'
   );
 }, 20000);
 
@@ -1365,7 +1437,8 @@ test('create report with empty/one/multiple(list) date values', async () => {
     ',',
     true,
     undefined,
-    mockLogger
+    mockLogger,
+    mockTimezone
   );
   expect(dataUrl).toEqual(
     'category,customer_gender,order_date\n' +
