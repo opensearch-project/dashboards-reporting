@@ -10,8 +10,21 @@ env:
 
 
 jobs:
+  Get-CI-Image-Tag:
+    uses: opensearch-project/opensearch-build/.github/workflows/get-ci-image-tag.yml@main
+    with:
+      product: opensearch-dashboards
+
   linux-build:
+    needs: Get-CI-Image-Tag
     runs-on: ubuntu-latest
+    container:
+      # using the same image which is used by opensearch-build team to build the OpenSearch Distribution
+      # this image tag is subject to change as more dependencies and updates will arrive over time
+      image: ${{ needs.Get-CI-Image-Tag.outputs.ci-image-version-linux }}
+      # need to switch to root so that github actions can install runner binary on container without permission issues.
+      options: --user root
+
     steps:
       - name: Checkout OpenSearch Dashboards
         uses: actions/checkout@v1
@@ -20,41 +33,22 @@ jobs:
           ref: ${{ env.OPENSEARCH_VERSION }}
           path: OpenSearch-Dashboards
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: '../OpenSearch-Dashboards/.nvmrc'
-          registry-url: 'https://registry.npmjs.org'
-
-      - name: Install Yarn
-        # Need to use bash to avoid having a windows/linux specific step
-        shell: bash
-        run: |
-          YARN_VERSION=$(node -p "require('../OpenSearch-Dashboards/package.json').engines.yarn")
-          echo "Installing yarn@$YARN_VERSION"
-          npm i -g yarn@$YARN_VERSION
-
-      - run: node -v
-      - run: yarn -v
-
       - name: Checkout Plugin	
         uses: actions/checkout@v1
         with:	
           path: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
 
-      - name: OpenSearch Dashboards Plugin Bootstrap
+      - name: OpenSearch Dashboards Plugin Bootstrap and test
         uses: nick-fields/retry@v1
         with:
           timeout_minutes: 30
           max_attempts: 3
-          command: yarn osd bootstrap
-
-      - name: Test
-        uses: nick-fields/retry@v1
-        with:
-          timeout_minutes: 30
-          max_attempts: 3
-          command: yarn test --coverage
+          command: |
+            chown -R 1000:1000 `pwd`
+            cd ./OpenSearch-Dashboards/
+            su `id -un 1000` -c "source $NVM_DIR/nvm.sh && nvm use && node -v && yarn -v &&
+                                 cd ./plugins/${{ env.PLUGIN_NAME }} &&
+                                 whoami && yarn osd bootstrap && yarn test --coverage"
 
       - name: Upload coverage
         uses: codecov/codecov-action@v1
@@ -65,8 +59,11 @@ jobs:
 
       - name: Build Artifact
         run: |
-          yarn build
-          mv ./build/*.zip ./build/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}.zip
+          chown -R 1000:1000 `pwd`
+          cd ./OpenSearch-Dashboards/
+          su `id -un 1000` -c "source $NVM_DIR/nvm.sh && nvm use && node -v && yarn -v &&
+                               cd ./plugins/${{ env.PLUGIN_NAME }} &&
+                               whoami && yarn build && mv ./build/*.zip ./build/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}.zip"
 
       - name: Upload Artifact For Linux
         uses: actions/upload-artifact@v1
