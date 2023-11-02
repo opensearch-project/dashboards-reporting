@@ -63,13 +63,13 @@ jobs:
           cd ./OpenSearch-Dashboards/
           su `id -un 1000` -c "source $NVM_DIR/nvm.sh && nvm use && node -v && yarn -v &&
                                cd ./plugins/${{ env.PLUGIN_NAME }} &&
-                               whoami && yarn build && mv -v ./build/*.zip ./build/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}.zip && ls -l | grep zip"
+                               whoami && yarn build && mv -v ./build/*.zip ./build/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}.zip"
 
       - name: Upload Artifact For Linux
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v1
         with:
           name: dashboards-reports-linux
-          path: ./build/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}.zip
+          path: ./OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}/build/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}.zip
 
   windows-build:
     runs-on: windows-latest
