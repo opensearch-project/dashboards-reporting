@@ -109,11 +109,76 @@ describe('test create saved search report', () => {
 
   test('create report for small data set by single search', async () => {
     const hits = [
-      hit({ category: 'c1', customer_gender: 'Male' }),
-      hit({ category: 'c2', customer_gender: 'Male' }),
-      hit({ category: 'c3', customer_gender: 'Male' }),
-      hit({ category: 'c4', customer_gender: 'Male' }),
-      hit({ category: 'c5', customer_gender: 'Male' }),
+      hit(
+        {
+          category: 'c1',
+          customer_gender: 'Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c2',
+          customer_gender: 'Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c3',
+          customer_gender: 'Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c4',
+          customer_gender: 'Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c5',
+          customer_gender: 'Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
     ];
     const client = mockOpenSearchClient(hits);
     const { dataUrl } = await createSavedSearchReport(
@@ -137,17 +202,160 @@ describe('test create saved search report', () => {
 
   test('create report for large data set by scroll', async () => {
     const hits = [
-      hit({ category: 'c1', customer_gender: 'Male' }),
-      hit({ category: 'c2', customer_gender: 'Male' }),
-      hit({ category: 'c3', customer_gender: 'Male' }),
-      hit({ category: 'c4', customer_gender: 'Male' }),
-      hit({ category: 'c5', customer_gender: 'Male' }),
-      hit({ category: 'c6', customer_gender: 'Female' }),
-      hit({ category: 'c7', customer_gender: 'Female' }),
-      hit({ category: 'c8', customer_gender: 'Female' }),
-      hit({ category: 'c9', customer_gender: 'Female' }),
-      hit({ category: 'c10', customer_gender: 'Female' }),
-      hit({ category: 'c11', customer_gender: 'Male' }),
+      hit(
+        {
+          category: 'c1',
+          customer_gender: 'Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c2',
+          customer_gender: 'Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c3',
+          customer_gender: 'Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c4',
+          customer_gender: 'Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c5',
+          customer_gender: 'Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c6',
+          customer_gender: 'Female',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c7',
+          customer_gender: 'Female',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c8',
+          customer_gender: 'Female',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c9',
+          customer_gender: 'Female',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c10',
+          customer_gender: 'Female',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c11',
+          customer_gender: 'Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
     ];
     const client = mockOpenSearchClient(hits);
     const { dataUrl } = await createSavedSearchReport(
@@ -180,11 +388,76 @@ describe('test create saved search report', () => {
     input.report_definition.report_params.core_params.limit = 1;
 
     const hits = [
-      hit({ category: 'c1', customer_gender: 'Male' }),
-      hit({ category: 'c2', customer_gender: 'Male' }),
-      hit({ category: 'c3', customer_gender: 'Male' }),
-      hit({ category: 'c4', customer_gender: 'Male' }),
-      hit({ category: 'c5', customer_gender: 'Male' }),
+      hit(
+        {
+          category: 'c1',
+          customer_gender: 'Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c2',
+          customer_gender: 'Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c3',
+          customer_gender: 'Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c4',
+          customer_gender: 'Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c5',
+          customer_gender: 'Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
     ];
     const client = mockOpenSearchClient(hits);
     const { dataUrl } = await createSavedSearchReport(
@@ -204,16 +477,146 @@ describe('test create saved search report', () => {
     input.report_definition.report_params.core_params.limit = 6;
 
     const hits = [
-      hit({ category: 'c1', customer_gender: 'Male' }),
-      hit({ category: 'c2', customer_gender: 'Male' }),
-      hit({ category: 'c3', customer_gender: 'Male' }),
-      hit({ category: 'c4', customer_gender: 'Male' }),
-      hit({ category: 'c5', customer_gender: 'Male' }),
-      hit({ category: 'c6', customer_gender: 'Female' }),
-      hit({ category: 'c7', customer_gender: 'Female' }),
-      hit({ category: 'c8', customer_gender: 'Female' }),
-      hit({ category: 'c9', customer_gender: 'Female' }),
-      hit({ category: 'c10', customer_gender: 'Female' }),
+      hit(
+        {
+          category: 'c1',
+          customer_gender: 'Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c2',
+          customer_gender: 'Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c3',
+          customer_gender: 'Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c4',
+          customer_gender: 'Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c5',
+          customer_gender: 'Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c6',
+          customer_gender: 'Female',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c7',
+          customer_gender: 'Female',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c8',
+          customer_gender: 'Female',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c9',
+          customer_gender: 'Female',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c10',
+          customer_gender: 'Female',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
     ];
     const client = mockOpenSearchClient(hits);
     const { dataUrl } = await createSavedSearchReport(
@@ -241,12 +644,90 @@ describe('test create saved search report', () => {
     input.report_definition.report_params.core_params.limit = 10;
 
     const hits = [
-      hit({ category: 'c1', customer_gender: 'Male' }),
-      hit({ category: 'c2', customer_gender: 'Male' }),
-      hit({ category: 'c3', customer_gender: 'Male' }),
-      hit({ category: 'c4', customer_gender: 'Male' }),
-      hit({ category: 'c5', customer_gender: 'Male' }),
-      hit({ category: 'c6', customer_gender: 'Female' }),
+      hit(
+        {
+          category: 'c1',
+          customer_gender: 'Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c2',
+          customer_gender: 'Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c3',
+          customer_gender: 'Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c4',
+          customer_gender: 'Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c5',
+          customer_gender: 'Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c6',
+          customer_gender: 'Female',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
     ];
     const client = mockOpenSearchClient(hits);
     const { dataUrl } = await createSavedSearchReport(
@@ -271,9 +752,48 @@ describe('test create saved search report', () => {
 
   test('create report for data set with comma', async () => {
     const hits = [
-      hit({ category: ',c1', customer_gender: 'Ma,le' }),
-      hit({ category: 'c2,', customer_gender: 'M,ale' }),
-      hit({ category: ',,c3', customer_gender: 'Male,,,' }),
+      hit(
+        {
+          category: ',c1',
+          customer_gender: 'Ma,le',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c2,',
+          customer_gender: 'M,ale',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: ',,c3',
+          customer_gender: 'Male,,,',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
     ];
     const client = mockOpenSearchClient(hits);
     const { dataUrl } = await createSavedSearchReport(
@@ -295,9 +815,48 @@ describe('test create saved search report', () => {
 
   test('create report for data set with comma and custom separator', async () => {
     const hits = [
-      hit({ category: ',c1', customer_gender: 'Ma,le' }),
-      hit({ category: 'c2,', customer_gender: 'M,ale' }),
-      hit({ category: ',,c3', customer_gender: 'Male,,,' }),
+      hit(
+        {
+          category: ',c1',
+          customer_gender: 'Ma,le',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c2,',
+          customer_gender: 'M,ale',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: ',,c3',
+          customer_gender: 'Male,,,',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
     ];
     const client = mockOpenSearchClient(hits);
     const { dataUrl } = await createSavedSearchReport(
@@ -319,15 +878,35 @@ describe('test create saved search report', () => {
 
   test('create report for data set with nested fields', async () => {
     const hits = [
-      hit({
-        'geoip.country_iso_code': 'GB',
-        'geoip.location': { lon: -0.1, lat: 51.5 },
-      }),
-      hit({
-        'geoip.country_iso_code': 'US',
-        'geoip.city_name': 'New York',
-        'geoip.location': { lon: -74, lat: 40.8 },
-      }),
+      hit(
+        {
+          'geoip.country_iso_code': 'GB',
+          'geoip.location': { lon: -0.1, lat: 51.5 },
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          'geoip.country_iso_code': 'US',
+          'geoip.city_name': 'New York',
+          'geoip.location': { lon: -74, lat: 40.8 },
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
     ];
     const client = mockOpenSearchClient(
       hits,
@@ -351,11 +930,76 @@ describe('test create saved search report', () => {
 
   test('create report by sanitizing data set for Excel', async () => {
     const hits = [
-      hit({ category: 'c1', customer_gender: '=Male' }),
-      hit({ category: 'c2', customer_gender: 'Male=' }),
-      hit({ category: 'c3', customer_gender: '+Ma,le' }),
-      hit({ category: ',-c4', customer_gender: 'Male' }),
-      hit({ category: ',,,@c5', customer_gender: 'Male' }),
+      hit(
+        {
+          category: 'c1',
+          customer_gender: '=Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c2',
+          customer_gender: 'Male=',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c3',
+          customer_gender: '+Ma,le',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: ',-c4',
+          customer_gender: 'Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: ',,,@c5',
+          customer_gender: 'Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
     ];
     const client = mockOpenSearchClient(hits);
     const { dataUrl } = await createSavedSearchReport(
@@ -382,11 +1026,76 @@ describe('test create saved search report', () => {
     input.report_definition.report_params.core_params.excel = false;
 
     const hits = [
-      hit({ category: 'c1', customer_gender: '=Male' }),
-      hit({ category: 'c2', customer_gender: 'Male=' }),
-      hit({ category: 'c3', customer_gender: '+Ma,le' }),
-      hit({ category: ',-c4', customer_gender: 'Male' }),
-      hit({ category: ',,,@c5', customer_gender: 'Male' }),
+      hit(
+        {
+          category: 'c1',
+          customer_gender: '=Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c2',
+          customer_gender: 'Male=',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: 'c3',
+          customer_gender: '+Ma,le',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: ',-c4',
+          customer_gender: 'Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
+      hit(
+        {
+          category: ',,,@c5',
+          customer_gender: 'Male',
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          products: { created_on: '2023-04-26T04:34:32Z' },
+        },
+        {
+          customer_birth_date: '2023-04-26T04:34:32Z',
+          order_date: '2023-04-26T04:34:32Z',
+          'products.created_on': '2023-04-26T04:34:32Z',
+        }
+      ),
     ];
     const client = mockOpenSearchClient(hits);
     const { dataUrl } = await createSavedSearchReport(
@@ -411,9 +1120,48 @@ describe('test create saved search report', () => {
 
 test('create report for data set contains null field value', async () => {
   const hits = [
-    hit({ category: 'c1', customer_gender: 'Ma' }),
-    hit({ category: 'c2', customer_gender: 'le' }),
-    hit({ category: 'c3', customer_gender: null }),
+    hit(
+      {
+        category: 'c1',
+        customer_gender: 'Ma',
+        customer_birth_date: '2023-04-26T04:34:32Z',
+        order_date: '2023-04-26T04:34:32Z',
+        products: { created_on: '2023-04-26T04:34:32Z' },
+      },
+      {
+        customer_birth_date: '2023-04-26T04:34:32Z',
+        order_date: '2023-04-26T04:34:32Z',
+        'products.created_on': '2023-04-26T04:34:32Z',
+      }
+    ),
+    hit(
+      {
+        category: 'c2',
+        customer_gender: 'le',
+        customer_birth_date: '2023-04-26T04:34:32Z',
+        order_date: '2023-04-26T04:34:32Z',
+        products: { created_on: '2023-04-26T04:34:32Z' },
+      },
+      {
+        customer_birth_date: '2023-04-26T04:34:32Z',
+        order_date: '2023-04-26T04:34:32Z',
+        'products.created_on': '2023-04-26T04:34:32Z',
+      }
+    ),
+    hit(
+      {
+        category: 'c3',
+        customer_gender: null,
+        customer_birth_date: '2023-04-26T04:34:32Z',
+        order_date: '2023-04-26T04:34:32Z',
+        products: { created_on: '2023-04-26T04:34:32Z' },
+      },
+      {
+        customer_birth_date: '2023-04-26T04:34:32Z',
+        order_date: '2023-04-26T04:34:32Z',
+        'products.created_on': '2023-04-26T04:34:32Z',
+      }
+    ),
   ];
   const client = mockOpenSearchClient(hits);
   const { dataUrl } = await createSavedSearchReport(
@@ -433,11 +1181,76 @@ test('create report for data set contains null field value', async () => {
 test('create report for data set with metadata fields', async () => {
   const metadataFields = { _index: 'nameofindex', _id: 'someid' };
   let hits = [
-    hit({ category: 'c1', customer_gender: 'Male' }),
-    hit({ category: 'c2', customer_gender: 'Male' }),
-    hit({ category: 'c3', customer_gender: 'Male' }),
-    hit({ category: 'c4', customer_gender: 'Male' }),
-    hit({ category: 'c5', customer_gender: 'Male' }),
+    hit(
+      {
+        category: 'c1',
+        customer_gender: 'Male',
+        customer_birth_date: '2023-04-26T04:34:32Z',
+        order_date: '2023-04-26T04:34:32Z',
+        products: { created_on: '2023-04-26T04:34:32Z' },
+      },
+      {
+        customer_birth_date: '2023-04-26T04:34:32Z',
+        order_date: '2023-04-26T04:34:32Z',
+        'products.created_on': '2023-04-26T04:34:32Z',
+      }
+    ),
+    hit(
+      {
+        category: 'c2',
+        customer_gender: 'Male',
+        customer_birth_date: '2023-04-26T04:34:32Z',
+        order_date: '2023-04-26T04:34:32Z',
+        products: { created_on: '2023-04-26T04:34:32Z' },
+      },
+      {
+        customer_birth_date: '2023-04-26T04:34:32Z',
+        order_date: '2023-04-26T04:34:32Z',
+        'products.created_on': '2023-04-26T04:34:32Z',
+      }
+    ),
+    hit(
+      {
+        category: 'c3',
+        customer_gender: 'Male',
+        customer_birth_date: '2023-04-26T04:34:32Z',
+        order_date: '2023-04-26T04:34:32Z',
+        products: { created_on: '2023-04-26T04:34:32Z' },
+      },
+      {
+        customer_birth_date: '2023-04-26T04:34:32Z',
+        order_date: '2023-04-26T04:34:32Z',
+        'products.created_on': '2023-04-26T04:34:32Z',
+      }
+    ),
+    hit(
+      {
+        category: 'c4',
+        customer_gender: 'Male',
+        customer_birth_date: '2023-04-26T04:34:32Z',
+        order_date: '2023-04-26T04:34:32Z',
+        products: { created_on: '2023-04-26T04:34:32Z' },
+      },
+      {
+        customer_birth_date: '2023-04-26T04:34:32Z',
+        order_date: '2023-04-26T04:34:32Z',
+        'products.created_on': '2023-04-26T04:34:32Z',
+      }
+    ),
+    hit(
+      {
+        category: 'c5',
+        customer_gender: 'Male',
+        customer_birth_date: '2023-04-26T04:34:32Z',
+        order_date: '2023-04-26T04:34:32Z',
+        products: { created_on: '2023-04-26T04:34:32Z' },
+      },
+      {
+        customer_birth_date: '2023-04-26T04:34:32Z',
+        order_date: '2023-04-26T04:34:32Z',
+        'products.created_on': '2023-04-26T04:34:32Z',
+      }
+    ),
   ];
   hits.forEach((i) => {
     _.merge(i, metadataFields);
@@ -469,32 +1282,60 @@ test('create report for data set with metadata fields', async () => {
 test('create report with empty/one/multiple(list) date values', async () => {
   const hits = [
     hit(
-      { category: 'c1', customer_gender: 'Ma', order_date: [] },
-      { order_date: [] }
+      {
+        category: 'c1',
+        customer_gender: 'Ma',
+        order_date: [],
+        customer_birth_date: '2023-04-26T04:34:32Z',
+        products: { created_on: '2023-04-26T04:34:32Z' },
+      },
+      {
+        order_date: [],
+        customer_birth_date: '2023-04-26T04:34:32Z',
+        'products.created_on': '2023-04-26T04:34:32Z',
+      }
     ),
     hit(
       {
         category: 'c2',
         customer_gender: 'le',
         order_date: ['2021-12-16T14:04:55'],
+        customer_birth_date: '2023-04-26T04:34:32Z',
+        products: { created_on: '2023-04-26T04:34:32Z' },
       },
-      { order_date: ['2021-12-16T14:04:55'] }
+      {
+        order_date: ['2021-12-16T14:04:55'],
+        customer_birth_date: '2023-04-26T04:34:32Z',
+        'products.created_on': '2023-04-26T04:34:32Z',
+      }
     ),
     hit(
       {
         category: 'c3',
         customer_gender: 'he',
         order_date: ['2021-12-17T14:04:55', '2021-12-18T14:04:55'],
+        customer_birth_date: '2023-04-26T04:34:32Z',
+        products: { created_on: '2023-04-26T04:34:32Z' },
       },
-      { order_date: ['2021-12-17T14:04:55', '2021-12-18T14:04:55'] }
+      {
+        order_date: ['2021-12-17T14:04:55', '2021-12-18T14:04:55'],
+        customer_birth_date: '2023-04-26T04:34:32Z',
+        'products.created_on': '2023-04-26T04:34:32Z',
+      }
     ),
     hit(
       {
         category: 'c4',
         customer_gender: 'te',
         order_date: '2021-12-19T14:04:55',
+        customer_birth_date: '2023-04-26T04:34:32Z',
+        products: { created_on: '2023-04-26T04:34:32Z' },
       },
-      { order_date: ['2021-12-19T14:04:55'] }
+      {
+        order_date: ['2021-12-19T14:04:55'],
+        customer_birth_date: '2023-04-26T04:34:32Z',
+        'products.created_on': '2023-04-26T04:34:32Z',
+      }
     ),
   ];
   const client = mockOpenSearchClient(
