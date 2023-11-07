@@ -6,7 +6,7 @@
 import esb, { Sort } from 'elastic-builder';
 import converter from 'json-2-csv';
 import _ from 'lodash';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { DATA_REPORT_CONFIG } from './constants';
 import {
   buildOpenSearchQuery,
@@ -122,7 +122,8 @@ export const getOpenSearchData = (
   arrayHits: any,
   report: { _source: any },
   params: { excel: any; limit: number },
-  dateFormat: string
+  dateFormat: string,
+  timezone: string
 ) => {
   let hits: any = [];
   for (let valueRes of arrayHits) {
@@ -142,13 +143,13 @@ export const getOpenSearchData = (
           if (keys.length === 1) {
             // if conditions to determine if the date field's value is an array or a string
             if (typeof dateValue === 'string') {
-              data._source[keys] = moment(dateValue).format(dateFormat);
+              data._source[keys] = moment.utc(dateValue).tz(timezone).format(dateFormat);
             } else if (
               fieldDateValue.length !== 0 &&
               fieldDateValue instanceof Array
             ) {
               fieldDateValue.forEach((element, index) => {
-                data._source[keys][index] = moment(element).format(dateFormat);
+                data._source[keys][index] = moment.utc(element).tz(timezone).format(dateFormat);
               });
             } else {
               data._source[keys] = [];
@@ -158,14 +159,14 @@ export const getOpenSearchData = (
             let keyElement = keys.shift();
             // if conditions to determine if the date field's value is an array or a string
             if (typeof fieldDateValue === 'string') {
-              keys.push(moment(fieldDateValue).format(dateFormat));
+              keys.push(moment.utc(fieldDateValue).tz(timezone).format(dateFormat));
             } else if (
               fieldDateValue.length !== 0 &&
               fieldDateValue instanceof Array
             ) {
               let tempArray: string[] = [];
               fieldDateValue.forEach((index) => {
-                tempArray.push(moment(index).format(dateFormat));
+                tempArray.push(moment.utc(index).tz(timezone).format(dateFormat));
               });
               keys.push(tempArray);
             } else {
