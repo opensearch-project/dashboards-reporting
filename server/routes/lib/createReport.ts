@@ -78,7 +78,8 @@ export const createReport = async (
         csvSeparator,
         allowLeadingWildcards,
         isScheduledTask,
-        logger
+        logger,
+        timezone
       );
     } else {
       // report source can only be one of [saved search, visualization, dashboard, notebook]
