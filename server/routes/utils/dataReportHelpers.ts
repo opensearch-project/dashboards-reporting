@@ -13,6 +13,7 @@ import {
   Filter,
   Query,
 } from '../../../../../src/plugins/data/common';
+import { string } from 'joi';
 
 export var metaData = {
   saved_search_id: <string>null,
@@ -49,16 +50,26 @@ export const getSelectedFields = async (columns) => {
 
 // Build the OpenSearch query from the meta data
 // is_count is set to 1 if we building the count query but 0 if we building the fetch data query
-export const buildRequestBody = (report: any, is_count: number) => {
+export const buildRequestBody = (
+  report: any,
+  allowLeadingWildcards: boolean,
+  is_count: number
+) => {
   let esbBoolQuery = esb.boolQuery();
   const searchSourceJSON = report._source.searchSourceJSON;
 
   const savedObjectQuery: Query = JSON.parse(searchSourceJSON).query;
   const savedObjectFilter: Filter = JSON.parse(searchSourceJSON).filter;
+  const savedObjectConfig: OpenSearchQueryConfig = {
+    allowLeadingWildcards: allowLeadingWildcards,
+    queryStringOptions: {},
+    ignoreFilterIfFieldNotInIndex: false,
+  };
   const QueryFromSavedObject = buildOpenSearchQuery(
     undefined,
     savedObjectQuery,
-    savedObjectFilter
+    savedObjectFilter,
+    savedObjectConfig
   );
   // Add time range
   if (report._source.timeFieldName && report._source.timeFieldName.length > 0) {
@@ -108,9 +119,9 @@ export const buildRequestBody = (report: any, is_count: number) => {
 
 // Fetch the data from OpenSearch
 export const getOpenSearchData = (
-  arrayHits,
-  report,
-  params,
+  arrayHits: any,
+  report: { _source: any },
+  params: { excel: any; limit: number },
   dateFormat: string
 ) => {
   let hits: any = [];
@@ -118,22 +129,56 @@ export const getOpenSearchData = (
     for (let data of valueRes.hits) {
       const fields = data.fields;
       // get all the fields of type date and format them to excel format
+      let tempKeyElement: string[] = [];
       for (let dateField of report._source.dateFields) {
+        let keys;
+        keys = dateField.split('.');
         const dateValue = data._source[dateField];
-        if (dateValue && dateValue.length !== 0) {
-          if (dateValue instanceof Array) {
-            // loop through array
-            dateValue.forEach((element, index) => {
-              data._source[dateField][index] = moment(
-                fields[dateField][index]
-              ).format(dateFormat);
+        const fieldDateValue = fields[dateField];
+        // if its not a nested date field
+        if (keys.length === 1) {
+          // if conditions to determine if the date field's value is an array or a string
+          if (typeof dateValue === 'string') {
+            data._source[keys] = moment(dateValue).format(dateFormat);
+          } else if (
+            fieldDateValue.length !== 0 &&
+            fieldDateValue instanceof Array
+          ) {
+            fieldDateValue.forEach((element, index) => {
+              data._source[keys][index] = moment(element).format(dateFormat);
             });
           } else {
-            // The fields response always returns an array of values for each field
-            // https://www.elastic.co/guide/en/elasticsearch/reference/master/search-fields.html#search-fields-response
-            data._source[dateField] = moment(fields[dateField][0]).format(
-              dateFormat
-            );
+            data._source[keys] = [];
+          }
+          // else to cover cases with nested date fields
+        } else {
+          let keyElement = keys.shift();
+          // if conditions to determine if the date field's value is an array or a string
+          if (typeof fieldDateValue === 'string') {
+            keys.push(moment(fieldDateValue).format(dateFormat));
+          } else if (
+            fieldDateValue.length !== 0 &&
+            fieldDateValue instanceof Array
+          ) {
+            let tempArray: string[] = [];
+            fieldDateValue.forEach((index) => {
+              tempArray.push(moment(index).format(dateFormat));
+            });
+            keys.push(tempArray);
+          } else {
+            keys.push([]);
+          }
+          const nestedJSON = arrayToNestedJSON(keys);
+          let keyLength = Object.keys(data._source);
+          // to check if the nested field have anyother keys apart from date field
+          if (tempKeyElement.includes(keyElement) || keyLength.length > 1) {
+            data._source[keyElement] = {
+              ...data._source[keyElement],
+              ...nestedJSON,
+            };
+          } else {
+            data._source[keyElement] = nestedJSON;
+            tempKeyElement.push(keyElement);
           }
         }
       }
@@ -218,6 +263,18 @@ function sanitize(doc: any) {
     }
   }
   return doc;
+}
+
+function arrayToNestedJSON(arr: string[]) {
+  if (arr.length === 0) {
+    return null;
+  } else if (arr.length === 1) {
+    return arr[0];
+  } else {
+    const key = arr[0];
+    const rest = arr.slice(1);
+    return { [key]: arrayToNestedJSON(rest) };
+  }
 }
 
 const addDocValueFields = (report: any, requestBody: any) => {
