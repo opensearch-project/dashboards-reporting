@@ -14,6 +14,7 @@ import {
   Query,
   OpenSearchQueryConfig,
 } from '../../../../../src/plugins/data/common';
+import { string } from 'joi';
 
 export var metaData = {
   saved_search_id: <string>null,
@@ -50,7 +51,11 @@ export const getSelectedFields = async (columns) => {
 
 // Build the OpenSearch query from the meta data
 // is_count is set to 1 if we building the count query but 0 if we building the fetch data query
-export const buildRequestBody = (report: any, allowLeadingWildcards: boolean, is_count: number) => {
+export const buildRequestBody = (
+  report: any,
+  allowLeadingWildcards: boolean,
+  is_count: number
+) => {
   let esbBoolQuery = esb.boolQuery();
   const searchSourceJSON = report._source.searchSourceJSON;
   const savedObjectQuery: Query = JSON.parse(searchSourceJSON).query;
@@ -59,12 +64,12 @@ export const buildRequestBody = (report: any, allowLeadingWildcards: boolean, is
     allowLeadingWildcards: allowLeadingWildcards,
     queryStringOptions: {},
     ignoreFilterIfFieldNotInIndex: false,
-  }
+  };
   const QueryFromSavedObject = buildOpenSearchQuery(
     undefined,
     savedObjectQuery,
     savedObjectFilter,
-    savedObjectConfig,
+    savedObjectConfig
   );
   // Add time range
   if (report._source.timeFieldName && report._source.timeFieldName.length > 0) {
@@ -114,9 +119,9 @@ export const buildRequestBody = (report: any, allowLeadingWildcards: boolean, is
 
 // Fetch the data from OpenSearch
 export const getOpenSearchData = (
-  arrayHits,
-  report,
-  params,
+  arrayHits: any,
+  report: { _source: any },
+  params: { excel: any; limit: number },
   dateFormat: string
 ) => {
   let hits: any = [];
@@ -124,7 +129,10 @@ export const getOpenSearchData = (
     for (let data of valueRes.hits) {
       const fields = data.fields;
       // get all the fields of type date and format them to excel format
+      let tempKeyElement: string[] = [];
       for (let dateField of report._source.dateFields) {
+        let keys;
+        keys = dateField.split('.');
         const dateValue = data._source[dateField];
         const fieldDateValue = fields[dateField];
         const isDateFieldPresent = isKeyPresent(data._source, dateField);
@@ -273,6 +281,7 @@ function arrayToNestedJSON(arr: string[]) {
   }
 }
 
+
 function isKeyPresent(data: any, key: string): boolean {
   if (typeof data === 'object' && data !== null) {
     if (key in data) {
@@ -286,6 +295,7 @@ function isKeyPresent(data: any, key: string): boolean {
   }
   return false;
 }
+
 
 const addDocValueFields = (report: any, requestBody: any) => {
   const docValues = [];
