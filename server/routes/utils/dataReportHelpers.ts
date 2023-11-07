@@ -135,50 +135,54 @@ export const getOpenSearchData = (
         keys = dateField.split('.');
         const dateValue = data._source[dateField];
         const fieldDateValue = fields[dateField];
-        // if its not a nested date field
-        if (keys.length === 1) {
-          // if conditions to determine if the date field's value is an array or a string
-          if (typeof dateValue === 'string') {
-            data._source[keys] = moment(dateValue).format(dateFormat);
-          } else if (
-            fieldDateValue.length !== 0 &&
-            fieldDateValue instanceof Array
-          ) {
-            fieldDateValue.forEach((element, index) => {
-              data._source[keys][index] = moment(element).format(dateFormat);
-            });
+        const isDateFieldPresent = isKeyPresent(data._source, dateField);
+
+        if (isDateFieldPresent) {
+          // if its not a nested date field
+          if (keys.length === 1) {
+            // if conditions to determine if the date field's value is an array or a string
+            if (typeof dateValue === 'string') {
+              data._source[keys] = moment(dateValue).format(dateFormat);
+            } else if (
+              fieldDateValue.length !== 0 &&
+              fieldDateValue instanceof Array
+            ) {
+              fieldDateValue.forEach((element, index) => {
+                data._source[keys][index] = moment(element).format(dateFormat);
+              });
+            } else {
+              data._source[keys] = [];
+            }
+            // else to cover cases with nested date fields
           } else {
-            data._source[keys] = [];
-          }
-          // else to cover cases with nested date fields
-        } else {
-          let keyElement = keys.shift();
-          // if conditions to determine if the date field's value is an array or a string
-          if (typeof fieldDateValue === 'string') {
-            keys.push(moment(fieldDateValue).format(dateFormat));
-          } else if (
-            fieldDateValue.length !== 0 &&
-            fieldDateValue instanceof Array
-          ) {
-            let tempArray: string[] = [];
-            fieldDateValue.forEach((index) => {
-              tempArray.push(moment(index).format(dateFormat));
-            });
-            keys.push(tempArray);
-          } else {
-            keys.push([]);
-          }
-          const nestedJSON = arrayToNestedJSON(keys);
-          let keyLength = Object.keys(data._source);
-          // to check if the nested field have anyother keys apart from date field
-          if (tempKeyElement.includes(keyElement) || keyLength.length > 1) {
-            data._source[keyElement] = {
-              ...data._source[keyElement],
-              ...nestedJSON,
-            };
-          } else {
-            data._source[keyElement] = nestedJSON;
-            tempKeyElement.push(keyElement);
+            let keyElement = keys.shift();
+            // if conditions to determine if the date field's value is an array or a string
+            if (typeof fieldDateValue === 'string') {
+              keys.push(moment(fieldDateValue).format(dateFormat));
+            } else if (
+              fieldDateValue.length !== 0 &&
+              fieldDateValue instanceof Array
+            ) {
+              let tempArray: string[] = [];
+              fieldDateValue.forEach((index) => {
+                tempArray.push(moment(index).format(dateFormat));
+              });
+              keys.push(tempArray);
+            } else {
+              keys.push([]);
+            }
+            const nestedJSON = arrayToNestedJSON(keys);
+            let keyLength = Object.keys(data._source);
+            // to check if the nested field have anyother keys apart from date field
+            if (tempKeyElement.includes(keyElement) || keyLength.length > 1) {
+              data._source[keyElement] = {
+                ...data._source[keyElement],
+                ...nestedJSON,
+              };
+            } else {
+              data._source[keyElement] = nestedJSON;
+              tempKeyElement.push(keyElement);
+            }
           }
         }
       }
@@ -276,6 +280,22 @@ function arrayToNestedJSON(arr: string[]) {
     return { [key]: arrayToNestedJSON(rest) };
   }
 }
+
+
+function isKeyPresent(data: any, key: string): boolean {
+  if (typeof data === 'object' && data !== null) {
+    if (key in data) {
+      return true;
+    }
+    for (const value of Object.values(data)) {
+      if (isKeyPresent(value, key)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 
 const addDocValueFields = (report: any, requestBody: any) => {
   const docValues = [];
