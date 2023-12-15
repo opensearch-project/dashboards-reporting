@@ -23,7 +23,6 @@
     "elastic-builder": "^2.7.1",
     "enzyme-adapter-react-16": "^1.15.5",
     "html2canvas": "1.4.1",
-    "jest": "^27.5.1",
     "jest-fetch-mock": "^3.0.3",
     "jquery": "^3.5.0",
     "jsdom": "16.7.0",
@@ -40,8 +39,7 @@
     "react-toast-notifications": "^2.4.0",
     "set-interval-async": "1.0.33",
     "showdown": "^1.9.1",
-    "tesseract.js": "^4.0.2",
-    "typescript": "4.0.2"
+    "tesseract.js": "^4.0.2"
   },
   "devDependencies": {
     "@elastic/eslint-import-resolver-kibana": "link:../../packages/osd-eslint-import-resolver-opensearch-dashboards",
