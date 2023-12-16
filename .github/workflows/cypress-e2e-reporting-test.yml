@@ -1,4 +1,4 @@
-name: Cypress E2E SQL Workbench Test
+name: Cypress E2E Dashboards Reporting Plugin Test
 
 on: [pull_request, push]
 
@@ -13,7 +13,7 @@ env:
 
 jobs:
   tests:
-    name: Run Cypress E2E SQL Workbench tests
+    name: Run Cypress E2E Dashboards Reporting Plugin Tests
     strategy:
       fail-fast: false
       matrix:
