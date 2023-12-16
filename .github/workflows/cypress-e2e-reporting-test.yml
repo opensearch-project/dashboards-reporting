@@ -116,10 +116,13 @@ jobs:
         working-directory: OpenSearch-Dashboards
         shell: bash
 
-      - name: Boodstrap Opensearch Dashboards
-        run: |
-          yarn osd bootstrap
-        working-directory: OpenSearch-Dashboards
+      - name: OpenSearch Dashboards Plugin Bootstrap
+        uses: nick-fields/retry@v1
+        with:
+          timeout_minutes: 30
+          max_attempts: 3
+          command: yarn osd bootstrap
+          path: OpenSearch-Dashboards
 
       - name: Run Opensearch Dashboards with Dashboards Reporting Plugin Installed
         run: |
