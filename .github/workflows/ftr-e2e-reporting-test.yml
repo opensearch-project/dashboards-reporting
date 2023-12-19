@@ -170,7 +170,7 @@ jobs:
 
       - name: Run Cypress tests
         run: |
-          yarn cypress:run-without-security --browser chrome --spec 'cypress/integration/plugins/reports-dashboards/*.js'
+          yarn cypress:run-without-security --browser chromium --spec 'cypress/integration/plugins/reports-dashboards/*.js'
         working-directory: opensearch-dashboards-functional-test
 
       - name: Capture failure screenshots
