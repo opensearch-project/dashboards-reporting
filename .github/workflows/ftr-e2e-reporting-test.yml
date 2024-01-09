@@ -115,22 +115,10 @@ jobs:
         working-directory: OpenSearch-Dashboards
         shell: bash
 
-      - name: OpenSearch Dashboards Plugin Bootstrap
+      - name: Boodstrap Opensearch Dashboards
         run: |
-          max_retries=3
-          count=0
-          until yarn osd bootstrap; do
-            exit_code=$?
-            count=$(($count + 1))
-            echo "Attempt $count/$max_retries failed with exit code $exit_code, retrying..."
-            if [ $count -ge $max_retries ]; then
-              echo "Reached maximum retry attempts, stopping..."
-              exit $exit_code
-            fi
-            sleep 5 # Wait for 5 seconds before retrying
-          done
+          yarn osd bootstrap
         working-directory: OpenSearch-Dashboards
-        shell: bash
 
       - name: Run Opensearch Dashboards with Dashboards Reporting Plugin Installed
         run: |
