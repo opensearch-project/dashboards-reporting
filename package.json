@@ -7,7 +7,8 @@
   "scripts": {
     "osd": "node ../../scripts/osd",
     "opensearch": "node ../../scripts/opensearch",
-    "lint": "eslint .",
+    "lint:es": "node ../../scripts/eslint",
+    "lint": "yarn lint:es",
     "start": "yarn plugin-helpers start",
     "build": "yarn plugin-helpers build",
     "test": "../../node_modules/.bin/jest --config ./test/jest.config.js",
