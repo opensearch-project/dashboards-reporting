@@ -12,7 +12,7 @@ export interface CreateReportResultType {
 }
 
 type ReportSourceType = 'dashboard' | 'visualization' | 'saved_search' | 'notebook';
-type ReportFormatType = 'pdf' | 'png' | 'csv';
+type ReportFormatType = 'pdf' | 'png' | 'csv' | 'xlsx';
 type UsageActionType = 'download';
 export type EntityType = 'report' | 'report_definition' | 'report_source';
 

@@ -28,6 +28,7 @@ import {
   PDF_PNG_FILE_FORMAT_OPTIONS,
   HEADER_FOOTER_CHECKBOX,
   REPORT_SOURCE_TYPES,
+  SAVED_SEARCH_FORMAT_OPTIONS,
 } from './report_settings_constants';
 import Showdown from 'showdown';
 import ReactMde from 'react-mde';
@@ -275,6 +276,27 @@ export function ReportSettings(props: ReportSettingProps) {
     );
   };
 
+  const CSVandXLSXFileFormats = () => {
+    return (
+      <div>
+        <EuiFormRow
+          label={i18n.translate(
+            'opensearch.reports.reportSettingProps.fileFormat',
+            {
+              defaultMessage: 'File format',
+            }
+          )}
+        >
+          <EuiRadioGroup
+            options={SAVED_SEARCH_FORMAT_OPTIONS}
+            idSelected={fileFormat}
+            onChange={handleFileFormat}
+          />
+        </EuiFormRow>
+      </div>
+    );
+  };
+
   const SettingsMarkdown = () => {
     const [
       checkboxIdSelectHeaderFooter,
@@ -433,6 +455,14 @@ export function ReportSettings(props: ReportSettingProps) {
       <div>
         <PDFandPNGFileFormats />
         <EuiSpacer />
+      </div>
+    );
+  };
+
+  const DataReportFormatAndMarkdown = () => {
+    return (
+      <div>
+        <CSVandXLSXFileFormats />
       </div>
     );
   };
@@ -762,18 +792,7 @@ export function ReportSettings(props: ReportSettingProps) {
         <SettingsMarkdown />
       </div>
     ) : (
-      <div>
-        <EuiFormRow
-          label={i18n.translate(
-            'opensearch.reports.reportSettingProps.form.fileFormat',
-            { defaultMessage: 'File format' }
-          )}
-        >
-          <EuiText>
-            <p>CSV</p>
-          </EuiText>
-        </EuiFormRow>
-      </div>
+      <DataReportFormatAndMarkdown />
     );
 
   const displayNotebooksSelect =
