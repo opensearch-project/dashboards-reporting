@@ -4,7 +4,7 @@ on: [pull_request]
 
 env:
   PLUGIN_NAME: dashboards-reporting
-  OPENSEARCH_DASHBOARDS_VERSION: "main"
+  OPENSEARCH_DASHBOARDS_VERSION: "2.x"
 
 jobs:
   build:
@@ -23,6 +23,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           path: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
+          ref: ${{ env.OPENSEARCH_DASHBOARDS_VERSION }}
           fetch-depth: 0
 
       - name: Get node and yarn versions
