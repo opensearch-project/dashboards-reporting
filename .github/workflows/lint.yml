@@ -4,7 +4,7 @@ on: [pull_request]
 
 env:
   PLUGIN_NAME: dashboards-reporting
-  OPENSEARCH_DASHBOARDS_VERSION: "main"
+  OPENSEARCH_DASHBOARDS_VERSION: "2.x"
 
 jobs:
   build:
