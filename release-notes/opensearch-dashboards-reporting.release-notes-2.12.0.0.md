@@ -1,4 +1,4 @@
-## Version 2.11.0.0 Release Notes
+## Version 2.12.0.0 Release Notes
 
 Compatible with OpenSearch and OpenSearch Dashboards Version 2.12.0
 
