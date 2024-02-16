@@ -254,7 +254,7 @@ const checkURLParams = async () => {
 
 const isDiscoverNavMenu = (navMenu) => {
   return (
-    navMenu[0].children.length === 5 &&
+    (navMenu[0].children.length === 5 || navMenu[0].children.length === 6) &&
     ($('[data-test-subj="breadcrumb first"]').prop('title') === 'Discover' ||
       $('[data-test-subj="breadcrumb first last"]').prop('title') ===
         'Discover')
