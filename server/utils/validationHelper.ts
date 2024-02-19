@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { RequestParams } from '@elastic/elasticsearch';
+import { RequestParams } from '@opensearch-project/opensearch';
 import path from 'path';
 import { ILegacyScopedClusterClient } from '../../../../src/core/server';
 import {
@@ -15,7 +15,7 @@ import {
 import { REPORT_TYPE } from '../../server/routes/utils/constants';
 
 export const isValidRelativeUrl = (relativeUrl: string) => {
-  let normalizedRelativeUrl = relativeUrl
+  let normalizedRelativeUrl = relativeUrl;
   if (
     !relativeUrl.includes('observability#/notebooks') &&
     !relativeUrl.includes('notebooks-dashboards')
@@ -34,7 +34,7 @@ export const isValidRelativeUrl = (relativeUrl: string) => {
  * moment.js isValid() API fails to validate time duration, so use regex
  * https://github.com/moment/moment/issues/1805
  **/
-export const regexDuration = /^(-?)P(?=\d|T\d)(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)([DW]))?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+(?:\.\d+)?)S)?)?$/;
+export const regexDuration = /^([-+]?)P(?=\d|T[-+]?\d)(?:([-+]?\d+)Y)?(?:([-+]?\d+)M)?(?:([-+]?\d+)([DW]))?(?:T(?:([-+]?\d+)H)?(?:([-+]?\d+)M)?(?:([-+]?\d+(?:\.\d+)?)S)?)?$/;
 export const regexEmailAddress = /\S+@\S+\.\S+/;
 export const regexReportName = /^[\w\-\s\(\)\[\]\,\_\-+]+$/;
 export const regexRelativeUrl = /^\/(_plugin\/kibana\/|_dashboards\/)?app\/(dashboards|visualize|discover|discoverLegacy|data-explorer\/discover\/?|observability-dashboards|observability-notebooks|notebooks-dashboards\?view=output_only(&security_tenant=.+)?)(\?security_tenant=.+)?#\/(notebooks\/|view\/|edit\/)?[^\/]+$/;
@@ -42,7 +42,7 @@ export const regexRelativeUrl = /^\/(_plugin\/kibana\/|_dashboards\/)?app\/(dash
 export const validateReport = async (
   client: ILegacyScopedClusterClient,
   report: ReportSchemaType,
-  basePath: String
+  basePath: string
 ) => {
   report.query_url = report.query_url.replace(basePath, '');
   report.report_definition.report_params.core_params.base_url = report.report_definition.report_params.core_params.base_url.replace(
@@ -66,7 +66,7 @@ export const validateReport = async (
 export const validateReportDefinition = async (
   client: ILegacyScopedClusterClient,
   reportDefinition: ReportDefinitionSchemaType,
-  basePath: String
+  basePath: string
 ) => {
   reportDefinition.report_params.core_params.base_url = reportDefinition.report_params.core_params.base_url.replace(
     basePath,
@@ -115,8 +115,7 @@ const validateSavedObject = async (
   if (getType(source) === 'notebook') {
     // no backend check for notebooks because we would just be checking against the notebooks api again
     exist = true;
-  }
-  else {
+  } else {
     savedObjectId = `${getType(source)}:${getId(url)}`;
     const params: RequestParams.Exists = {
       index: '.kibana',
