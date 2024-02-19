@@ -5,12 +5,16 @@
 
 import { ReportDefinitionSchemaType, ReportSchemaType } from '../../model';
 import {
-  DELIVERY_TYPE,
   FORMAT,
   REPORT_TYPE,
   TRIGGER_TYPE,
 } from '../../routes/utils/constants';
-import { isValidRelativeUrl, validateReport, validateReportDefinition } from '../validationHelper';
+import {
+  isValidRelativeUrl,
+  regexDuration,
+  validateReport,
+  validateReportDefinition,
+} from '../validationHelper';
 
 const SAMPLE_SAVED_OBJECT_ID = '3ba638e0-b894-11e8-a6d9-e546fe2bba5f';
 const createReportDefinitionInput: ReportDefinitionSchemaType = {
@@ -31,7 +35,7 @@ const createReportDefinitionInput: ReportDefinitionSchemaType = {
     configIds: [],
     title: 'title',
     textDescription: 'text description',
-    htmlDescription: 'html description'
+    htmlDescription: 'html description',
   },
   trigger: {
     trigger_type: TRIGGER_TYPE.onDemand,
@@ -63,12 +67,12 @@ const createReportDefinitionNotebookLegacyInput: ReportDefinitionSchemaType = {
     configIds: [],
     title: 'title',
     textDescription: 'text description',
-    htmlDescription: 'html description'
+    htmlDescription: 'html description',
   },
   trigger: {
     trigger_type: TRIGGER_TYPE.onDemand,
   },
-}
+};
 
 const createReportDefinitionNotebookInput: ReportDefinitionSchemaType = {
   report_params: {
@@ -88,12 +92,12 @@ const createReportDefinitionNotebookInput: ReportDefinitionSchemaType = {
     configIds: [],
     title: 'title',
     textDescription: 'text description',
-    htmlDescription: 'html description'
+    htmlDescription: 'html description',
   },
   trigger: {
     trigger_type: TRIGGER_TYPE.onDemand,
   },
-}
+};
 
 const createReportDefinitionNotebookPostNavBarInput: ReportDefinitionSchemaType = {
   report_params: {
@@ -113,12 +117,12 @@ const createReportDefinitionNotebookPostNavBarInput: ReportDefinitionSchemaType 
     configIds: [],
     title: 'title',
     textDescription: 'text description',
-    htmlDescription: 'html description'
+    htmlDescription: 'html description',
   },
   trigger: {
     trigger_type: TRIGGER_TYPE.onDemand,
   },
-}
+};
 
 describe('test input validation', () => {
   test('create report with correct saved object id', async () => {
@@ -189,7 +193,7 @@ describe('test input validation', () => {
   });
 
   test('validation against query_url', async () => {
-    const urls: [string, boolean][] = [
+    const urls: Array<[string, boolean]> = [
       ['/app/dashboards#/view/7adfa750-4c81-11e8-b3d7-01146121b73d?_g=', true],
       [
         '/_plugin/kibana/app/dashboards#/view/7adfa750-4c81-11e8-b3d7-01146121b73d?_g=',
@@ -223,14 +227,22 @@ describe('test input validation', () => {
         '/app/data-explorer/discover?security_tenant=private#/view/571aaf70-4c88-11e8-b3d7-01146121b73d',
         true,
       ],
-      [
-        '/app/discoverLegacy#/view/571aaf70-4c88-11e8-b3d7-01146121b73d',
-        true,
-      ],
+      ['/app/discoverLegacy#/view/571aaf70-4c88-11e8-b3d7-01146121b73d', true],
     ];
     expect(urls.map((url) => isValidRelativeUrl(url[0]))).toEqual(
       urls.map((url) => url[1])
     );
+  });
+
+  test('validate ISO 8601 durations', () => {
+    const durations: Array<[string, boolean]> = [
+      ['PT30M', true],
+      ['PT-30M', true],
+      ['PT-2H-30M', true],
+    ];
+    expect(
+      durations.map((duration) => regexDuration.test(duration[0]))
+    ).toEqual(durations.map((duration) => duration[1]));
   });
 });
 
