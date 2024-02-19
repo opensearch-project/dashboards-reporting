@@ -138,7 +138,7 @@ jobs:
 
       - name: Install Cypress
         run: |
-          yarn cypress install
+          npx cypress install
         shell: bash
         working-directory: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
 
