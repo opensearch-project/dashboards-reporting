@@ -12,15 +12,12 @@ describe('Cypress', () => {
     );
 
     cy.wait(12500);
-    cy.get('#landingPageOnDemandDownload').click({ force: true });
-    cy.get('body').then($body => {
-      if ($body.find('#downloadInProgressLoadingModal').length > 0) {
-        return;
-      }
-      else {
-        assert(false);
-      }
-    })
+    cy.get('[id="landingPageOnDemandDownload"]')
+      .contains('CSV')
+      .click({ force: true });
+    cy.get('.euiToastHeader__title')
+      .contains('Successfully downloaded report')
+      .should('exist');
   });
 
   it('Download pdf from in-context menu', () => {
@@ -85,10 +82,14 @@ describe('Cypress', () => {
 
     cy.url().should('include', 'report_definition_details');
 
-    cy.get('#generateReportFromDetailsButton').should('exist');
+    cy.wait(5000);
 
-    cy.get('#generateReportFromDetailsButton').click({ force: true });
+    cy.get('#generateReportFromDetailsFileFormat').should('exist');
 
-    cy.get('#downloadInProgressLoadingModal');
+    cy.get('#generateReportFromDetailsFileFormat').click({ force: true });
+
+    cy.get('.euiToastHeader__title')
+      .contains('Successfully generated report')
+      .should('exist');
   });
 });
