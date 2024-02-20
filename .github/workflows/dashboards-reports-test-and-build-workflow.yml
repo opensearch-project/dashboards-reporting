@@ -48,7 +48,7 @@ jobs:
             cd ./OpenSearch-Dashboards/
             su `id -un 1000` -c "source $NVM_DIR/nvm.sh && nvm use && node -v && yarn -v &&
                                  cd ./plugins/${{ env.PLUGIN_NAME }} &&
-                                 whoami && yarn osd bootstrap && yarn test --coverage"
+                                 whoami && yarn osd bootstrap --single-version=loose && yarn test --coverage"
 
       - name: Upload coverage
         uses: codecov/codecov-action@v1
@@ -113,7 +113,7 @@ jobs:
         with:
           timeout_minutes: 30
           max_attempts: 3
-          command: yarn osd bootstrap
+          command: yarn osd bootstrap --single-version=loose
 
       - name: Test
         uses: nick-fields/retry@v1
@@ -171,7 +171,7 @@ jobs:
         with:
           timeout_minutes: 30
           max_attempts: 3
-          command: yarn osd bootstrap
+          command: yarn osd bootstrap --single-version=loose
 
       - name: Test
         uses: nick-fields/retry@v1
