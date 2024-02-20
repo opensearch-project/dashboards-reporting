@@ -27,7 +27,7 @@ another JDK installation, e.g. `RUNTIME_JAVA_HOME=/usr/lib/jvm/jdk-8`.
    cd plugins
    git clone https://github.com/opensearch-project/dashboards-reporting.git
    ```
-1. Run `yarn osd bootstrap` inside `OpenSearch-Dashboards/plugins/dashboards-reporting`.
+1. Run `yarn osd bootstrap --single-version=loose` inside `OpenSearch-Dashboards/plugins/dashboards-reporting`.
 
 Ultimately, your directory structure should look like this:
 
