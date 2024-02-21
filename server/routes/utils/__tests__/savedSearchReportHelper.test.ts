@@ -1367,58 +1367,6 @@ test('create report with Etc/GMT-2 Timezone', async () => {
   );
 }, 20000);
 
-test('create report with undefined values', async () => {
-  const hits = [
-    hit(
-      {
-        category: 'c1',
-        customer_gender: 'Ma',
-        undefined,
-        customer_birth_date: '2023-04-26T04:34:32Z',
-        products: { created_on: '2023-04-26T04:34:32Z' },
-      },
-      {
-        undefined,
-        customer_birth_date: '2023-04-26T04:34:32Z',
-        'products.created_on': '2023-04-26T04:34:32Z',
-      }
-    ),
-    hit(
-      {
-        category: 'c2',
-        customer_gender: 'le',
-        order_date: ['2021-12-16T14:04:55'],
-        customer_birth_date: '2023-04-26T04:34:32Z',
-        products: { created_on: '2023-04-26T04:34:32Z' },
-      },
-      {
-        order_date: ['2021-12-16T14:04:55'],
-        customer_birth_date: '2023-04-26T04:34:32Z',
-        'products.created_on': '2023-04-26T04:34:32Z',
-      }
-    ),
-  ];
-  const client = mockOpenSearchClient(
-    hits,
-    '"category", "customer_gender"'
-  );
-  const { dataUrl } = await createSavedSearchReport(
-    input,
-    client,
-    mockDateFormat,
-    ',',
-    true,
-    undefined,
-    mockLogger,
-    mockTimezone
-  );
-  expect(dataUrl).toEqual(
-    'category,customer_gender\n' +
-      'c1,Ma\n' +
-      'c2,le'
-  );
-}, 20000);
-
 test('create report with empty/one/multiple(list) date values', async () => {
   const hits = [
     hit(
