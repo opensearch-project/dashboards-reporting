@@ -142,14 +142,20 @@ export const getOpenSearchData = (
           // if its not a nested date field
           if (keys.length === 1) {
             // if conditions to determine if the date field's value is an array or a string
-            if (typeof dateValue === 'string' || typeof dateValue === 'number') {
-              data._source[keys] = moment.utc(dateValue).tz(timezone).format(dateFormat);
-            } else if (
-              dateValue.length !== 0 &&
-              dateValue instanceof Array
+            if (
+              typeof dateValue === 'string' ||
+              typeof dateValue === 'number'
             ) {
+              data._source[keys] = moment
+                .utc(dateValue)
+                .tz(timezone)
+                .format(dateFormat);
+            } else if (dateValue.length !== 0 && dateValue instanceof Array) {
               fieldDateValue.forEach((element, index) => {
-                data._source[keys][index] = moment.utc(element).tz(timezone).format(dateFormat);
+                data._source[keys][index] = moment
+                  .utc(element)
+                  .tz(timezone)
+                  .format(dateFormat);
               });
             } else {
               data._source[keys] = [];
@@ -158,15 +164,19 @@ export const getOpenSearchData = (
           } else {
             let keyElement = keys.shift();
             // if conditions to determine if the date field's value is an array or a string
-            if (typeof fieldDateValue === 'string' || typeof fieldDateValue === 'number') {
-              keys.push(moment.utc(fieldDateValue).tz(timezone).format(dateFormat));
-            } else if (
-              dateValue.length !== 0 &&
-              dateValue instanceof Array
+            if (
+              typeof fieldDateValue === 'string' ||
+              typeof fieldDateValue === 'number'
             ) {
+              keys.push(
+                moment.utc(fieldDateValue).tz(timezone).format(dateFormat)
+              );
+            } else if (dateValue.length !== 0 && dateValue instanceof Array) {
               let tempArray: string[] = [];
               fieldDateValue.forEach((index) => {
-                tempArray.push(moment.utc(index).tz(timezone).format(dateFormat));
+                tempArray.push(
+                  moment.utc(index).tz(timezone).format(dateFormat)
+                );
               });
               keys.push(tempArray);
             } else {
