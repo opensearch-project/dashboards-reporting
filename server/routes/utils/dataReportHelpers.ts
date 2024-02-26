@@ -135,10 +135,10 @@ export const getOpenSearchData = (
         let keys;
         keys = dateField.split('.');
         const dateValue = data._source[dateField];
-        const fieldDateValue = fields[dateField];
         const isDateFieldPresent = isKeyPresent(data._source, dateField);
 
         if (isDateFieldPresent) {
+          const fieldDateValue = fields[dateField];
           // if its not a nested date field
           if (keys.length === 1) {
             // if conditions to determine if the date field's value is an array or a string
