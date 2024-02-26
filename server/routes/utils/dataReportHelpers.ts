@@ -142,7 +142,7 @@ export const getOpenSearchData = (
           // if its not a nested date field
           if (keys.length === 1) {
             // if conditions to determine if the date field's value is an array or a string
-            if (typeof dateValue === 'string') {
+            if (typeof dateValue === 'string' || typeof dateValue === 'number') {
               data._source[keys] = moment.utc(dateValue).tz(timezone).format(dateFormat);
             } else if (
               dateValue.length !== 0 &&
@@ -158,7 +158,7 @@ export const getOpenSearchData = (
           } else {
             let keyElement = keys.shift();
             // if conditions to determine if the date field's value is an array or a string
-            if (typeof fieldDateValue === 'string') {
+            if (typeof fieldDateValue === 'string' || typeof fieldDateValue === 'number') {
               keys.push(moment.utc(fieldDateValue).tz(timezone).format(dateFormat));
             } else if (
               dateValue.length !== 0 &&
