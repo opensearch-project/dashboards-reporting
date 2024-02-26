@@ -18,7 +18,6 @@ export const popoverMenu = (savedObjectAvailable) => {
     ? 'euiContextMenuItem'
     : 'euiContextMenuItem euiContextMenuItem-isDisabled';
   const button = savedObjectAvailable ? 'button' : 'button disabled';
-  const popoverHeight = savedObjectAvailable ? '395px' : '380px';
   const message = savedObjectAvailable
     ? i18n.translate('opensearch.reports.menu.visual.waitPrompt', {
         defaultMessage:
@@ -43,8 +42,8 @@ export const popoverMenu = (savedObjectAvailable) => {
           <div class="euiPopover__panelArrow euiPopover__panelArrow--bottom" style="right: ${arrowRight}; top: 0px;">
         </div>
           <div>
-             <div class="euiContextMenu" data-test-subj="shareContextMenu" style="height: ${popoverHeight}; width: 235px;">
-                <div class="euiContextMenuPanel euiContextMenu__panel" tabindex="0">
+             <div class="euiContextMenu" data-test-subj="shareContextMenu" style="width: 235px;">
+                <div class="euiContextMenuPanel" tabindex="0">
                    <div class="euiPopoverTitle">
                       <span data-html2canvas-ignore class="euiContextMenu__itemLayout">
                       ${i18n.translate(
@@ -138,7 +137,6 @@ export const popoverMenuDiscover = (savedObjectAvailable) => {
     ? 'euiContextMenuItem'
     : 'euiContextMenuItem euiContextMenuItem-isDisabled';
   const button = savedObjectAvailable ? 'button' : 'button disabled';
-  const popoverHeight = savedObjectAvailable ? '354px' : '322px';
   const message = savedObjectAvailable
     ? i18n.translate('opensearch.reports.menu.csv.waitPrompt', {
         defaultMessage:
@@ -161,8 +159,8 @@ export const popoverMenuDiscover = (savedObjectAvailable) => {
           <div class="euiPopover__panelArrow euiPopover__panelArrow--bottom" style="right: ${arrowRight}; top: 0px;">
         </div>
           <div>
-             <div class="euiContextMenu" data-test-subj="shareContextMenu" style="height: ${popoverHeight}; width: 235px;">
-                <div class="euiContextMenuPanel euiContextMenu__panel" tabindex="0">
+             <div class="euiContextMenu" data-test-subj="shareContextMenu" style="width: 235px;">
+                <div class="euiContextMenuPanel" tabindex="0">
                    <div class="euiPopoverTitle">
                       <span data-html2canvas-ignore class="euiContextMenu__itemLayout">
                       ${i18n.translate(
