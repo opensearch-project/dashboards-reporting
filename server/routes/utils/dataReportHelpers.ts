@@ -147,8 +147,8 @@ export const getOpenSearchData = (
                 .tz(timezone)
                 .format(dateFormat);
             } else if (
-              fieldDateValue.length !== 0 &&
-              fieldDateValue instanceof Array
+              dateValue.length !== 0 &&
+              dateValue instanceof Array
             ) {
               fieldDateValue.forEach((element, index) => {
                 data._source[keys][index] = moment
@@ -168,8 +168,8 @@ export const getOpenSearchData = (
                 moment.utc(fieldDateValue).tz(timezone).format(dateFormat)
               );
             } else if (
-              fieldDateValue.length !== 0 &&
-              fieldDateValue instanceof Array
+              dateValue.length !== 0 &&
+              dateValue instanceof Array
             ) {
               let tempArray: string[] = [];
               fieldDateValue.forEach((index) => {

@@ -117,7 +117,7 @@ jobs:
 
       - name: Boodstrap Opensearch Dashboards
         run: |
-          yarn osd bootstrap
+          yarn osd bootstrap --single-version=loose
         working-directory: OpenSearch-Dashboards
 
       - name: Run Opensearch Dashboards with Dashboards Reporting Plugin Installed
@@ -150,7 +150,7 @@ jobs:
 
       - name: Run Cypress tests
         run: |
-          yarn cypress:run --browser chrome --headless --spec '.cypress/integration/*'
+          yarn cypress:run --browser chrome --headless
         working-directory: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
 
       - name: Capture failure screenshots
