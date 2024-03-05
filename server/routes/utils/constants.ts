@@ -10,6 +10,7 @@ export enum FORMAT {
   pdf = 'pdf',
   png = 'png',
   csv = 'csv',
+  xlsx = 'xlsx',
 }
 
 export enum REPORT_STATE {
@@ -181,6 +182,11 @@ export const GLOBAL_BASIC_COUNTER: CountersType = {
         total: 0,
       },
     },
+    xlsx: {
+      download: {
+        total: 0,
+      },
+    },
   },
 };
 
@@ -284,6 +290,11 @@ export const DEFAULT_ROLLING_COUNTER: CountersType = {
   },
   saved_search: {
     csv: {
+      download: {
+        count: 0,
+      },
+    },
+    xlsx: {
       download: {
         count: 0,
       },

@@ -46,12 +46,12 @@ export const PDF_PNG_FILE_FORMAT_OPTIONS = [
 
 export const SAVED_SEARCH_FORMAT_OPTIONS = [
   {
-    id: 'csvFormat',
+    id: 'csv',
     label: 'CSV',
   },
   {
-    id: 'xlsFormat',
-    label: 'XLS',
+    id: 'xlsx',
+    label: 'XLSX',
   },
 ];
 

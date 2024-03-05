@@ -238,7 +238,7 @@ const getDataReportCoreParams = (
 ): DataReportSchemaType => {
   let res: DataReportSchemaType = {
     base_url: baseUrl,
-    report_format: <FORMAT.csv>getUiReportFormat(fileFormat),
+    report_format:  <FORMAT.csv | FORMAT.xlsx>getUiReportFormat(fileFormat),
     limit: limit,
     time_duration: duration,
     saved_search_id: sourceId,

@@ -7,14 +7,13 @@ import esb, { Sort } from 'elastic-builder';
 import converter from 'json-2-csv';
 import _ from 'lodash';
 import moment from 'moment-timezone';
-import { DATA_REPORT_CONFIG } from './constants';
 import {
   buildOpenSearchQuery,
   Filter,
   Query,
   OpenSearchQueryConfig,
 } from '../../../../../src/plugins/data/common';
-import { string } from 'joi';
+import { ExcelBuilder } from './excelBuilder';
 
 export var metaData = {
   saved_search_id: <string>null,
@@ -143,13 +142,19 @@ export const getOpenSearchData = (
           if (keys.length === 1) {
             // if conditions to determine if the date field's value is an array or a string
             if (typeof dateValue === 'string') {
-              data._source[keys] = moment.utc(dateValue).tz(timezone).format(dateFormat);
+              data._source[keys] = moment
+                .utc(dateValue)
+                .tz(timezone)
+                .format(dateFormat);
             } else if (
               dateValue.length !== 0 &&
               dateValue instanceof Array
             ) {
               fieldDateValue.forEach((element, index) => {
-                data._source[keys][index] = moment.utc(element).tz(timezone).format(dateFormat);
+                data._source[keys][index] = moment
+                  .utc(element)
+                  .tz(timezone)
+                  .format(dateFormat);
               });
             } else {
               data._source[keys] = [];
@@ -159,14 +164,18 @@ export const getOpenSearchData = (
             let keyElement = keys.shift();
             // if conditions to determine if the date field's value is an array or a string
             if (typeof fieldDateValue === 'string') {
-              keys.push(moment.utc(fieldDateValue).tz(timezone).format(dateFormat));
+              keys.push(
+                moment.utc(fieldDateValue).tz(timezone).format(dateFormat)
+              );
             } else if (
               dateValue.length !== 0 &&
               dateValue instanceof Array
             ) {
               let tempArray: string[] = [];
               fieldDateValue.forEach((index) => {
-                tempArray.push(moment.utc(index).tz(timezone).format(dateFormat));
+                tempArray.push(
+                  moment.utc(index).tz(timezone).format(dateFormat)
+                );
               });
               keys.push(tempArray);
             } else {
@@ -203,7 +212,7 @@ export const getOpenSearchData = (
   return hits;
 };
 
-//Convert the data to Csv format
+// Convert the data to Csv format
 export const convertToCSV = async (dataset, csvSeparator) => {
   let convertedData: any = [];
   const options = {
@@ -232,6 +241,50 @@ function flattenHits(hits, result = {}, prefix = '') {
   }
   return result;
 }
+
+function flattenObject(obj = {}, parentKey = '', result: any = {}) {
+  for (const [key, value] of Object.entries(obj)) {
+    const newKey = parentKey ? `${parentKey}.${key}` : key;
+
+    if (
+      typeof value == 'object' &&
+      value !== null &&
+      !Array.isArray(value) &&
+      Object.keys(value).length > 0
+    ) {
+      flattenObject(value, newKey, result);
+    } else if (Array.isArray(value)) {
+      result[newKey] = JSON.stringify(value);
+    } else {
+      result[newKey] = value;
+    }
+  }
+
+  return result;
+}
+
+function flattenArray(array = []) {
+  return array.map((item) => flattenObject(item));
+}
+
+export const convertToExcel = async (dataset: any) => {
+  const flatDataset = flattenArray(dataset[0]);
+
+  const excelBuilder = new ExcelBuilder();
+  const base64 = await excelBuilder
+    .addHeaders(flatDataset)
+    .addRows(flatDataset)
+    .updateColumnWidths()
+    .applyHeaderStyles()
+    .applyAutoFilter()
+    .applyFreeze()
+    .getWorkbookAsBase64();
+
+  return (
+    'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,' +
+    base64
+  );
+};
 
 //Return only the selected fields
 function traverse(data, keys, result = {}) {

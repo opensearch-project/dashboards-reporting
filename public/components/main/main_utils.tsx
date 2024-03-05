@@ -28,6 +28,7 @@ type fileFormatsOptions = {
 
 export const fileFormatsUpper: fileFormatsOptions = {
   csv: 'CSV',
+  xlsx: 'XLSX',
   pdf: 'PDF',
   png: 'PNG',
 };
@@ -40,12 +41,17 @@ export const humanReadableDate = (date: string | number | Date) => {
 };
 
 export const extractFilename = (filename: string) => {
-  return filename.substring(0, filename.length - 4);
+  const index = filename.lastIndexOf('.');
+  if (index == -1) {
+    return filename;
+  }
+
+  return filename.slice(0, index);
 };
 
 export const extractFileFormat = (filename: string) => {
-  const fileFormat = filename;
-  return fileFormat.substring(filename.length - 3, filename.length);
+  const index = filename.lastIndexOf('.');
+  return filename.slice(index+1);
 };
 
 export const getFileFormatPrefix = (fileFormat: string) => {
@@ -112,13 +118,23 @@ export const removeDuplicatePdfFileFormat = (filename: string) => {
   return filename.substring(0, filename.length - 4);
 };
 
+async function getDataReportURL(stream: string, fileFormat: string): Promise<string> {
+  if (fileFormat == 'xlsx') {
+    const response = await fetch(stream);
+    const blob = await response.blob();
+    return URL.createObjectURL(blob);
+  }
+
+  const blob = new Blob([stream]);
+  return URL.createObjectURL(blob);
+}
+
 export const readDataReportToFile = async (
   stream: string,
   fileFormat: string,
   fileName: string
 ) => {
-  const blob = new Blob([stream]);
-  const url = URL.createObjectURL(blob);
+  const url = await getDataReportURL(stream, fileFormat);
   let link = document.createElement('a');
   link.setAttribute('href', url);
   link.setAttribute('download', fileName);
@@ -133,7 +149,7 @@ export const readStreamToFile = async (
   fileName: string
 ) => {
   let link = document.createElement('a');
-  if (fileName.includes('csv')) {
+  if (fileName.includes('csv') || fileName.includes('xlsx')) {
     readDataReportToFile(stream, fileFormat, fileName);
     return;
   }
@@ -168,7 +184,7 @@ export const generateReportFromDefinitionId = async (
       if (!response) return;
       const fileFormat = extractFileFormat(response['filename']);
       const fileName = response['filename'];
-      if (fileFormat === 'csv') {
+      if (fileFormat === 'csv' || fileFormat === 'xlsx') {
         await readStreamToFile(await response['data'], fileFormat, fileName);
         status = true;
         return;
@@ -212,7 +228,7 @@ export const generateReportById = async (
       //TODO: duplicate code, extract to be a function that can reuse. e.g. handleResponse(response)
       const fileFormat = extractFileFormat(response['filename']);
       const fileName = response['filename'];
-      if (fileFormat === 'csv') {
+      if (fileFormat === 'csv' || fileFormat === 'xlsx') {
         await readStreamToFile(await response['data'], fileFormat, fileName);
         handleSuccessToast();
         return response;
