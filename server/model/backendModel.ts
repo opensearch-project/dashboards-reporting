@@ -101,6 +101,7 @@ export enum BACKEND_REPORT_FORMAT {
   pdf = 'Pdf',
   png = 'Png',
   csv = 'Csv',
+  xlsx = 'Xlsx',
 }
 
 export enum BACKEND_TRIGGER_TYPE {
@@ -126,6 +127,7 @@ export const REPORT_SOURCE_DICT = {
 
 export const REPORT_FORMAT_DICT = {
   [FORMAT.csv]: BACKEND_REPORT_FORMAT.csv,
+  [FORMAT.xlsx]: BACKEND_REPORT_FORMAT.xlsx,
   [FORMAT.pdf]: BACKEND_REPORT_FORMAT.pdf,
   [FORMAT.png]: BACKEND_REPORT_FORMAT.png,
 };

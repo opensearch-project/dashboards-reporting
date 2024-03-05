@@ -42,8 +42,7 @@ export const dataReportSchema = schema.object({
       }
     },
   }),
-  //TODO: future support schema.literal('xlsx')
-  report_format: schema.oneOf([schema.literal(FORMAT.csv)]),
+  report_format: schema.oneOf([schema.literal(FORMAT.csv), schema.literal(FORMAT.xlsx)]),
   limit: schema.number({ defaultValue: DEFAULT_MAX_SIZE, min: 0 }),
   excel: schema.boolean({ defaultValue: true }),
 });
