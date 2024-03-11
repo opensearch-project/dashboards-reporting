@@ -179,6 +179,14 @@ $(function () {
     generateInContextReport(timeRanges, queryUrl, 'csv', { saved_search_id });
   });
 
+  // generate XLSX onclick
+  $(document).on('click', '#generateXLSX', function () {
+    const timeRanges = getTimeFieldsFromUrl();
+    const queryUrl = replaceQueryURL(location.href);
+    const saved_search_id = getUuidFromUrl()[1];
+    generateInContextReport(timeRanges, queryUrl, 'xlsx', { saved_search_id });
+  });
+
   // navigate to Create report definition page with report source and pre-set time range
   $(document).on('click', '#createReportDefinition', function () {
     contextMenuCreateReportDefinition(this.baseURI);

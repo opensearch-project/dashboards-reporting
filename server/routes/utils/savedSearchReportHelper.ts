@@ -6,6 +6,7 @@
 import {
   buildRequestBody,
   convertToCSV,
+  convertToExcel,
   getOpenSearchData,
   getSelectedFields,
   metaData,
@@ -19,6 +20,7 @@ import { getFileName, callCluster } from './helpers';
 import { CreateReportResultType } from './types';
 import { RequestParams } from '@elastic/elasticsearch';
 import esb from 'elastic-builder';
+import { FORMAT } from './constants';
 
 /**
  * Specify how long scroll context should be maintained for scrolled search
@@ -125,7 +127,7 @@ async function populateMetaData(
 }
 
 /**
- * Generate CSV data by query and convert OpenSearch data set.
+ * Generate CSV and XLSX data by query and convert OpenSearch data set.
  * @param client  OpenSearch client
  * @param limit   limit size of result data set
  */
@@ -153,13 +155,18 @@ async function generateReportData(
 
   const reqBody = buildRequestBody(report, allowLeadingWildcards, 0);
   logger.info(
-    `[Reporting csv module] DSL request body: ${JSON.stringify(reqBody)}`
+    `[Reporting ${params.report_format} module] DSL request body: ${JSON.stringify(reqBody)}`
   );
   if (total > maxResultSize) {
     await getOpenSearchDataByScroll();
   } else {
     await getOpenSearchDataBySearch();
   }
+
+  if (params.report_format == FORMAT.xlsx) {
+    return convertOpenSearchDataToExcel();
+  }
+
   return convertOpenSearchDataToCsv();
 
   // Fetch OpenSearch query max size windows to decide search or scroll
@@ -266,5 +273,12 @@ async function generateReportData(
     const dataset: any = [];
     dataset.push(getOpenSearchData(arrayHits, report, params, dateFormat, timezone));
     return await convertToCSV(dataset, csvSeparator);
+  }
+
+  async function convertOpenSearchDataToExcel() {
+    const dataset = [];
+    dataset.push(getOpenSearchData(arrayHits, report, params, dateFormat, timezone));
+
+    return await convertToExcel(dataset);
   }
 }

@@ -98,6 +98,8 @@ describe('test create saved search report', () => {
       mockTimezone
     );
     expect(xlsxReport.fileName).toContain('.xlsx');
+
+    input.report_definition.report_params.core_params.report_format = 'csv';
   }, 20000);
 
   test('create report for empty data set', async () => {
