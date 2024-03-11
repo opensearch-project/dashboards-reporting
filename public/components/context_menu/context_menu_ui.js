@@ -29,7 +29,7 @@ export const popoverMenu = (savedObjectAvailable) => {
       });
 
   const arrowRight = '100px';
-  const popoverRight = '77px';
+  const popoverRight = '170px';
 
   return `
     <div>
@@ -146,7 +146,7 @@ export const popoverMenuDiscover = (savedObjectAvailable) => {
         defaultMessage: 'Save this search to enable CSV reports.',
       });
   const arrowRight = '60px';
-  const popoverRight = '77px';
+  const popoverRight = '170px';
 
   return `
     <div>
