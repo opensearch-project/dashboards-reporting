@@ -53,7 +53,7 @@
     "@types/react-dom": "^16.9.8",
     "@types/react-test-renderer": "^18.0.0",
     "@types/set-interval-async": "^1.0.0",
-    "@types/showdown": "^1.9.3",
+    "@types/showdown": "^2.0.6",
     "babel-jest": "^27.5.1",
     "cypress": "^13.6.0",
     "elastic-builder": "^2.7.1",
