@@ -4,7 +4,6 @@
  */
 
 import { CountersType } from './types';
-import Showdown from 'showdown';
 
 export enum FORMAT {
   pdf = 'pdf',
