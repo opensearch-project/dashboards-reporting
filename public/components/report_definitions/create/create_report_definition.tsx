@@ -17,7 +17,6 @@ import {
 } from '@elastic/eui';
 import { ReportSettings } from '../report_settings';
 import { generateReportFromDefinitionId } from '../../main/main_utils';
-import { converter } from '../utils';
 import {
   permissionsMissingToast,
   permissionsMissingActions,

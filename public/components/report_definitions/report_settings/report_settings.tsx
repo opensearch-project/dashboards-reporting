@@ -15,10 +15,8 @@ import {
   EuiPageContent,
   EuiPageContentBody,
   EuiHorizontalRule,
-  EuiText,
   EuiSpacer,
   EuiRadioGroup,
-  EuiSelect,
   EuiTextArea,
   EuiCheckboxGroup,
   EuiComboBox,
@@ -30,7 +28,6 @@ import {
   REPORT_SOURCE_TYPES,
   SAVED_SEARCH_FORMAT_OPTIONS,
 } from './report_settings_constants';
-import Showdown from 'showdown';
 import ReactMde from 'react-mde';
 import 'react-mde/lib/styles/css/react-mde-all.css';
 import {
