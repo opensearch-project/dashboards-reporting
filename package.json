@@ -20,7 +20,7 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "cron-validator": "^1.1.1",
-    "dompurify": "^2.4.1",
+    "dompurify": "^3.0.11",
     "elastic-builder": "^2.7.1",
     "enzyme-adapter-react-16": "^1.15.5",
     "exceljs": "^4.4.0",
@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@elastic/eslint-import-resolver-kibana": "link:../../packages/osd-eslint-import-resolver-opensearch-dashboards",
-    "@types/dompurify": "^2.3.3",
+    "@types/dompurify": "^3.0.5",
     "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/jsdom": "^16.2.3",
     "@types/react": "^16.14.23",
