@@ -238,6 +238,7 @@ $(function () {
 
 /* generate a report if flagged in URL params */
 const checkURLParams = async () => {
+  if (!location.href.includes('#')) return;
   const [hash, query] = location.href.split('#')[1].split('?');
   const params = new URLSearchParams(query);
   const id = params.get(GENERATE_REPORT_PARAM);
