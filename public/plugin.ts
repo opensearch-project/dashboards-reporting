@@ -19,6 +19,7 @@ import './components/context_menu/context_menu';
 import { PLUGIN_ID, PLUGIN_NAME } from '../common';
 import { uiSettingsService } from './components/utils/settings_service';
 import { applicationService } from './components/utils/application_service';
+import { registerAllPluginNavGroups } from './plugin_nav';
 
 export class ReportsDashboardsPlugin
   implements Plugin<ReportsDashboardsPluginSetup, ReportsDashboardsPluginStart>
@@ -52,7 +53,7 @@ export class ReportsDashboardsPlugin
         );
       },
     });
-
+    registerAllPluginNavGroups(core);
     // Return methods that should be available to other plugins
     return {};
   }
