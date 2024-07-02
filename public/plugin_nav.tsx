@@ -9,25 +9,25 @@ import { PLUGIN_ID } from '../common';
 import { DEFAULT_NAV_GROUPS, DEFAULT_APP_CATEGORIES } from '../../../src/core/public';
 
 export function registerAllPluginNavGroups(core: CoreSetup<ReportsDashboardsPluginSetup>) {
-  core.chrome.addNavLinksToGroup(DEFAULT_NAV_GROUPS.observability, [
+  core.chrome.navGroup.addNavLinksToGroup(DEFAULT_NAV_GROUPS.observability, [
     {
       id: PLUGIN_ID,
       category: DEFAULT_APP_CATEGORIES.dashboardAndReport,
     },
   ]);
-  core.chrome.addNavLinksToGroup(DEFAULT_NAV_GROUPS[`security-analytics`], [
+  core.chrome.navGroup.addNavLinksToGroup(DEFAULT_NAV_GROUPS[`security-analytics`], [
     {
       id: PLUGIN_ID,
       category: DEFAULT_APP_CATEGORIES.dashboardAndReport,
     },
   ]);
-  core.chrome.addNavLinksToGroup(DEFAULT_NAV_GROUPS.analytics, [
+  core.chrome.navGroup.addNavLinksToGroup(DEFAULT_NAV_GROUPS.analytics, [
     {
       id: PLUGIN_ID,
       category: DEFAULT_APP_CATEGORIES.dashboardAndReport,
     },
   ]);
-  core.chrome.addNavLinksToGroup(DEFAULT_NAV_GROUPS.search, [
+  core.chrome.navGroup.addNavLinksToGroup(DEFAULT_NAV_GROUPS.search, [
     {
       id: PLUGIN_ID,
       category: DEFAULT_APP_CATEGORIES.analyzeSearch,
