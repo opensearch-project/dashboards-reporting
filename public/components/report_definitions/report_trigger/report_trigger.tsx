@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { i18n } from '@osd/i18n';
 import {
   EuiCompressedFormRow,
-  EuiRadioGroup,
+  EuiCompressedRadioGroup,
   EuiDatePicker,
   EuiCompressedSelect,
   EuiSpacer,
@@ -619,7 +619,7 @@ export function ReportTrigger(props: ReportTriggerProps) {
             { defaultMessage: 'request time' }
           )}
         >
-          <EuiRadioGroup
+          <EuiCompressedRadioGroup
             options={SCHEDULE_TYPE_OPTIONS}
             idSelected={scheduleType}
             onChange={handleScheduleType}
@@ -707,7 +707,7 @@ export function ReportTrigger(props: ReportTriggerProps) {
         )}
         id="reportDefinitionTriggerTypes"
       >
-        <EuiRadioGroup
+        <EuiCompressedRadioGroup
         options={TRIGGER_TYPE_OPTIONS}
         idSelected={reportTriggerType}
         onChange={handleReportTriggerType}

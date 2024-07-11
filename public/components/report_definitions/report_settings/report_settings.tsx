@@ -16,7 +16,7 @@ import {
   EuiPageContentBody,
   EuiHorizontalRule,
   EuiSpacer,
-  EuiRadioGroup,
+  EuiCompressedRadioGroup,
   EuiTextArea,
   EuiCompressedCheckboxGroup,
   EuiComboBox,
@@ -263,7 +263,7 @@ export function ReportSettings(props: ReportSettingProps) {
             }
           )}
         >
-          <EuiRadioGroup
+          <EuiCompressedRadioGroup
             options={PDF_PNG_FILE_FORMAT_OPTIONS}
             idSelected={fileFormat}
             onChange={handleFileFormat}
@@ -284,7 +284,7 @@ export function ReportSettings(props: ReportSettingProps) {
             }
           )}
         >
-          <EuiRadioGroup
+          <EuiCompressedRadioGroup
             options={SAVED_SEARCH_FORMAT_OPTIONS}
             idSelected={fileFormat}
             onChange={handleFileFormat}
@@ -904,7 +904,7 @@ export function ReportSettings(props: ReportSettingProps) {
             { defaultMessage: 'Report source' }
           )}
         >
-          <EuiRadioGroup
+          <EuiCompressedRadioGroup
             options={REPORT_SOURCE_RADIOS}
             idSelected={reportSourceId}
             onChange={handleReportSource}
