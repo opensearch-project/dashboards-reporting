@@ -19,7 +19,7 @@ import {
   EuiCompressedRadioGroup,
   EuiCompressedTextArea,
   EuiCompressedCheckboxGroup,
-  EuiComboBox,
+  EuiCompressedComboBox,
 } from '@elastic/eui';
 import {
   REPORT_SOURCE_RADIOS,
@@ -712,7 +712,7 @@ export function ReportSettings(props: ReportSettingProps) {
           isInvalid={showSettingsReportSourceError}
           error={settingsReportSourceErrorMessage}
         >
-          <EuiComboBox
+          <EuiCompressedComboBox
             id="reportSourceDashboardSelector"
             placeholder={i18n.translate(
               'opensearch.reports.reportSettingProps.placeholder.selectDashboard',
@@ -739,7 +739,7 @@ export function ReportSettings(props: ReportSettingProps) {
           isInvalid={showSettingsReportSourceError}
           error={settingsReportSourceErrorMessage}
         >
-          <EuiComboBox
+          <EuiCompressedComboBox
             id="reportSourceVisualizationSelect"
             placeholder={i18n.translate(
               'opensearch.reports.reportSettingProps.form.placeholder.selectAVisualization',
@@ -766,7 +766,7 @@ export function ReportSettings(props: ReportSettingProps) {
           isInvalid={showSettingsReportSourceError}
           error={settingsReportSourceErrorMessage}
         >
-          <EuiComboBox
+          <EuiCompressedComboBox
             id="reportSourceSavedSearchSelect"
             placeholder={i18n.translate(
               'opensearch.reports.reportSettingProps.form.placeholder.selectASavedSearch',
@@ -800,7 +800,7 @@ export function ReportSettings(props: ReportSettingProps) {
           isInvalid={showSettingsReportSourceError}
           error={settingsReportSourceErrorMessage}
         >
-          <EuiComboBox
+          <EuiCompressedComboBox
             id="reportSourceNotebooksSelect"
             placeholder="Select a notebook"
             singleSelection={{ asPlainText: true }}

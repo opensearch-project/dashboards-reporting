@@ -13,7 +13,7 @@ import {
   EuiHorizontalRule,
   EuiSpacer,
   EuiCompressedCheckbox,
-  EuiComboBox,
+  EuiCompressedComboBox,
   EuiCompressedFieldText,
   EuiSmallButton,
 } from '@elastic/eui';
@@ -281,7 +281,7 @@ export function ReportDelivery(props: ReportDeliveryProps) {
         isInvalid={showDeliveryChannelError}
         error={deliveryChannelError}
       >
-        <EuiComboBox
+        <EuiCompressedComboBox
           id="notificationsChannelSelect"
           placeholder={'Select channels'}
           options={channels}
