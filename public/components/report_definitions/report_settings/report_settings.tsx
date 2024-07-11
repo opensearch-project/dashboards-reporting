@@ -17,7 +17,7 @@ import {
   EuiHorizontalRule,
   EuiSpacer,
   EuiCompressedRadioGroup,
-  EuiTextArea,
+  EuiCompressedTextArea,
   EuiCompressedCheckboxGroup,
   EuiComboBox,
 } from '@elastic/eui';
@@ -883,7 +883,7 @@ export function ReportSettings(props: ReportSettingProps) {
               )}
               id={'reportSettingsDescription'}
             >
-              <EuiTextArea
+              <EuiCompressedTextArea
                 placeholder={i18n.translate(
                   'opensearch.reports.reportSettingProps.form.placeholder.description',
                   {

@@ -16,7 +16,7 @@ import {
   EuiText,
   EuiCompressedFieldText,
   EuiCompressedCheckboxGroup,
-  EuiTextArea,
+  EuiCompressedTextArea,
   EuiLink,
   EuiCompressedFieldNumber,
 } from '@elastic/eui';
