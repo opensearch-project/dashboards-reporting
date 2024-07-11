@@ -9,7 +9,7 @@ import {
   EuiCompressedFormRow,
   EuiRadioGroup,
   EuiDatePicker,
-  EuiSelect,
+  EuiCompressedSelect,
   EuiSpacer,
   EuiFlexGroup,
   EuiFlexItem,
@@ -348,7 +348,7 @@ export function ReportTrigger(props: ReportTriggerProps) {
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
               <EuiCompressedFormRow>
-                <EuiSelect
+                <EuiCompressedSelect
                   id="intervalTimeUnit"
                   options={INTERVAL_TIME_PERIODS}
                   value={intervalTimePeriod}
@@ -417,7 +417,7 @@ export function ReportTrigger(props: ReportTriggerProps) {
         >
           <EuiFlexGroup>
             <EuiFlexItem grow={false}>
-              <EuiSelect
+              <EuiCompressedSelect
                 id="monthlySelect"
                 options={MONTHLY_ON_THE_OPTIONS}
                 value={monthlySelect}
@@ -558,7 +558,7 @@ export function ReportTrigger(props: ReportTriggerProps) {
           )}
           id="recurringFrequencySelect"
         >
-          <EuiSelect
+          <EuiCompressedSelect
             options={SCHEDULE_RECURRING_OPTIONS}
             value={scheduleRecurringFrequency}
             onChange={handleScheduleRecurringFrequency}

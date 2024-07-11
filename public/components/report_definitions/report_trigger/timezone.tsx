@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiCompressedFormRow, EuiSelect } from '@elastic/eui';
+import { EuiCompressedFormRow, EuiCompressedSelect } from '@elastic/eui';
 import React, { useState, useEffect } from 'react';
 import { i18n } from '@osd/i18n';
 import { TIMEZONE_OPTIONS } from './report_trigger_constants';
@@ -58,7 +58,7 @@ export function TimezoneSelect(props: { reportDefinitionRequest: any; httpClient
           defaultMessage: 'Timezone',
         })}
       >
-        <EuiSelect
+        <EuiCompressedSelect
           id="setTimezone"
           options={TIMEZONE_OPTIONS}
           value={timezone}
