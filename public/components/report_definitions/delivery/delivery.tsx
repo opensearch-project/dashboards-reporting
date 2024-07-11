@@ -14,7 +14,7 @@ import {
   EuiSpacer,
   EuiCheckbox,
   EuiComboBox,
-  EuiFieldText,
+  EuiCompressedFieldText,
   EuiSmallButton,
 } from '@elastic/eui';
 import CSS from 'csstype';
@@ -298,7 +298,7 @@ export function ReportDelivery(props: ReportDeliveryProps) {
         error={deliverySubjectError}
         style={styles}
       >
-        <EuiFieldText
+        <EuiCompressedFieldText
           placeholder={'Enter notification message subject'}
           fullWidth={true}
           value={notificationSubject}

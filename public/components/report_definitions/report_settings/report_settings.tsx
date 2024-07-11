@@ -6,7 +6,7 @@
 import React, { useEffect, useState } from 'react';
 import { i18n } from '@osd/i18n';
 import {
-  EuiFieldText,
+  EuiCompressedFieldText,
   EuiFlexGroup,
   EuiFlexItem,
   EuiCompressedFormRow,
@@ -860,7 +860,7 @@ export function ReportSettings(props: ReportSettingProps) {
               error={settingsReportNameErrorMessage}
               id={'reportSettingsName'}
             >
-              <EuiFieldText
+              <EuiCompressedFieldText
                 placeholder={i18n.translate(
                   'opensearch.reports.reportSettingProps.form.placeholder.reportName',
                   {

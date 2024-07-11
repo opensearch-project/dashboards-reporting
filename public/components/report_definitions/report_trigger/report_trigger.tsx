@@ -14,11 +14,11 @@ import {
   EuiFlexGroup,
   EuiFlexItem,
   EuiText,
-  EuiFieldText,
+  EuiCompressedFieldText,
   EuiCheckboxGroup,
   EuiTextArea,
   EuiLink,
-  EuiFieldNumber,
+  EuiCompressedFieldNumber,
 } from '@elastic/eui';
 import moment, { Moment } from 'moment';
 import { reportDefinitionParams } from '../create/create_report_definition';
@@ -336,7 +336,7 @@ export function ReportTrigger(props: ReportTriggerProps) {
         >
           <EuiFlexGroup>
             <EuiFlexItem grow={false}>
-              <EuiFieldText
+              <EuiCompressedFieldText
                 id="recurringByIntervalNumber"
                 placeholder={i18n.translate(
                   'opensearch.reports.reportTrigger.recurring.placeholder.mustBeANumber',
@@ -425,7 +425,7 @@ export function ReportTrigger(props: ReportTriggerProps) {
               />
             </EuiFlexItem>
             <EuiFlexItem>
-              <EuiFieldNumber
+              <EuiCompressedFieldNumber
                 placeholder={i18n.translate(
                   'opensearch.reports.reportTrigger.monthly.placeholder.dayOfMonth',
                   { defaultMessage: 'Day of month' }
@@ -516,7 +516,7 @@ export function ReportTrigger(props: ReportTriggerProps) {
             </EuiText>
           }
         >
-          <EuiFieldText
+          <EuiCompressedFieldText
             id="cronExpressionFieldText"
             placeholder={i18n.translate(
               'opensearch.reports.reportTrigger.cron.placeholder.formula',
