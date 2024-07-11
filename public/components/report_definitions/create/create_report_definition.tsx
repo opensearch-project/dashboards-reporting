@@ -6,7 +6,7 @@
 import React, { useEffect, useState } from 'react';
 import { i18n } from '@osd/i18n';
 import {
-  EuiButtonEmpty,
+  EuiSmallButtonEmpty,
   EuiFlexGroup,
   EuiFlexItem,
   EuiGlobalToastList,
@@ -324,7 +324,7 @@ export function CreateReport(props: { [x: string]: any; setBreadcrumbs?: any; ht
         <EuiSpacer />
         <EuiFlexGroup justifyContent="flexEnd">
           <EuiFlexItem grow={false}>
-            <EuiButtonEmpty
+            <EuiSmallButtonEmpty
               onClick={() => {
                 window.location.assign(`reports-dashboards#/`);
               }}
@@ -333,7 +333,7 @@ export function CreateReport(props: { [x: string]: any; setBreadcrumbs?: any; ht
                 'opensearch.reports.createReportDefinition.cancel',
                 { defaultMessage: 'Cancel' }
               )}
-            </EuiButtonEmpty>
+            </EuiSmallButtonEmpty>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <EuiSmallButton
