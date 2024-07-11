@@ -9,7 +9,7 @@ import { i18n } from '@osd/i18n';
 import { parseInContextUrl } from './report_settings_helpers';
 import dateMath from '@elastic/datemath';
 import {
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiGlobalToastList,
   EuiSuperDatePicker,
 } from '@elastic/eui';
@@ -188,7 +188,7 @@ export function TimeRangeSelect(props) {
   return (
     <div>
       <div>
-        <EuiFormRow
+        <EuiCompressedFormRow
           label={i18n.translate(
             'opensearch.reports.timeRange.label.timeRange',
             { defaultMessage: 'Time range' }
@@ -215,7 +215,7 @@ export function TimeRangeSelect(props) {
             showUpdateButton={false}
             commonlyUsedRanges={commonTimeRanges}
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       </div>
       <div>
         <EuiGlobalToastList

@@ -5,7 +5,7 @@
 
 import React, { useEffect, useState } from 'react';
 import {
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiPageHeader,
   EuiTitle,
   EuiPageContent,
@@ -276,7 +276,7 @@ export function ReportDelivery(props: ReportDeliveryProps) {
   const showNotificationsBody = sendNotification ? (
     <div>
       <EuiSpacer />
-      <EuiFormRow
+      <EuiCompressedFormRow
         label="Channels"
         isInvalid={showDeliveryChannelError}
         error={deliveryChannelError}
@@ -289,9 +289,9 @@ export function ReportDelivery(props: ReportDeliveryProps) {
           onChange={handleSelectedChannels}
           isClearable={true}
         />
-      </EuiFormRow>
+      </EuiCompressedFormRow>
       <EuiSpacer />
-      <EuiFormRow
+      <EuiCompressedFormRow
         label="Notification subject"
         helpText="Required if at least one channel type is Email."
         isInvalid={showDeliverySubjectError}
@@ -304,9 +304,9 @@ export function ReportDelivery(props: ReportDeliveryProps) {
           value={notificationSubject}
           onChange={handleNotificationSubject}
         />
-      </EuiFormRow>
+      </EuiCompressedFormRow>
       <EuiSpacer />
-      <EuiFormRow
+      <EuiCompressedFormRow
         label="Notification message"
         helpText="Embed variables in your message using Markdown."
         isInvalid={showDeliveryTextError}
@@ -326,13 +326,13 @@ export function ReportDelivery(props: ReportDeliveryProps) {
             Promise.resolve(converter.makeHtml(markdown))
           }
         />
-      </EuiFormRow>
+      </EuiCompressedFormRow>
       <EuiSpacer />
-      <EuiFormRow helpText={testMessageConfirmation} fullWidth={true}>
+      <EuiCompressedFormRow helpText={testMessageConfirmation} fullWidth={true}>
         <EuiSmallButton onClick={sendTestNotificationsMessage}>
           Send test message
         </EuiSmallButton>
-      </EuiFormRow>
+      </EuiCompressedFormRow>
     </div>
   ) : null;
 

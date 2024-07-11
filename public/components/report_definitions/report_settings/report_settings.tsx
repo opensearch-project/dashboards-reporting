@@ -9,7 +9,7 @@ import {
   EuiFieldText,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiPageHeader,
   EuiTitle,
   EuiPageContent,
@@ -255,7 +255,7 @@ export function ReportSettings(props: ReportSettingProps) {
   const PDFandPNGFileFormats = () => {
     return (
       <div>
-        <EuiFormRow
+        <EuiCompressedFormRow
           label={i18n.translate(
             'opensearch.reports.reportSettingProps.fileFormat',
             {
@@ -268,7 +268,7 @@ export function ReportSettings(props: ReportSettingProps) {
             idSelected={fileFormat}
             onChange={handleFileFormat}
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       </div>
     );
   };
@@ -276,7 +276,7 @@ export function ReportSettings(props: ReportSettingProps) {
   const CSVandXLSXFileFormats = () => {
     return (
       <div>
-        <EuiFormRow
+        <EuiCompressedFormRow
           label={i18n.translate(
             'opensearch.reports.reportSettingProps.fileFormat',
             {
@@ -289,7 +289,7 @@ export function ReportSettings(props: ReportSettingProps) {
             idSelected={fileFormat}
             onChange={handleFileFormat}
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       </div>
     );
   };
@@ -331,7 +331,7 @@ export function ReportSettings(props: ReportSettingProps) {
     };
 
     const showFooter = checkboxIdSelectHeaderFooter.footer ? (
-      <EuiFormRow
+      <EuiCompressedFormRow
         label={i18n.translate('opensearch.reports.reportSettingProps.footer', {
           defaultMessage: 'Footer',
         })}
@@ -350,11 +350,11 @@ export function ReportSettings(props: ReportSettingProps) {
             Promise.resolve(converter.makeHtml(markdown))
           }
         />
-      </EuiFormRow>
+      </EuiCompressedFormRow>
     ) : null;
 
     const showHeader = checkboxIdSelectHeaderFooter.header ? (
-      <EuiFormRow
+      <EuiCompressedFormRow
         label={i18n.translate('opensearch.reports.reportSettingProps.header', {
           defaultMessage: 'Header',
         })}
@@ -373,7 +373,7 @@ export function ReportSettings(props: ReportSettingProps) {
             Promise.resolve(converter.makeHtml(markdown))
           }
         />
-      </EuiFormRow>
+      </EuiCompressedFormRow>
     ) : null;
 
     useEffect(() => {
@@ -703,7 +703,7 @@ export function ReportSettings(props: ReportSettingProps) {
   const displayDashboardSelect =
     reportSourceId === 'dashboardReportSource' ? (
       <div>
-        <EuiFormRow
+        <EuiCompressedFormRow
         id="reportSourceDashboardSelect"
           label={i18n.translate(
             'opensearch.reports.reportSettingProps.selectDashboard',
@@ -723,7 +723,7 @@ export function ReportSettings(props: ReportSettingProps) {
             onChange={handleDashboardSelect}
             selectedOptions={dashboardSourceSelect}
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
         <EuiSpacer />
       </div>
     ) : null;
@@ -731,7 +731,7 @@ export function ReportSettings(props: ReportSettingProps) {
   const displayVisualizationSelect =
     reportSourceId === 'visualizationReportSource' ? (
       <div>
-        <EuiFormRow
+        <EuiCompressedFormRow
           label={i18n.translate(
             'opensearch.reports.reportSettingProps.form.selectVisualization',
             { defaultMessage: 'Select visualization' }
@@ -750,7 +750,7 @@ export function ReportSettings(props: ReportSettingProps) {
             onChange={handleVisualizationSelect}
             selectedOptions={visualizationSourceSelect}
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
         <EuiSpacer />
       </div>
     ) : null;
@@ -758,7 +758,7 @@ export function ReportSettings(props: ReportSettingProps) {
   const displaySavedSearchSelect =
     reportSourceId === 'savedSearchReportSource' ? (
       <div>
-        <EuiFormRow
+        <EuiCompressedFormRow
           label={i18n.translate(
             'opensearch.reports.reportSettingProps.form.selectSavedSearch',
             { defaultMessage: 'Select saved search' }
@@ -777,7 +777,7 @@ export function ReportSettings(props: ReportSettingProps) {
             onChange={handleSavedSearchSelect}
             selectedOptions={savedSearchSourceSelect}
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
         <EuiSpacer />
       </div>
     ) : null;
@@ -795,7 +795,7 @@ export function ReportSettings(props: ReportSettingProps) {
   const displayNotebooksSelect =
     reportSourceId === 'notebooksReportSource' ? (
       <div>
-        <EuiFormRow
+        <EuiCompressedFormRow
           label="Select notebook"
           isInvalid={showSettingsReportSourceError}
           error={settingsReportSourceErrorMessage}
@@ -808,7 +808,7 @@ export function ReportSettings(props: ReportSettingProps) {
             onChange={handleNotebooksSelect}
             selectedOptions={notebooksSourceSelect}
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
         <EuiSpacer />
       </div>
     ) : null;
@@ -844,7 +844,7 @@ export function ReportSettings(props: ReportSettingProps) {
       <EuiPageContentBody>
         <EuiFlexGroup>
           <EuiFlexItem>
-            <EuiFormRow
+            <EuiCompressedFormRow
               label={i18n.translate(
                 'opensearch.reports.reportSettingProps.form.name',
                 { defaultMessage: 'Name' }
@@ -871,12 +871,12 @@ export function ReportSettings(props: ReportSettingProps) {
                 value={reportName}
                 onChange={handleReportName}
               />
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </EuiFlexItem>
         </EuiFlexGroup>
         <EuiFlexGroup style={{ maxWidth: 600 }}>
           <EuiFlexItem>
-            <EuiFormRow
+            <EuiCompressedFormRow
               label={i18n.translate(
                 'opensearch.reports.reportSettingProps.form.description',
                 { defaultMessage: 'Description (optional)' }
@@ -894,11 +894,11 @@ export function ReportSettings(props: ReportSettingProps) {
                 value={reportDescription}
                 onChange={handleReportDescription}
               />
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </EuiFlexItem>
         </EuiFlexGroup>
         <EuiSpacer />
-        <EuiFormRow
+        <EuiCompressedFormRow
           label={i18n.translate(
             'opensearch.reports.reportSettingProps.form.reportSource',
             { defaultMessage: 'Report source' }
@@ -910,7 +910,7 @@ export function ReportSettings(props: ReportSettingProps) {
             onChange={handleReportSource}
             disabled={edit}
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
         <EuiSpacer />
         {displayDashboardSelect}
         {displayVisualizationSelect}
