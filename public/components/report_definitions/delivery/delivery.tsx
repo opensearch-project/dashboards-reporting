@@ -12,7 +12,7 @@ import {
   EuiPageContentBody,
   EuiHorizontalRule,
   EuiSpacer,
-  EuiCheckbox,
+  EuiCompressedCheckbox,
   EuiComboBox,
   EuiCompressedFieldText,
   EuiSmallButton,
@@ -345,7 +345,7 @@ export function ReportDelivery(props: ReportDeliveryProps) {
       </EuiPageHeader>
       <EuiHorizontalRule />
       <EuiPageContentBody>
-        <EuiCheckbox
+        <EuiCompressedCheckbox
           id="notificationsDeliveryCheckbox"
           label="Send notification when report is available"
           checked={sendNotification}

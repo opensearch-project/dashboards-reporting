@@ -15,7 +15,7 @@ import {
   EuiFlexItem,
   EuiText,
   EuiCompressedFieldText,
-  EuiCheckboxGroup,
+  EuiCompressedCheckboxGroup,
   EuiTextArea,
   EuiLink,
   EuiCompressedFieldNumber,
@@ -386,7 +386,7 @@ export function ReportTrigger(props: ReportTriggerProps) {
             { defaultMessage: 'every' }
           )}
         >
-          <EuiCheckboxGroup
+          <EuiCompressedCheckboxGroup
             options={WEEKLY_CHECKBOX_OPTIONS}
             idToSelectedMap={weeklyCheckbox}
             onChange={handleWeeklyCheckbox}

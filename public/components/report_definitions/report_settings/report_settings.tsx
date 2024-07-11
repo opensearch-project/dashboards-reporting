@@ -18,7 +18,7 @@ import {
   EuiSpacer,
   EuiRadioGroup,
   EuiTextArea,
-  EuiCheckboxGroup,
+  EuiCompressedCheckboxGroup,
   EuiComboBox,
 } from '@elastic/eui';
 import {
@@ -429,7 +429,7 @@ export function ReportSettings(props: ReportSettingProps) {
 
     return (
       <div>
-        <EuiCheckboxGroup
+        <EuiCompressedCheckboxGroup
           options={HEADER_FOOTER_CHECKBOX}
           idToSelectedMap={checkboxIdSelectHeaderFooter}
           onChange={handleCheckboxHeaderFooter}
