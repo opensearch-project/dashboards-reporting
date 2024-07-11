@@ -9,7 +9,7 @@ import {
   EuiButtonEmpty,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiButton,
+  EuiSmallButton,
   EuiPage,
   EuiTitle,
   EuiPageBody,
@@ -330,7 +330,7 @@ export function EditReportDefinition(props: { [x: string]: any; setBreadcrumbs?:
             </EuiButtonEmpty>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton
+            <EuiSmallButton
               fill
               onClick={() => editReportDefinition(editReportDefinitionRequest)}
               id={'editReportDefinitionButton'}
@@ -338,7 +338,7 @@ export function EditReportDefinition(props: { [x: string]: any; setBreadcrumbs?:
               {i18n.translate('opensearch.reports.editReportDefinition.save', {
                 defaultMessage: 'Save Changes',
               })}
-            </EuiButton>
+            </EuiSmallButton>
           </EuiFlexItem>
         </EuiFlexGroup>
         <EuiGlobalToastList

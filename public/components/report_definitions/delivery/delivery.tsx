@@ -15,7 +15,7 @@ import {
   EuiCheckbox,
   EuiComboBox,
   EuiFieldText,
-  EuiButton,
+  EuiSmallButton,
 } from '@elastic/eui';
 import CSS from 'csstype';
 import {
@@ -329,9 +329,9 @@ export function ReportDelivery(props: ReportDeliveryProps) {
       </EuiFormRow>
       <EuiSpacer />
       <EuiFormRow helpText={testMessageConfirmation} fullWidth={true}>
-        <EuiButton onClick={sendTestNotificationsMessage}>
+        <EuiSmallButton onClick={sendTestNotificationsMessage}>
           Send test message
-        </EuiButton>
+        </EuiSmallButton>
       </EuiFormRow>
     </div>
   ) : null;

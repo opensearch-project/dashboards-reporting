@@ -10,7 +10,7 @@ import {
   EuiFlexGroup,
   EuiFlexItem,
   EuiGlobalToastList,
-  EuiButton,
+  EuiSmallButton,
   EuiTitle,
   EuiPageBody,
   EuiSpacer,
@@ -336,7 +336,7 @@ export function CreateReport(props: { [x: string]: any; setBreadcrumbs?: any; ht
             </EuiButtonEmpty>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton
+            <EuiSmallButton
               fill={true}
               onClick={() =>
                 createNewReportDefinition(
@@ -350,7 +350,7 @@ export function CreateReport(props: { [x: string]: any; setBreadcrumbs?: any; ht
                 'opensearch.reports.createReportDefinition.create',
                 { defaultMessage: 'Create' }
               )}
-            </EuiButton>
+            </EuiSmallButton>
           </EuiFlexItem>
         </EuiFlexGroup>
         <EuiGlobalToastList

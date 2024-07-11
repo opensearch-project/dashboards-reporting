@@ -14,7 +14,7 @@ import {
   EuiFlexGroup,
   EuiFlexItem,
   EuiLoadingSpinner,
-  EuiButton,
+  EuiSmallButton,
 } from '@elastic/eui';
 import { i18n } from '@osd/i18n';
 import React, { useState } from 'react';
