@@ -25,6 +25,7 @@ export function registerAllPluginNavGroups(core: CoreSetup<ReportsDashboardsPlug
     {
       id: PLUGIN_ID,
       category: DEFAULT_APP_CATEGORIES.dashboardAndReport,
+      showInAllNavGroup: true,
     },
   ]);
   core.chrome.navGroup.addNavLinksToGroup(DEFAULT_NAV_GROUPS.search, [
