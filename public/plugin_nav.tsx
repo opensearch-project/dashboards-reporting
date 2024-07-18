@@ -12,19 +12,19 @@ export function registerAllPluginNavGroups(core: CoreSetup<ReportsDashboardsPlug
   core.chrome.navGroup.addNavLinksToGroup(DEFAULT_NAV_GROUPS.observability, [
     {
       id: PLUGIN_ID,
-      category: DEFAULT_APP_CATEGORIES.dashboardAndReport,
+      category: DEFAULT_APP_CATEGORIES.visualizeAndReport,
     },
   ]);
   core.chrome.navGroup.addNavLinksToGroup(DEFAULT_NAV_GROUPS[`security-analytics`], [
     {
       id: PLUGIN_ID,
-      category: DEFAULT_APP_CATEGORIES.dashboardAndReport,
+      category: DEFAULT_APP_CATEGORIES.visualizeAndReport,
     },
   ]);
   core.chrome.navGroup.addNavLinksToGroup(DEFAULT_NAV_GROUPS.analytics, [
     {
       id: PLUGIN_ID,
-      category: DEFAULT_APP_CATEGORIES.dashboardAndReport,
+      category: DEFAULT_APP_CATEGORIES.visualizeAndReport,
       showInAllNavGroup: true,
     },
   ]);

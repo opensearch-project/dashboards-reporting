@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { i18n } from '@osd/i18n';
 import {
   AppMountParameters,
   CoreSetup,
@@ -14,7 +15,6 @@ import {
   ReportsDashboardsPluginStart,
   AppPluginStartDependencies,
 } from './types';
-import { i18n } from '@osd/i18n';
 import './components/context_menu/context_menu';
 import { PLUGIN_ID, PLUGIN_NAME } from '../common';
 import { uiSettingsService } from './components/utils/settings_service';
@@ -22,7 +22,8 @@ import { applicationService } from './components/utils/application_service';
 import { registerAllPluginNavGroups } from './plugin_nav';
 
 export class ReportsDashboardsPlugin
-  implements Plugin<ReportsDashboardsPluginSetup, ReportsDashboardsPluginStart>
+  implements 
+  Plugin<ReportsDashboardsPluginSetup, ReportsDashboardsPluginStart>
 {
   public setup(core: CoreSetup): ReportsDashboardsPluginSetup {
     uiSettingsService.init(core.uiSettings, core.http);
