@@ -22,9 +22,7 @@ import { applicationService } from './components/utils/application_service';
 import { registerAllPluginNavGroups } from './plugin_nav';
 
 export class ReportsDashboardsPlugin
-  implements 
-  Plugin<ReportsDashboardsPluginSetup, ReportsDashboardsPluginStart>
-{
+  implements Plugin<ReportsDashboardsPluginSetup, ReportsDashboardsPluginStart> {
   public setup(core: CoreSetup): ReportsDashboardsPluginSetup {
     uiSettingsService.init(core.uiSettings, core.http);
     // Register an application into the side navigation menu
@@ -64,5 +62,5 @@ export class ReportsDashboardsPlugin
     return {};
   }
 
-  public stop() {}
+  public stop() { }
 }
