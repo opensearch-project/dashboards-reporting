@@ -15,8 +15,8 @@ export const getMenuItem = (name) => {
 
 export const popoverMenu = (savedObjectAvailable) => {
   const buttonClass = savedObjectAvailable
-    ? 'euiContextMenuItem'
-    : 'euiContextMenuItem euiContextMenuItem-isDisabled';
+    ? 'euiContextMenuItem euiContextMenuItem--small'
+    : 'euiContextMenuItem euiContextMenuItem--small euiContextMenuItem-isDisabled';
   const button = savedObjectAvailable ? 'button' : 'button disabled';
   const message = savedObjectAvailable
     ? i18n.translate('opensearch.reports.menu.visual.waitPrompt', {
@@ -44,7 +44,7 @@ export const popoverMenu = (savedObjectAvailable) => {
           <div>
              <div class="euiContextMenu" data-test-subj="shareContextMenu" style="width: 235px;">
                 <div class="euiContextMenuPanel" tabindex="0">
-                   <div class="euiPopoverTitle">
+                   <div class="euiContextMenuPanelTitle euiContextMenuPanelTitle--small">
                       <span data-html2canvas-ignore class="euiContextMenu__itemLayout">
                       ${i18n.translate(
                         'opensearch.reports.menu.visual.generateReport',
@@ -53,9 +53,8 @@ export const popoverMenu = (savedObjectAvailable) => {
                       </span>
                    </div>
                    <div>
-                    <span data-html2canvas-ignore class="euiContextMenuItem__text" style="padding-left: 10px; padding-right: 10px; margin-top: 10px; box-decoration-break: clone; display: inline-block;">
-                      ${message}
-                    </span>
+                   <div class="euiText euiText--small" style="padding-left: 10px; padding-right: 10px; margin-top: 10px; box-decoration-break: clone; display: inline-block;">
+                    <p>${message}</p>
                    </div>
                    <div>
                       <div>
@@ -79,7 +78,7 @@ export const popoverMenu = (savedObjectAvailable) => {
                          </button>
                       </div>
                    </div>
-                   <div class="euiPopoverTitle">
+                   <div class="euiContextMenuPanelTitle euiContextMenuPanelTitle--small">
                     <span data-html2canvas-ignore class="euiContextMenu__itemLayout">
                       ${i18n.translate(
                         'opensearch.reports.menu.visual.scheduleAndShare',
@@ -99,7 +98,7 @@ export const popoverMenu = (savedObjectAvailable) => {
                       </span>
                     </button>
                   </div>
-                  <div class="euiPopoverTitle">
+                  <div class="euiContextMenuPanelTitle euiContextMenuPanelTitle--small">
                     <span data-html2canvas-ignore class="euiContextMenu__itemLayout">
                       ${i18n.translate('opensearch.reports.menu.visual.view', {
                         defaultMessage: 'View',
@@ -134,8 +133,8 @@ export const popoverMenu = (savedObjectAvailable) => {
 // TODO: merge this function and popoverMenu() into one
 export const popoverMenuDiscover = (savedObjectAvailable) => {
   const buttonClass = savedObjectAvailable
-    ? 'euiContextMenuItem'
-    : 'euiContextMenuItem euiContextMenuItem-isDisabled';
+    ? 'euiContextMenuItem euiContextMenuItem--small'
+    : 'euiContextMenuItem euiContextMenuItem--small euiContextMenuItem-isDisabled';
   const button = savedObjectAvailable ? 'button' : 'button disabled';
   const message = savedObjectAvailable
     ? i18n.translate('opensearch.reports.menu.csv.waitPrompt', {
@@ -159,9 +158,9 @@ export const popoverMenuDiscover = (savedObjectAvailable) => {
           <div class="euiPopover__panelArrow euiPopover__panelArrow--bottom" style="right: ${arrowRight}; top: 0px;">
         </div>
           <div>
-             <div class="euiContextMenu" data-test-subj="shareContextMenu" style="width: 235px;">
+             <div class="euiContextMenu euiContextMenuItem--small" data-test-subj="shareContextMenu" style="width: 235px;">
                 <div class="euiContextMenuPanel" tabindex="0">
-                   <div class="euiPopoverTitle">
+                   <div class="euiContextMenuPanelTitle euiContextMenuPanelTitle--small">
                       <span data-html2canvas-ignore class="euiContextMenu__itemLayout">
                       ${i18n.translate(
                         'opensearch.reports.menu.csv.generateReport',
@@ -197,7 +196,7 @@ export const popoverMenuDiscover = (savedObjectAvailable) => {
                       </span>
                     </button>
                   </div>
-                   <div class="euiPopoverTitle">
+                   <div class="euiContextMenuPanelTitle euiContextMenuPanelTitle--small">
                     <span data-html2canvas-ignore class="euiContextMenu__itemLayout">
                       ${i18n.translate(
                         'opensearch.reports.menu.scheduleAndShare',
@@ -219,7 +218,7 @@ export const popoverMenuDiscover = (savedObjectAvailable) => {
                       </span>
                     </button>
                   </div>
-                  <div class="euiPopoverTitle">
+                  <div class="euiContextMenuPanelTitle euiContextMenuPanelTitle--small">
                     <span data-html2canvas-ignore class="euiContextMenu__itemLayout">
                       ${i18n.translate('opensearch.reports.menu.csv.view', {
                         defaultMessage: 'View',
