@@ -11,7 +11,7 @@ import dateMath from '@elastic/datemath';
 import {
   EuiCompressedFormRow,
   EuiGlobalToastList,
-  EuiSuperDatePicker,
+  EuiCompressedSuperDatePicker,
 } from '@elastic/eui';
 import { commonTimeRanges } from './report_settings_constants';
 
@@ -206,7 +206,7 @@ export function TimeRangeSelect(props) {
             { defaultMessage: 'Invalid time range selected.' }
           )}
         >
-          <EuiSuperDatePicker
+          <EuiCompressedSuperDatePicker
             isDisabled={false}
             isLoading={isLoading}
             start={start}
