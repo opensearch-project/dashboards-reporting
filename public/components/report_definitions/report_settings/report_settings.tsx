@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { i18n } from '@osd/i18n';
 import {
   EuiFieldText,
+  EuiFieldNumber,
   EuiFlexGroup,
   EuiFlexItem,
   EuiFormRow,
@@ -99,6 +100,7 @@ export function ReportSettings(props: ReportSettingProps) {
     [] as any
   );
   const [savedSearches, setSavedSearches] = useState([] as any);
+  const [savedSearchRecordLimit, setSavedSearchRecordLimit] = useState(10000)
 
   const [notebooksSourceSelect, setNotebooksSourceSelect] = useState([] as any);
   const [notebooks, setNotebooks] = useState([] as any);
@@ -167,7 +169,7 @@ export function ReportSettings(props: ReportSettingProps) {
       reportDefinitionRequest.report_params.core_params.saved_search_id =
         savedSearches[0]?.value;
       reportDefinitionRequest.report_params.core_params.report_format = 'csv';
-      reportDefinitionRequest.report_params.core_params.limit = 10000;
+      reportDefinitionRequest.report_params.core_params.limit = savedSearchRecordLimit;
       reportDefinitionRequest.report_params.core_params.excel = true;
     } else if (e === 'notebooksReportSource') {
       reportDefinitionRequest.report_params.report_source = 'Notebook';
@@ -231,6 +233,12 @@ export function ReportSettings(props: ReportSettingProps) {
       reportDefinitionRequest.report_params.core_params.base_url = '';
     }
   };
+
+  const handleSavedSearchRecordLimit = (e) => {
+    setSavedSearchRecordLimit(e.target.value)
+
+    reportDefinitionRequest.report_params.core_params.limit = e.target.value
+  }
 
   const handleNotebooksSelect = (e) => {
     setNotebooksSourceSelect(e);
@@ -776,6 +784,16 @@ export function ReportSettings(props: ReportSettingProps) {
             options={savedSearches}
             onChange={handleSavedSearchSelect}
             selectedOptions={savedSearchSourceSelect}
+          />
+        </EuiFormRow>
+        <EuiSpacer />
+        <EuiFormRow
+          label="Record limit"
+        >
+          <EuiFieldNumber
+            value={savedSearchRecordLimit}
+            onChange={handleSavedSearchRecordLimit}
+            min={1}
           />
         </EuiFormRow>
         <EuiSpacer />
