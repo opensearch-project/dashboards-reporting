@@ -234,7 +234,9 @@ export function ReportSettings(props: ReportSettingProps) {
     }
   };
 
-  const handleSavedSearchRecordLimit = (e) => {
+  const handleSavedSearchRecordLimit = (e: {
+    target: { value: React.SetStateAction<number> };
+  }) => {
     setSavedSearchRecordLimit(e.target.value)
 
     reportDefinitionRequest.report_params.core_params.limit = e.target.value
