@@ -602,6 +602,11 @@ export function ReportSettings(props: ReportSettingProps) {
         reportDefinitionRequest.report_params.report_source = reportSource;
       }
     });
+
+    if (reportSource == REPORT_SOURCE_TYPES.savedSearch) {
+      setSavedSearchRecordLimit(response.report_definition.report_params.core_params.limit)
+    }
+
     setDefaultFileFormat(
       response.report_definition.report_params.core_params.report_format
     );
