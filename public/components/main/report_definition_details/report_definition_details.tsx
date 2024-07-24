@@ -48,6 +48,7 @@ interface ReportDefinitionDetails {
   created: string;
   lastUpdated: string;
   source: string;
+  recordLimit: number | undefined;
   timePeriod: string;
   fileFormat: string;
   status: string | undefined;
@@ -65,6 +66,7 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
     created: '',
     lastUpdated: '',
     source: '',
+    recordLimit: 0,
     timePeriod: '',
     fileFormat: '',
     status: '',
@@ -418,6 +420,7 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
       created: displayCreatedDate,
       lastUpdated: displayUpdatedDate,
       source: reportParams.report_source,
+      recordLimit: reportParams.core_params.limit,
       baseUrl: baseUrl,
       // TODO: need better display
       timePeriod: moment.duration(timeDuration).humanize(),
@@ -782,6 +785,13 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
             />
             <ReportDetailsComponent
               reportDetailsComponentTitle={i18n.translate(
+                'opensearch.reports.reportDefinitionsDetails.fields.recordLimit',
+                { defaultMessage: 'Record limit' }
+              )}
+              reportDetailsComponentContent={reportDefinitionDetails.recordLimit}
+            />
+            <ReportDetailsComponent
+              reportDetailsComponentTitle={i18n.translate(
                 'opensearch.reports.reportDefinitionsDetails.fields.timePeriod',
                 { defaultMessage: 'Time period' }
               )}
@@ -796,7 +806,6 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
                 reportDefinitionDetails
               )}
             />
-            <EuiFlexItem />
           </EuiFlexGroup>
           <EuiSpacer />
           <EuiFlexGroup>
