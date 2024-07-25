@@ -238,6 +238,24 @@ exports[`<ReportDefinitionDetails /> panel render 5 hours recurring definition d
             <dt
               class="euiDescriptionList__title"
             >
+              Record limit
+            </dt>
+            <dd
+              class="euiDescriptionList__description"
+            >
+              0
+            </dd>
+          </dl>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <dl
+            class="euiDescriptionList euiDescriptionList--row"
+          >
+            <dt
+              class="euiDescriptionList__title"
+            >
               Time period
             </dt>
             <dd
@@ -285,9 +303,6 @@ exports[`<ReportDefinitionDetails /> panel render 5 hours recurring definition d
             </dd>
           </dl>
         </div>
-        <div
-          class="euiFlexItem"
-        />
       </div>
       <div
         class="euiSpacer euiSpacer--l"
@@ -651,6 +666,24 @@ exports[`<ReportDefinitionDetails /> panel render disabled daily definition, cli
             <dt
               class="euiDescriptionList__title"
             >
+              Record limit
+            </dt>
+            <dd
+              class="euiDescriptionList__description"
+            >
+              0
+            </dd>
+          </dl>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <dl
+            class="euiDescriptionList euiDescriptionList--row"
+          >
+            <dt
+              class="euiDescriptionList__title"
+            >
               Time period
             </dt>
             <dd
@@ -698,9 +731,6 @@ exports[`<ReportDefinitionDetails /> panel render disabled daily definition, cli
             </dd>
           </dl>
         </div>
-        <div
-          class="euiFlexItem"
-        />
       </div>
       <div
         class="euiSpacer euiSpacer--l"
@@ -1065,6 +1095,24 @@ exports[`<ReportDefinitionDetails /> panel render on demand definition details 1
             <dt
               class="euiDescriptionList__title"
             >
+              Record limit
+            </dt>
+            <dd
+              class="euiDescriptionList__description"
+            >
+              0
+            </dd>
+          </dl>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <dl
+            class="euiDescriptionList euiDescriptionList--row"
+          >
+            <dt
+              class="euiDescriptionList__title"
+            >
               Time period
             </dt>
             <dd
@@ -1112,9 +1160,6 @@ exports[`<ReportDefinitionDetails /> panel render on demand definition details 1
             </dd>
           </dl>
         </div>
-        <div
-          class="euiFlexItem"
-        />
       </div>
       <div
         class="euiSpacer euiSpacer--l"
