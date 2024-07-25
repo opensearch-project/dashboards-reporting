@@ -187,6 +187,24 @@ exports[`<ReportDetails /> panel render 5 hours recurring component 1`] = `
             <dt
               class="euiDescriptionList__title"
             >
+              Record limit
+            </dt>
+            <dd
+              class="euiDescriptionList__description"
+            >
+              —
+            </dd>
+          </dl>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <dl
+            class="euiDescriptionList euiDescriptionList--row"
+          >
+            <dt
+              class="euiDescriptionList__title"
+            >
               Time period
             </dt>
             <dd
@@ -233,6 +251,10 @@ exports[`<ReportDetails /> panel render 5 hours recurring component 1`] = `
             </dd>
           </dl>
         </div>
+      </div>
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+      >
         <div
           class="euiFlexItem"
         >
@@ -598,6 +620,24 @@ exports[`<ReportDetails /> panel render on-demand component 1`] = `
             <dt
               class="euiDescriptionList__title"
             >
+              Record limit
+            </dt>
+            <dd
+              class="euiDescriptionList__description"
+            >
+              —
+            </dd>
+          </dl>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <dl
+            class="euiDescriptionList euiDescriptionList--row"
+          >
+            <dt
+              class="euiDescriptionList__title"
+            >
               Time period
             </dt>
             <dd
@@ -644,6 +684,10 @@ exports[`<ReportDetails /> panel render on-demand component 1`] = `
             </dd>
           </dl>
         </div>
+      </div>
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+      >
         <div
           class="euiFlexItem"
         >
