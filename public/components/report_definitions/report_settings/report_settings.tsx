@@ -100,7 +100,7 @@ export function ReportSettings(props: ReportSettingProps) {
     [] as any
   );
   const [savedSearches, setSavedSearches] = useState([] as any);
-  const [savedSearchRecordLimit, setSavedSearchRecordLimit] = useState(10000)
+  const [savedSearchRecordLimit, setSavedSearchRecordLimit] = useState(10000);
 
   const [notebooksSourceSelect, setNotebooksSourceSelect] = useState([] as any);
   const [notebooks, setNotebooks] = useState([] as any);
@@ -234,13 +234,11 @@ export function ReportSettings(props: ReportSettingProps) {
     }
   };
 
-  const handleSavedSearchRecordLimit = (e: {
-    target: { value: React.SetStateAction<number> };
-  }) => {
-    setSavedSearchRecordLimit(e.target.value)
+  const handleSavedSearchRecordLimit = (e) => {
+    setSavedSearchRecordLimit(e.target.value);
 
-    reportDefinitionRequest.report_params.core_params.limit = e.target.value
-  }
+    reportDefinitionRequest.report_params.core_params.limit = e.target.value;
+  };
 
   const handleNotebooksSelect = (e) => {
     setNotebooksSourceSelect(e);
@@ -795,7 +793,11 @@ export function ReportSettings(props: ReportSettingProps) {
         </EuiFormRow>
         <EuiSpacer />
         <EuiFormRow
-          label="Record limit"
+          id="reportSourceSavedSearchRecordLimit"
+          label={i18n.translate(
+            'opensearch.reports.reportSettingProps.form.savedSearchRecordLimit',
+            { defaultMessage: 'Record limit' }
+          )}
         >
           <EuiFieldNumber
             value={savedSearchRecordLimit}
