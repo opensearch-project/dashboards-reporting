@@ -420,7 +420,10 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
       created: displayCreatedDate,
       lastUpdated: displayUpdatedDate,
       source: reportParams.report_source,
-      recordLimit: reportParams.core_params.limit,
+      recordLimit: 
+        reportParams.report_source != 'Saved search' 
+          ? `\u2014` 
+          : reportParams.core_params.limit,
       baseUrl: baseUrl,
       // TODO: need better display
       timePeriod: moment.duration(timeDuration).humanize(),
