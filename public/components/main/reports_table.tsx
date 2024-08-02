@@ -6,7 +6,6 @@
 import React, { Fragment, useState } from 'react';
 import { i18n } from '@osd/i18n';
 import {
-  EuiSmallButton,
   // @ts-ignore
   EuiLink,
   EuiText,
