@@ -8,7 +8,7 @@ import { i18n } from '@osd/i18n';
 import {
   EuiFlexGroup,
   EuiFlexItem,
-  EuiButton,
+  EuiSmallButton,
   EuiTitle,
   // @ts-ignore
   EuiHorizontalRule,
@@ -285,7 +285,7 @@ export function Main(props) {
             </EuiTitle>
           </EuiFlexItem>
           <EuiFlexItem component="span" grow={false}>
-            <EuiButton
+            <EuiSmallButton
               onClick={refreshReportsTable}
               iconSide="left"
               iconType="refresh"
@@ -294,7 +294,7 @@ export function Main(props) {
                 'opensearch.reports.main.reports.button.refresh',
                 { defaultMessage: 'Refresh' }
               )}
-            </EuiButton>
+            </EuiSmallButton>
           </EuiFlexItem>
         </EuiFlexGroup>
         <EuiHorizontalRule />
@@ -325,7 +325,7 @@ export function Main(props) {
             </EuiTitle>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton
+            <EuiSmallButton
               onClick={refreshReportsDefinitionsTable}
               iconSide="left"
               iconType="refresh"
@@ -334,10 +334,10 @@ export function Main(props) {
                 'opensearch.reports.main.reportDefinitions.button.refresh',
                 { defaultMessage: 'Refresh' }
               )}
-            </EuiButton>
+            </EuiSmallButton>
           </EuiFlexItem>
           <EuiFlexItem component="span" grow={false}>
-            <EuiButton
+            <EuiSmallButton
               fill={true}
               onClick={() => {
                 window.location.assign('reports-dashboards#/create');
@@ -348,7 +348,7 @@ export function Main(props) {
                 'opensearch.reports.main.reportDefinitions.button.create',
                 { defaultMessage: 'Create' }
               )}
-            </EuiButton>
+            </EuiSmallButton>
           </EuiFlexItem>
         </EuiFlexGroup>
         <EuiHorizontalRule />

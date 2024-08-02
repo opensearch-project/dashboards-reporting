@@ -5,17 +5,17 @@
 
 import React, { useEffect, useState } from 'react';
 import {
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiPageHeader,
   EuiTitle,
   EuiPageContent,
   EuiPageContentBody,
   EuiHorizontalRule,
   EuiSpacer,
-  EuiCheckbox,
-  EuiComboBox,
-  EuiFieldText,
-  EuiButton,
+  EuiCompressedCheckbox,
+  EuiCompressedComboBox,
+  EuiCompressedFieldText,
+  EuiSmallButton,
 } from '@elastic/eui';
 import CSS from 'csstype';
 import {
@@ -276,12 +276,12 @@ export function ReportDelivery(props: ReportDeliveryProps) {
   const showNotificationsBody = sendNotification ? (
     <div>
       <EuiSpacer />
-      <EuiFormRow
+      <EuiCompressedFormRow
         label="Channels"
         isInvalid={showDeliveryChannelError}
         error={deliveryChannelError}
       >
-        <EuiComboBox
+        <EuiCompressedComboBox
           id="notificationsChannelSelect"
           placeholder={'Select channels'}
           options={channels}
@@ -289,24 +289,24 @@ export function ReportDelivery(props: ReportDeliveryProps) {
           onChange={handleSelectedChannels}
           isClearable={true}
         />
-      </EuiFormRow>
+      </EuiCompressedFormRow>
       <EuiSpacer />
-      <EuiFormRow
+      <EuiCompressedFormRow
         label="Notification subject"
         helpText="Required if at least one channel type is Email."
         isInvalid={showDeliverySubjectError}
         error={deliverySubjectError}
         style={styles}
       >
-        <EuiFieldText
+        <EuiCompressedFieldText
           placeholder={'Enter notification message subject'}
           fullWidth={true}
           value={notificationSubject}
           onChange={handleNotificationSubject}
         />
-      </EuiFormRow>
+      </EuiCompressedFormRow>
       <EuiSpacer />
-      <EuiFormRow
+      <EuiCompressedFormRow
         label="Notification message"
         helpText="Embed variables in your message using Markdown."
         isInvalid={showDeliveryTextError}
@@ -326,13 +326,13 @@ export function ReportDelivery(props: ReportDeliveryProps) {
             Promise.resolve(converter.makeHtml(markdown))
           }
         />
-      </EuiFormRow>
+      </EuiCompressedFormRow>
       <EuiSpacer />
-      <EuiFormRow helpText={testMessageConfirmation} fullWidth={true}>
-        <EuiButton onClick={sendTestNotificationsMessage}>
+      <EuiCompressedFormRow helpText={testMessageConfirmation} fullWidth={true}>
+        <EuiSmallButton onClick={sendTestNotificationsMessage}>
           Send test message
-        </EuiButton>
-      </EuiFormRow>
+        </EuiSmallButton>
+      </EuiCompressedFormRow>
     </div>
   ) : null;
 
@@ -345,7 +345,7 @@ export function ReportDelivery(props: ReportDeliveryProps) {
       </EuiPageHeader>
       <EuiHorizontalRule />
       <EuiPageContentBody>
-        <EuiCheckbox
+        <EuiCompressedCheckbox
           id="notificationsDeliveryCheckbox"
           label="Send notification when report is available"
           checked={sendNotification}

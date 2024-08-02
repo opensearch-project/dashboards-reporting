@@ -954,7 +954,7 @@ exports[`<ReportDefinitions /> panel render empty table 1`] = `
                       />
                       <div>
                         <button
-                          class="euiButton euiButton--primary"
+                          class="euiButton euiButton--primary euiButton--small"
                           type="button"
                         >
                           <span

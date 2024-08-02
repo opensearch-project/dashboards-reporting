@@ -6,10 +6,10 @@
 import React, { useEffect, useState } from 'react';
 import { i18n } from '@osd/i18n';
 import {
-  EuiButtonEmpty,
+  EuiSmallButtonEmpty,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiButton,
+  EuiSmallButton,
   EuiPage,
   EuiTitle,
   EuiPageBody,
@@ -318,7 +318,7 @@ export function EditReportDefinition(props: { [x: string]: any; setBreadcrumbs?:
         <EuiSpacer />
         <EuiFlexGroup justifyContent="flexEnd">
           <EuiFlexItem grow={false}>
-            <EuiButtonEmpty
+            <EuiSmallButtonEmpty
               onClick={() => {
                 window.location.assign('reports-dashboards#/');
               }}
@@ -327,10 +327,10 @@ export function EditReportDefinition(props: { [x: string]: any; setBreadcrumbs?:
                 'opensearch.reports.editReportDefinition.cancel',
                 { defaultMessage: 'Cancel' }
               )}
-            </EuiButtonEmpty>
+            </EuiSmallButtonEmpty>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton
+            <EuiSmallButton
               fill
               onClick={() => editReportDefinition(editReportDefinitionRequest)}
               id={'editReportDefinitionButton'}
@@ -338,7 +338,7 @@ export function EditReportDefinition(props: { [x: string]: any; setBreadcrumbs?:
               {i18n.translate('opensearch.reports.editReportDefinition.save', {
                 defaultMessage: 'Save Changes',
               })}
-            </EuiButton>
+            </EuiSmallButton>
           </EuiFlexItem>
         </EuiFlexGroup>
         <EuiGlobalToastList

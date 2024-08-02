@@ -211,7 +211,7 @@ $(function () {
       $('#reportGenerationProgressModal').remove();
     });
 
-    // close modal with the close EuiButton
+    // close modal with the close EuiSmallButton
     $(document).on('click', '#closeReportGenerationModalButton', function () {
       $('#reportGenerationProgressModal').remove();
     });

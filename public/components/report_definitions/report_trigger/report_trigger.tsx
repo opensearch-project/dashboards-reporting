@@ -6,19 +6,19 @@
 import React, { useEffect, useState } from 'react';
 import { i18n } from '@osd/i18n';
 import {
-  EuiFormRow,
-  EuiRadioGroup,
+  EuiCompressedFormRow,
+  EuiCompressedRadioGroup,
   EuiDatePicker,
-  EuiSelect,
+  EuiCompressedSelect,
   EuiSpacer,
   EuiFlexGroup,
   EuiFlexItem,
   EuiText,
-  EuiFieldText,
-  EuiCheckboxGroup,
-  EuiTextArea,
+  EuiCompressedFieldText,
+  EuiCompressedCheckboxGroup,
+  EuiCompressedTextArea,
   EuiLink,
-  EuiFieldNumber,
+  EuiCompressedFieldNumber,
 } from '@elastic/eui';
 import moment, { Moment } from 'moment';
 import { reportDefinitionParams } from '../create/create_report_definition';
@@ -135,7 +135,7 @@ export function ReportTrigger(props: ReportTriggerProps) {
 
     return (
       <div>
-        <EuiFormRow
+        <EuiCompressedFormRow
           label={i18n.translate(
             'opensearch.reports.reportTrigger.form.requestTime',
             { defaultMessage: 'request time' }
@@ -149,7 +149,7 @@ export function ReportTrigger(props: ReportTriggerProps) {
             dateFormat="HH:mm"
             timeFormat="HH:mm"
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
         <EuiSpacer />
       </div>
     );
@@ -227,7 +227,7 @@ export function ReportTrigger(props: ReportTriggerProps) {
 
     return (
       <div>
-        <EuiFormRow
+        <EuiCompressedFormRow
           label={i18n.translate(
             'opensearch.reports.reportTrigger.schedule.requestTime',
             { defaultMessage: 'request time' }
@@ -241,7 +241,7 @@ export function ReportTrigger(props: ReportTriggerProps) {
             dateFormat="HH:mm"
             timeFormat="HH:mm"
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
         <EuiSpacer />
       </div>
     );
@@ -323,7 +323,7 @@ export function ReportTrigger(props: ReportTriggerProps) {
 
     return (
       <div>
-        <EuiFormRow
+        <EuiCompressedFormRow
           label={i18n.translate(
             'opensearch.reports.reportTrigger.recurring.every',
             { defaultMessage: 'every' }
@@ -336,7 +336,7 @@ export function ReportTrigger(props: ReportTriggerProps) {
         >
           <EuiFlexGroup>
             <EuiFlexItem grow={false}>
-              <EuiFieldText
+              <EuiCompressedFieldText
                 id="recurringByIntervalNumber"
                 placeholder={i18n.translate(
                   'opensearch.reports.reportTrigger.recurring.placeholder.mustBeANumber',
@@ -347,18 +347,18 @@ export function ReportTrigger(props: ReportTriggerProps) {
               />
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-              <EuiFormRow>
-                <EuiSelect
+              <EuiCompressedFormRow>
+                <EuiCompressedSelect
                   id="intervalTimeUnit"
                   options={INTERVAL_TIME_PERIODS}
                   value={intervalTimePeriod}
                   onChange={handleIntervalTimePeriod}
                 />
-              </EuiFormRow>
+              </EuiCompressedFormRow>
             </EuiFlexItem>
           </EuiFlexGroup>
-        </EuiFormRow>
-        <EuiFormRow
+        </EuiCompressedFormRow>
+        <EuiCompressedFormRow
           label={i18n.translate(
             'opensearch.reports.reportTrigger.recurring.startTime',
             { defaultMessage: 'start time' }
@@ -372,7 +372,7 @@ export function ReportTrigger(props: ReportTriggerProps) {
             dateFormat="HH:mm"
             timeFormat="HH:mm"
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       </div>
     );
   };
@@ -380,18 +380,18 @@ export function ReportTrigger(props: ReportTriggerProps) {
   const RecurringWeekly = () => {
     return (
       <div>
-        <EuiFormRow
+        <EuiCompressedFormRow
           label={i18n.translate(
             'opensearch.reports.reportTrigger.weekly.every',
             { defaultMessage: 'every' }
           )}
         >
-          <EuiCheckboxGroup
+          <EuiCompressedCheckboxGroup
             options={WEEKLY_CHECKBOX_OPTIONS}
             idToSelectedMap={weeklyCheckbox}
             onChange={handleWeeklyCheckbox}
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
         <EuiSpacer />
         <RequestTime />
       </div>
@@ -409,7 +409,7 @@ export function ReportTrigger(props: ReportTriggerProps) {
 
     return (
       <div>
-        <EuiFormRow
+        <EuiCompressedFormRow
           label={i18n.translate(
             'opensearch.reports.reportTrigger.monthly.onThe',
             { defaultMessage: 'on the' }
@@ -417,7 +417,7 @@ export function ReportTrigger(props: ReportTriggerProps) {
         >
           <EuiFlexGroup>
             <EuiFlexItem grow={false}>
-              <EuiSelect
+              <EuiCompressedSelect
                 id="monthlySelect"
                 options={MONTHLY_ON_THE_OPTIONS}
                 value={monthlySelect}
@@ -425,7 +425,7 @@ export function ReportTrigger(props: ReportTriggerProps) {
               />
             </EuiFlexItem>
             <EuiFlexItem>
-              <EuiFieldNumber
+              <EuiCompressedFieldNumber
                 placeholder={i18n.translate(
                   'opensearch.reports.reportTrigger.monthly.placeholder.dayOfMonth',
                   { defaultMessage: 'Day of month' }
@@ -435,7 +435,7 @@ export function ReportTrigger(props: ReportTriggerProps) {
               />
             </EuiFlexItem>
           </EuiFlexGroup>
-        </EuiFormRow>
+        </EuiCompressedFormRow>
         <EuiSpacer size="s" />
         <RequestTime />
       </div>
@@ -496,7 +496,7 @@ export function ReportTrigger(props: ReportTriggerProps) {
 
     return (
       <div>
-        <EuiFormRow
+        <EuiCompressedFormRow
           id="cronExpressionFieldText"
           label={i18n.translate(
             'opensearch.reports.reportTrigger.cron.customCronExpression',
@@ -516,7 +516,7 @@ export function ReportTrigger(props: ReportTriggerProps) {
             </EuiText>
           }
         >
-          <EuiFieldText
+          <EuiCompressedFieldText
             id="cronExpressionFieldText"
             placeholder={i18n.translate(
               'opensearch.reports.reportTrigger.cron.placeholder.formula',
@@ -528,7 +528,7 @@ export function ReportTrigger(props: ReportTriggerProps) {
             value={cronExpression}
             onChange={handleCronExpression}
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
         <EuiSpacer />
       </div>
     );
@@ -551,19 +551,19 @@ export function ReportTrigger(props: ReportTriggerProps) {
 
     return (
       <div>
-        <EuiFormRow
+        <EuiCompressedFormRow
           label={i18n.translate(
             'opensearch.reports.reportTrigger.scheduleTriggerRecurring.frequency',
             { defaultMessage: 'frequency' }
           )}
           id="recurringFrequencySelect"
         >
-          <EuiSelect
+          <EuiCompressedSelect
             options={SCHEDULE_RECURRING_OPTIONS}
             value={scheduleRecurringFrequency}
             onChange={handleScheduleRecurringFrequency}
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
         <EuiSpacer />
         {display_daily}
         {display_interval}
@@ -613,18 +613,18 @@ export function ReportTrigger(props: ReportTriggerProps) {
 
     return (
       <div>
-        <EuiFormRow
+        <EuiCompressedFormRow
           label={i18n.translate(
             'opensearch.reports.reportTrigger.scheduleTrigger.requestTime',
             { defaultMessage: 'request time' }
           )}
         >
-          <EuiRadioGroup
+          <EuiCompressedRadioGroup
             options={SCHEDULE_TYPE_OPTIONS}
             idSelected={scheduleType}
             onChange={handleScheduleType}
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
         <EuiSpacer />
         {display_recurring}
         {display_cron}
@@ -700,19 +700,19 @@ export function ReportTrigger(props: ReportTriggerProps) {
 
   return (
     <div>
-      <EuiFormRow
+      <EuiCompressedFormRow
         label={i18n.translate(
         'opensearch.reports.reportTrigger.form.triggerType',
         { defaultMessage: 'Report trigger' }
         )}
         id="reportDefinitionTriggerTypes"
       >
-        <EuiRadioGroup
+        <EuiCompressedRadioGroup
         options={TRIGGER_TYPE_OPTIONS}
         idSelected={reportTriggerType}
         onChange={handleReportTriggerType}
         />
-      </EuiFormRow>
+      </EuiCompressedFormRow>
       <EuiSpacer />
       {schedule}
     </div>

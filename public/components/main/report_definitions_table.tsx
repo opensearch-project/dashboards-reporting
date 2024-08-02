@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import {
   EuiLink,
   EuiInMemoryTable,
-  EuiButton,
+  EuiSmallButton,
   EuiEmptyPrompt,
   EuiText,
   EuiIcon,
@@ -57,7 +57,7 @@ const emptyMessageReportDefinitions = (
     }
     actions={
       <div>
-        <EuiButton
+        <EuiSmallButton
           onClick={() => {
             window.location.assign('reports-dashboards#/create');
           }}
@@ -66,7 +66,7 @@ const emptyMessageReportDefinitions = (
             'opensearch.reports.reportDefinitionsTable.emptyMessageReports.createReportDefinition',
             { defaultMessage: 'Create report definition' }
           )}
-        </EuiButton>
+        </EuiSmallButton>
       </div>
     }
   />
