@@ -411,7 +411,7 @@ describe('<ReportSettings /> panel', () => {
     expect(container.firstChild).toMatchSnapshot();
     await act(() => promise);
   });
-  
+
 
   test('dashboard create from in-context', async () => {
     window = Object.create(window);
@@ -672,7 +672,7 @@ describe('<ReportSettings /> panel', () => {
     , {disableLifecycleMethods: true});
     await act(() => promise);
 
-    const comboBox = component.find('EuiComboBox').at(0);
+    const comboBox = component.find('EuiCompressedComboBox').at(0);
     comboBox.simulate('change', [{value: 'test', label: 'test'}]);
 
     await act(() => promise);
@@ -738,11 +738,11 @@ describe('<ReportSettings /> panel', () => {
 
     visualizationRadio.find('input').simulate('change', 'visualizationReportSource');
     await act(() => promise);
-    const comboBox = component.find('EuiComboBox').at(0);
+    const comboBox = component.find('EuiCompressedComboBox').at(0);
 
     act(() => {
       comboBox.props().onChange([{ value: 'test', label: 'test' }]);
-    }); 
+    });
     component.update();
 
     await act(() => promise);
@@ -808,7 +808,7 @@ describe('<ReportSettings /> panel', () => {
 
     visualizationRadio.find('input').simulate('change', 'savedSearchReportSource');
     await act(() => promise);
-    const comboBox = component.find('EuiComboBox').at(0);
+    const comboBox = component.find('EuiCompressedComboBox').at(0);
 
     act(() => {
       comboBox.props().onChange([{ value: 'test', label: 'test' }]);
