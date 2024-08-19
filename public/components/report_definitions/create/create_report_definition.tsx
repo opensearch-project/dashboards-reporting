@@ -6,11 +6,11 @@
 import React, { useEffect, useState } from 'react';
 import { i18n } from '@osd/i18n';
 import {
-  EuiButtonEmpty,
+  EuiSmallButtonEmpty,
   EuiFlexGroup,
   EuiFlexItem,
   EuiGlobalToastList,
-  EuiButton,
+  EuiSmallButton,
   EuiTitle,
   EuiPageBody,
   EuiSpacer,
@@ -325,7 +325,7 @@ export function CreateReport(props: { [x: string]: any; setBreadcrumbs?: any; ht
         <EuiSpacer />
         <EuiFlexGroup justifyContent="flexEnd">
           <EuiFlexItem grow={false}>
-            <EuiButtonEmpty
+            <EuiSmallButtonEmpty
               onClick={() => {
                 window.location.assign(`reports-dashboards#/`);
               }}
@@ -334,10 +334,10 @@ export function CreateReport(props: { [x: string]: any; setBreadcrumbs?: any; ht
                 'opensearch.reports.createReportDefinition.cancel',
                 { defaultMessage: 'Cancel' }
               )}
-            </EuiButtonEmpty>
+            </EuiSmallButtonEmpty>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton
+            <EuiSmallButton
               fill={true}
               onClick={() =>
                 createNewReportDefinition(
@@ -351,7 +351,7 @@ export function CreateReport(props: { [x: string]: any; setBreadcrumbs?: any; ht
                 'opensearch.reports.createReportDefinition.create',
                 { defaultMessage: 'Create' }
               )}
-            </EuiButton>
+            </EuiSmallButton>
           </EuiFlexItem>
         </EuiFlexGroup>
         <EuiGlobalToastList

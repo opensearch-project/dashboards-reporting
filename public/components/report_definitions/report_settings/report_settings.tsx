@@ -6,10 +6,10 @@
 import React, { useEffect, useState } from 'react';
 import { i18n } from '@osd/i18n';
 import {
-  EuiFieldText,
+  EuiCompressedFieldText,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiPageHeader,
   EuiTitle,
   EuiPageContent,
@@ -17,11 +17,10 @@ import {
   EuiHorizontalRule,
   EuiText,
   EuiSpacer,
-  EuiRadioGroup,
-  EuiSelect,
-  EuiTextArea,
-  EuiCheckboxGroup,
-  EuiComboBox,
+  EuiCompressedRadioGroup,
+  EuiCompressedTextArea,
+  EuiCompressedCheckboxGroup,
+  EuiCompressedComboBox,
 } from '@elastic/eui';
 import {
   REPORT_SOURCE_RADIOS,
@@ -258,7 +257,7 @@ export function ReportSettings(props: ReportSettingProps) {
   const PDFandPNGFileFormats = () => {
     return (
       <div>
-        <EuiFormRow
+        <EuiCompressedFormRow
           label={i18n.translate(
             'opensearch.reports.reportSettingProps.fileFormat',
             {
@@ -266,12 +265,12 @@ export function ReportSettings(props: ReportSettingProps) {
             }
           )}
         >
-          <EuiRadioGroup
+          <EuiCompressedRadioGroup
             options={PDF_PNG_FILE_FORMAT_OPTIONS}
             idSelected={fileFormat}
             onChange={handleFileFormat}
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       </div>
     );
   };
@@ -279,7 +278,7 @@ export function ReportSettings(props: ReportSettingProps) {
   const CSVandXLSXFileFormats = () => {
     return (
       <div>
-        <EuiFormRow
+        <EuiCompressedFormRow
           label={i18n.translate(
             'opensearch.reports.reportSettingProps.fileFormat',
             {
@@ -287,12 +286,12 @@ export function ReportSettings(props: ReportSettingProps) {
             }
           )}
         >
-          <EuiRadioGroup
+          <EuiCompressedRadioGroup
             options={SAVED_SEARCH_FORMAT_OPTIONS}
             idSelected={fileFormat}
             onChange={handleFileFormat}
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       </div>
     );
   };
@@ -334,7 +333,7 @@ export function ReportSettings(props: ReportSettingProps) {
     };
 
     const showFooter = checkboxIdSelectHeaderFooter.footer ? (
-      <EuiFormRow
+      <EuiCompressedFormRow
         label={i18n.translate('opensearch.reports.reportSettingProps.footer', {
           defaultMessage: 'Footer',
         })}
@@ -353,11 +352,11 @@ export function ReportSettings(props: ReportSettingProps) {
             Promise.resolve(converter.makeHtml(markdown))
           }
         />
-      </EuiFormRow>
+      </EuiCompressedFormRow>
     ) : null;
 
     const showHeader = checkboxIdSelectHeaderFooter.header ? (
-      <EuiFormRow
+      <EuiCompressedFormRow
         label={i18n.translate('opensearch.reports.reportSettingProps.header', {
           defaultMessage: 'Header',
         })}
@@ -376,7 +375,7 @@ export function ReportSettings(props: ReportSettingProps) {
             Promise.resolve(converter.makeHtml(markdown))
           }
         />
-      </EuiFormRow>
+      </EuiCompressedFormRow>
     ) : null;
 
     useEffect(() => {
@@ -432,7 +431,7 @@ export function ReportSettings(props: ReportSettingProps) {
 
     return (
       <div>
-        <EuiCheckboxGroup
+        <EuiCompressedCheckboxGroup
           options={HEADER_FOOTER_CHECKBOX}
           idToSelectedMap={checkboxIdSelectHeaderFooter}
           onChange={handleCheckboxHeaderFooter}
@@ -706,7 +705,7 @@ export function ReportSettings(props: ReportSettingProps) {
   const displayDashboardSelect =
     reportSourceId === 'dashboardReportSource' ? (
       <div>
-        <EuiFormRow
+        <EuiCompressedFormRow
         id="reportSourceDashboardSelect"
           label={i18n.translate(
             'opensearch.reports.reportSettingProps.selectDashboard',
@@ -715,7 +714,7 @@ export function ReportSettings(props: ReportSettingProps) {
           isInvalid={showSettingsReportSourceError}
           error={settingsReportSourceErrorMessage}
         >
-          <EuiComboBox
+          <EuiCompressedComboBox
             id="reportSourceDashboardSelector"
             placeholder={i18n.translate(
               'opensearch.reports.reportSettingProps.placeholder.selectDashboard',
@@ -726,7 +725,7 @@ export function ReportSettings(props: ReportSettingProps) {
             onChange={handleDashboardSelect}
             selectedOptions={dashboardSourceSelect}
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
         <EuiSpacer />
       </div>
     ) : null;
@@ -734,7 +733,7 @@ export function ReportSettings(props: ReportSettingProps) {
   const displayVisualizationSelect =
     reportSourceId === 'visualizationReportSource' ? (
       <div>
-        <EuiFormRow
+        <EuiCompressedFormRow
           label={i18n.translate(
             'opensearch.reports.reportSettingProps.form.selectVisualization',
             { defaultMessage: 'Select visualization' }
@@ -742,7 +741,7 @@ export function ReportSettings(props: ReportSettingProps) {
           isInvalid={showSettingsReportSourceError}
           error={settingsReportSourceErrorMessage}
         >
-          <EuiComboBox
+          <EuiCompressedComboBox
             id="reportSourceVisualizationSelect"
             placeholder={i18n.translate(
               'opensearch.reports.reportSettingProps.form.placeholder.selectAVisualization',
@@ -753,7 +752,7 @@ export function ReportSettings(props: ReportSettingProps) {
             onChange={handleVisualizationSelect}
             selectedOptions={visualizationSourceSelect}
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
         <EuiSpacer />
       </div>
     ) : null;
@@ -761,7 +760,7 @@ export function ReportSettings(props: ReportSettingProps) {
   const displaySavedSearchSelect =
     reportSourceId === 'savedSearchReportSource' ? (
       <div>
-        <EuiFormRow
+        <EuiCompressedFormRow
           label={i18n.translate(
             'opensearch.reports.reportSettingProps.form.selectSavedSearch',
             { defaultMessage: 'Select saved search' }
@@ -769,7 +768,7 @@ export function ReportSettings(props: ReportSettingProps) {
           isInvalid={showSettingsReportSourceError}
           error={settingsReportSourceErrorMessage}
         >
-          <EuiComboBox
+          <EuiCompressedComboBox
             id="reportSourceSavedSearchSelect"
             placeholder={i18n.translate(
               'opensearch.reports.reportSettingProps.form.placeholder.selectASavedSearch',
@@ -780,7 +779,7 @@ export function ReportSettings(props: ReportSettingProps) {
             onChange={handleSavedSearchSelect}
             selectedOptions={savedSearchSourceSelect}
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
         <EuiSpacer />
       </div>
     ) : null;
@@ -798,12 +797,12 @@ export function ReportSettings(props: ReportSettingProps) {
   const displayNotebooksSelect =
     reportSourceId === 'notebooksReportSource' ? (
       <div>
-        <EuiFormRow
+        <EuiCompressedFormRow
           label="Select notebook"
           isInvalid={showSettingsReportSourceError}
           error={settingsReportSourceErrorMessage}
         >
-          <EuiComboBox
+          <EuiCompressedComboBox
             id="reportSourceNotebooksSelect"
             placeholder="Select a notebook"
             singleSelection={{ asPlainText: true }}
@@ -811,7 +810,7 @@ export function ReportSettings(props: ReportSettingProps) {
             onChange={handleNotebooksSelect}
             selectedOptions={notebooksSourceSelect}
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
         <EuiSpacer />
       </div>
     ) : null;
@@ -847,7 +846,7 @@ export function ReportSettings(props: ReportSettingProps) {
       <EuiPageContentBody>
         <EuiFlexGroup>
           <EuiFlexItem>
-            <EuiFormRow
+            <EuiCompressedFormRow
               label={i18n.translate(
                 'opensearch.reports.reportSettingProps.form.name',
                 { defaultMessage: 'Name' }
@@ -863,7 +862,7 @@ export function ReportSettings(props: ReportSettingProps) {
               error={settingsReportNameErrorMessage}
               id={'reportSettingsName'}
             >
-              <EuiFieldText
+              <EuiCompressedFieldText
                 placeholder={i18n.translate(
                   'opensearch.reports.reportSettingProps.form.placeholder.reportName',
                   {
@@ -874,19 +873,19 @@ export function ReportSettings(props: ReportSettingProps) {
                 value={reportName}
                 onChange={handleReportName}
               />
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </EuiFlexItem>
         </EuiFlexGroup>
         <EuiFlexGroup style={{ maxWidth: 600 }}>
           <EuiFlexItem>
-            <EuiFormRow
+            <EuiCompressedFormRow
               label={i18n.translate(
                 'opensearch.reports.reportSettingProps.form.description',
                 { defaultMessage: 'Description (optional)' }
               )}
               id={'reportSettingsDescription'}
             >
-              <EuiTextArea
+              <EuiCompressedTextArea
                 placeholder={i18n.translate(
                   'opensearch.reports.reportSettingProps.form.placeholder.description',
                   {
@@ -897,23 +896,23 @@ export function ReportSettings(props: ReportSettingProps) {
                 value={reportDescription}
                 onChange={handleReportDescription}
               />
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </EuiFlexItem>
         </EuiFlexGroup>
         <EuiSpacer />
-        <EuiFormRow
+        <EuiCompressedFormRow
           label={i18n.translate(
             'opensearch.reports.reportSettingProps.form.reportSource',
             { defaultMessage: 'Report source' }
           )}
         >
-          <EuiRadioGroup
+          <EuiCompressedRadioGroup
             options={REPORT_SOURCE_RADIOS}
             idSelected={reportSourceId}
             onChange={handleReportSource}
             disabled={edit}
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
         <EuiSpacer />
         {displayDashboardSelect}
         {displayVisualizationSelect}

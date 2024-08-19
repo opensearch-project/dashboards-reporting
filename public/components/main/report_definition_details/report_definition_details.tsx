@@ -16,7 +16,7 @@ import {
   EuiHorizontalRule,
   EuiSpacer,
   EuiPageHeaderSection,
-  EuiButton,
+  EuiSmallButton,
   EuiIcon,
   EuiLink,
   EuiGlobalToastList,
@@ -562,12 +562,12 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
       reportDefinitionDetails.status === 'Active' ? 'Disable' : 'Enable';
 
     return (
-      <EuiButton
+      <EuiSmallButton
         onClick={() => changeScheduledReportDefinitionStatus(status)}
         id={'changeStatusFromDetailsButton'}
       >
         {status}
-      </EuiButton>
+      </EuiSmallButton>
     );
   };
 
@@ -609,12 +609,12 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
 
   const showActionButton =
     reportDefinitionDetails.triggerType === ON_DEMAND ? (
-      <EuiButton
+      <EuiSmallButton
         onClick={() => generateReportFromDetails()}
         id={'generateReportFromDetailsButton'}
       >
         Generate report
-      </EuiButton>
+      </EuiSmallButton>
     ) : (
       <ScheduledDefinitionStatus />
     );
@@ -653,7 +653,7 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
           )}
           reportDetailsComponentContent={reportDefinitionDetails.status}
         />
-        <ReportDetailsComponent 
+        <ReportDetailsComponent
           reportDetailsComponentTitle={''}
           reportDetailsComponentContent={''}
         />
@@ -697,7 +697,7 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
               gutterSize="l"
             >
               <EuiFlexItem grow={false}>
-                <EuiButton
+                <EuiSmallButton
                   color={'danger'}
                   onClick={(show: any) => handleShowDeleteModal(show)}
                   id={'deleteReportDefinitionButton'}
@@ -706,11 +706,11 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
                     'opensearch.reports.reportDefinitionsDetails.deleteReportDefinitionButton',
                     { defaultMessage: 'Delete' }
                   )}
-                </EuiButton>
+                </EuiSmallButton>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>{showActionButton}</EuiFlexItem>
               <EuiFlexItem grow={false}>
-                <EuiButton
+                <EuiSmallButton
                   fill={true}
                   onClick={() => {
                     window.location.assign(
@@ -723,7 +723,7 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
                     'opensearch.reports.reportDefinitionsDetails.editReportDefinitionButton',
                     { defaultMessage: 'Edit' }
                   )}
-                </EuiButton>
+                </EuiSmallButton>
               </EuiFlexItem>
             </EuiFlexGroup>
           </EuiPageHeader>
