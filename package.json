@@ -85,6 +85,7 @@
     "@cypress/request": "^3.0.0",
     "browserify-sign": "^4.2.2",
     "debug": "^4.3.1",
-    "**/@babel/traverse": "^7.23.2"
+    "**/@babel/traverse": "^7.23.2",
+    "braces": "^3.0.3"
   }
 }
