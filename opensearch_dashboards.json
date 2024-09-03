@@ -8,7 +8,9 @@
     "opensearchDashboardsUtils"
   ],
   "optionalPlugins": [
-    "share"
+    "share",
+    "dataSource",
+    "dataSourceManagement"
   ],
   "server": true,
   "ui": true,
