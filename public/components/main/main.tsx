@@ -276,12 +276,12 @@ export function Main(props) {
         <EuiFlexGroup justifyContent="spaceEvenly">
           <EuiFlexItem>
             <EuiTitle>
-              <h2>
+              <h3>
                 {i18n.translate('opensearch.reports.main.title.reports', {
                   defaultMessage: 'Reports',
                 })}{' '}
                 <p style={reportCountStyles}> ({reportsTableContent.length})</p>
-              </h2>
+              </h3>
             </EuiTitle>
           </EuiFlexItem>
           <EuiFlexItem component="span" grow={false}>
@@ -312,7 +312,7 @@ export function Main(props) {
         <EuiFlexGroup justifyContent="spaceEvenly">
           <EuiFlexItem>
             <EuiTitle>
-              <h2>
+              <h3>
                 {i18n.translate(
                   'opensearch.reports.main.title.reportDefinitions',
                   { defaultMessage: 'Report definitions' }
@@ -321,7 +321,7 @@ export function Main(props) {
                   {' '}
                   ({reportDefinitionsTableContent.length})
                 </p>
-              </h2>
+              </h3>
             </EuiTitle>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>

@@ -4,20 +4,16 @@
  */
 
 import React from 'react';
-import { FormattedMessage, I18nProvider } from '@osd/i18n/react';
+import { I18nProvider } from '@osd/i18n/react';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 
 import {
   EuiPage,
   EuiPageBody,
   EuiPageContentBody,
-  EuiPageContentHeader,
-  EuiPageContentHeaderSection,
 } from '@elastic/eui';
-import CSS from 'csstype';
 import {
   CoreStart,
-  CoreSystem,
   ChromeBreadcrumb,
   IUiSettingsClient,
 } from '../../../../src/core/public';
@@ -44,12 +40,6 @@ interface ReportsDashboardsAppDeps {
   chrome: CoreStart['chrome'];
 }
 
-const styles: CSS.Properties = {
-  float: 'left',
-  width: '100%',
-  maxWidth: '1600px',
-};
-
 export const ReportsDashboardsApp = ({
   basename,
   notifications,
@@ -61,12 +51,9 @@ export const ReportsDashboardsApp = ({
   return (
     <Router basename={'/' + basename}>
       <I18nProvider>
-        <div style={styles}>
+        <div>
           <EuiPage>
             <EuiPageBody>
-              <EuiPageContentHeader>
-                <EuiPageContentHeaderSection></EuiPageContentHeaderSection>
-              </EuiPageContentHeader>
               <EuiPageContentBody>
                 <Switch>
                   <Route
@@ -78,6 +65,7 @@ export const ReportsDashboardsApp = ({
                           { defaultMessage: 'Report Details' }
                         )}
                         httpClient={http}
+                        chrome={chrome}
                         {...props}
                         setBreadcrumbs={chrome.setBreadcrumbs}
                       />
@@ -92,6 +80,7 @@ export const ReportsDashboardsApp = ({
                           { defaultMessage: 'Report Definition Details' }
                         )}
                         httpClient={http}
+                        chrome={chrome}
                         {...props}
                         setBreadcrumbs={chrome.setBreadcrumbs}
                       />
@@ -106,6 +95,7 @@ export const ReportsDashboardsApp = ({
                           { defaultMessage: 'Create Report' }
                         )}
                         httpClient={http}
+                        chrome={chrome}
                         {...props}
                         setBreadcrumbs={chrome.setBreadcrumbs}
                       />

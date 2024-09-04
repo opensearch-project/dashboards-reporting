@@ -8,10 +8,8 @@ import { i18n } from '@osd/i18n';
 import {
   EuiFlexGroup,
   EuiFlexItem,
-  EuiPage,
   EuiPageHeader,
   EuiTitle,
-  EuiPageBody,
   EuiPageContent,
   EuiHorizontalRule,
   EuiSpacer,
@@ -25,7 +23,6 @@ import {
 } from '@elastic/eui';
 import {
   ReportDetailsComponent,
-  formatEmails,
   trimAndRenderAsText,
 } from '../report_details/report_details';
 import {
@@ -58,7 +55,8 @@ interface ReportDefinitionDetails {
   baseUrl: string;
 }
 
-export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: any; httpClient?: any; }) {
+export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: any; httpClient?: any; chrome: any }) {
+  const { chrome } = props;
   const [reportDefinitionDetails, setReportDefinitionDetails] = useState<ReportDefinitionDetails>({
     name: '',
     description: '',
@@ -82,6 +80,7 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
   const reportDefinitionId = props.match['params']['reportDefinitionId'];
+  const getNavGroupEnabled = chrome.navGroup.getNavGroupEnabled();
 
   const handleLoading = (e: boolean | ((prevState: boolean) => boolean)) => {
     setShowLoading(e);
@@ -669,169 +668,167 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
   ) : null;
 
   return (
-    <EuiPage>
-      <EuiPageBody>
-        <EuiTitle size="l">
-          <h1>
+    <>
+      <EuiTitle size="l">
+        <h1>
+          {!getNavGroupEnabled && i18n.translate('opensearch.reports.reportDefinitionsDetails.title', {
+              defaultMessage: 'Report definition details',
+            }
+          )}
+        </h1>
+      </EuiTitle>
+      <EuiSpacer size="m" />
+      <EuiPageContent panelPaddingSize={'l'}>
+        <EuiPageHeader>
+          <EuiFlexGroup>
+            <EuiFlexItem>
+              <EuiPageHeaderSection>
+                <EuiTitle>
+                  <h3>{reportDefinitionDetails.name}</h3>
+                </EuiTitle>
+              </EuiPageHeaderSection>
+            </EuiFlexItem>
+          </EuiFlexGroup>
+          <EuiFlexGroup
+            justifyContent="flexEnd"
+            alignItems="flexEnd"
+            gutterSize="l"
+          >
+            <EuiFlexItem grow={false}>
+              <EuiSmallButton
+                color={'danger'}
+                onClick={(show: any) => handleShowDeleteModal(show)}
+                id={'deleteReportDefinitionButton'}
+              >
+                {i18n.translate(
+                  'opensearch.reports.reportDefinitionsDetails.deleteReportDefinitionButton',
+                  { defaultMessage: 'Delete' }
+                )}
+              </EuiSmallButton>
+            </EuiFlexItem>
+            <EuiFlexItem grow={false}>{showActionButton}</EuiFlexItem>
+            <EuiFlexItem grow={false}>
+              <EuiSmallButton
+                fill={true}
+                onClick={() => {
+                  window.location.assign(
+                    `reports-dashboards#/edit/${reportDefinitionId}`
+                  );
+                }}
+                id={'editReportDefinitionButton'}
+              >
+                {i18n.translate(
+                  'opensearch.reports.reportDefinitionsDetails.editReportDefinitionButton',
+                  { defaultMessage: 'Edit' }
+                )}
+              </EuiSmallButton>
+            </EuiFlexItem>
+          </EuiFlexGroup>
+        </EuiPageHeader>
+        <EuiHorizontalRule />
+        <EuiTitle>
+          <h3>
             {i18n.translate(
-              'opensearch.reports.reportDefinitionsDetails.title',
-              { defaultMessage: 'Report definition details' }
+              'opensearch.reports.reportDefinitionsDetails.reportSettings',
+              { defaultMessage: 'Report settings' }
             )}
-          </h1>
+          </h3>
         </EuiTitle>
-        <EuiSpacer size="m" />
-        <EuiPageContent panelPaddingSize={'l'}>
-          <EuiPageHeader>
-            <EuiFlexGroup>
-              <EuiFlexItem>
-                <EuiPageHeaderSection>
-                  <EuiTitle>
-                    <h2>{reportDefinitionDetails.name}</h2>
-                  </EuiTitle>
-                </EuiPageHeaderSection>
-              </EuiFlexItem>
-            </EuiFlexGroup>
-            <EuiFlexGroup
-              justifyContent="flexEnd"
-              alignItems="flexEnd"
-              gutterSize="l"
-            >
-              <EuiFlexItem grow={false}>
-                <EuiSmallButton
-                  color={'danger'}
-                  onClick={(show: any) => handleShowDeleteModal(show)}
-                  id={'deleteReportDefinitionButton'}
-                >
-                  {i18n.translate(
-                    'opensearch.reports.reportDefinitionsDetails.deleteReportDefinitionButton',
-                    { defaultMessage: 'Delete' }
-                  )}
-                </EuiSmallButton>
-              </EuiFlexItem>
-              <EuiFlexItem grow={false}>{showActionButton}</EuiFlexItem>
-              <EuiFlexItem grow={false}>
-                <EuiSmallButton
-                  fill={true}
-                  onClick={() => {
-                    window.location.assign(
-                      `reports-dashboards#/edit/${reportDefinitionId}`
-                    );
-                  }}
-                  id={'editReportDefinitionButton'}
-                >
-                  {i18n.translate(
-                    'opensearch.reports.reportDefinitionsDetails.editReportDefinitionButton',
-                    { defaultMessage: 'Edit' }
-                  )}
-                </EuiSmallButton>
-              </EuiFlexItem>
-            </EuiFlexGroup>
-          </EuiPageHeader>
-          <EuiHorizontalRule />
-          <EuiTitle>
-            <h3>
-              {i18n.translate(
-                'opensearch.reports.reportDefinitionsDetails.reportSettings',
-                { defaultMessage: 'Report settings' }
-              )}
-            </h3>
-          </EuiTitle>
-          <EuiSpacer />
-          <EuiFlexGroup>
-            <ReportDetailsComponent
-              reportDetailsComponentTitle={i18n.translate(
-                'opensearch.reports.reportDefinitionsDetails.fields.name',
-                { defaultMessage: 'Name' }
-              )}
-              reportDetailsComponentContent={reportDefinitionDetails.name}
-            />
-            <ReportDetailsComponent
-              reportDetailsComponentTitle={i18n.translate(
-                'opensearch.reports.reportDefinitionsDetails.fields.description',
-                { defaultMessage: 'Description' }
-              )}
-              reportDetailsComponentContent={
-                reportDefinitionDetails.description
-              }
-            />
-            <ReportDetailsComponent
-              reportDetailsComponentTitle={i18n.translate(
-                'opensearch.reports.reportDefinitionsDetails.fields.created',
-                { defaultMessage: 'Created' }
-              )}
-              reportDetailsComponentContent={reportDefinitionDetails.created}
-            />
-            <ReportDetailsComponent
-              reportDetailsComponentTitle={i18n.translate(
-                'opensearch.reports.reportDefinitionsDetails.fields.lastUpdated',
-                { defaultMessage: 'Last updated' }
-              )}
-              reportDetailsComponentContent={
-                reportDefinitionDetails.lastUpdated
-              }
-            />
-          </EuiFlexGroup>
-          <EuiSpacer />
-          <EuiFlexGroup>
-            <ReportDetailsComponent
-              reportDetailsComponentTitle={i18n.translate(
-                'opensearch.reports.reportDefinitionsDetails.fields.source',
-                { defaultMessage: 'Source' }
-              )}
-              reportDetailsComponentContent={sourceURL(reportDefinitionDetails)}
-            />
-            <ReportDetailsComponent
-              reportDetailsComponentTitle={i18n.translate(
-                'opensearch.reports.reportDefinitionsDetails.fields.timePeriod',
-                { defaultMessage: 'Time period' }
-              )}
-              reportDetailsComponentContent={`Last ${reportDefinitionDetails.timePeriod}`}
-            />
-            <ReportDetailsComponent
-              reportDetailsComponentTitle={i18n.translate(
-                'opensearch.reports.reportDefinitionsDetails.fields.fileFormat',
-                { defaultMessage: 'File format' }
-              )}
-              reportDetailsComponentContent={fileFormatDownload(
-                reportDefinitionDetails
-              )}
-            />
-            <EuiFlexItem />
-          </EuiFlexGroup>
-          <EuiSpacer />
-          <EuiFlexGroup>
-            <ReportDetailsComponent
-              reportDetailsComponentTitle={i18n.translate(
-                'opensearch.reports.reportDefinitionsDetails.fields.reportHeader',
-                { defaultMessage: 'Report header' }
-              )}
-              reportDetailsComponentContent={trimAndRenderAsText(
-                reportDefinitionDetails.reportHeader
-              )}
-            />
-            <ReportDetailsComponent
-              reportDetailsComponentTitle={i18n.translate(
-                'opensearch.reports.reportDefinitionsDetails.fields.reportFooter',
-                { defaultMessage: 'Report footer' }
-              )}
-              reportDetailsComponentContent={trimAndRenderAsText(
-                reportDefinitionDetails.reportFooter
-              )}
-            />
-            <EuiFlexItem />
-            <EuiFlexItem />
-          </EuiFlexGroup>
-          <EuiSpacer />
-          {triggerSection}
-        </EuiPageContent>
-        <EuiGlobalToastList
-          toasts={toasts}
-          dismissToast={removeToast}
-          toastLifeTimeMs={6000}
-        />
-        {showDeleteConfirmationModal}
-        {showLoadingModal}
-      </EuiPageBody>
-    </EuiPage>
+        <EuiSpacer />
+        <EuiFlexGroup>
+          <ReportDetailsComponent
+            reportDetailsComponentTitle={i18n.translate(
+              'opensearch.reports.reportDefinitionsDetails.fields.name',
+              { defaultMessage: 'Name' }
+            )}
+            reportDetailsComponentContent={reportDefinitionDetails.name}
+          />
+          <ReportDetailsComponent
+            reportDetailsComponentTitle={i18n.translate(
+              'opensearch.reports.reportDefinitionsDetails.fields.description',
+              { defaultMessage: 'Description' }
+            )}
+            reportDetailsComponentContent={
+              reportDefinitionDetails.description
+            }
+          />
+          <ReportDetailsComponent
+            reportDetailsComponentTitle={i18n.translate(
+              'opensearch.reports.reportDefinitionsDetails.fields.created',
+              { defaultMessage: 'Created' }
+            )}
+            reportDetailsComponentContent={reportDefinitionDetails.created}
+          />
+          <ReportDetailsComponent
+            reportDetailsComponentTitle={i18n.translate(
+              'opensearch.reports.reportDefinitionsDetails.fields.lastUpdated',
+              { defaultMessage: 'Last updated' }
+            )}
+            reportDetailsComponentContent={
+              reportDefinitionDetails.lastUpdated
+            }
+          />
+        </EuiFlexGroup>
+        <EuiSpacer />
+        <EuiFlexGroup>
+          <ReportDetailsComponent
+            reportDetailsComponentTitle={i18n.translate(
+              'opensearch.reports.reportDefinitionsDetails.fields.source',
+              { defaultMessage: 'Source' }
+            )}
+            reportDetailsComponentContent={sourceURL(reportDefinitionDetails)}
+          />
+          <ReportDetailsComponent
+            reportDetailsComponentTitle={i18n.translate(
+              'opensearch.reports.reportDefinitionsDetails.fields.timePeriod',
+              { defaultMessage: 'Time period' }
+            )}
+            reportDetailsComponentContent={`Last ${reportDefinitionDetails.timePeriod}`}
+          />
+          <ReportDetailsComponent
+            reportDetailsComponentTitle={i18n.translate(
+              'opensearch.reports.reportDefinitionsDetails.fields.fileFormat',
+              { defaultMessage: 'File format' }
+            )}
+            reportDetailsComponentContent={fileFormatDownload(
+              reportDefinitionDetails
+            )}
+          />
+          <EuiFlexItem />
+        </EuiFlexGroup>
+        <EuiSpacer />
+        <EuiFlexGroup>
+          <ReportDetailsComponent
+            reportDetailsComponentTitle={i18n.translate(
+              'opensearch.reports.reportDefinitionsDetails.fields.reportHeader',
+              { defaultMessage: 'Report header' }
+            )}
+            reportDetailsComponentContent={trimAndRenderAsText(
+              reportDefinitionDetails.reportHeader
+            )}
+          />
+          <ReportDetailsComponent
+            reportDetailsComponentTitle={i18n.translate(
+              'opensearch.reports.reportDefinitionsDetails.fields.reportFooter',
+              { defaultMessage: 'Report footer' }
+            )}
+            reportDetailsComponentContent={trimAndRenderAsText(
+              reportDefinitionDetails.reportFooter
+            )}
+          />
+          <EuiFlexItem />
+          <EuiFlexItem />
+        </EuiFlexGroup>
+        <EuiSpacer />
+        {triggerSection}
+      </EuiPageContent>
+      <EuiGlobalToastList
+        toasts={toasts}
+        dismissToast={removeToast}
+        toastLifeTimeMs={6000}
+      />
+      {showDeleteConfirmationModal}
+      {showLoadingModal}
+    </>
   );
 }

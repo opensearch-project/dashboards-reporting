@@ -204,6 +204,7 @@ export function ReportsTable(props) {
   const reportsListSearch = {
     box: {
       incremental: true,
+      compressed: true,
     },
     filters: [
       {
@@ -235,6 +236,7 @@ export function ReportsTable(props) {
         })),
       },
     ],
+    compressed: true,
   };
 
   const displayMessage =
