@@ -677,7 +677,7 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
           )}
         </h1>
       </EuiTitle>
-      <EuiSpacer size="m" />
+      {!getNavGroupEnabled && <EuiSpacer size='s' />}
       <EuiPageContent panelPaddingSize={'l'}>
         <EuiPageHeader>
           <EuiFlexGroup>

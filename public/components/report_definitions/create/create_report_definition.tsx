@@ -309,7 +309,7 @@ export function CreateReport(props: { [x: string]: any; setBreadcrumbs?: any; ht
             })}
           </h1>
         </EuiTitle>
-        <EuiSpacer size='s'/>
+        {!getNavGroupEnabled && <EuiSpacer size='s' />}
         <ReportSettings
           edit={false}
           editDefinitionId={''} // empty string since we are coming from create
