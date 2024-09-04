@@ -6,25 +6,20 @@
 import React from 'react';
 import { I18nProvider } from '@osd/i18n/react';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
-
-import {
-  EuiPage,
-  EuiPageBody,
-  EuiPageContentBody,
-} from '@elastic/eui';
+import { i18n } from '@osd/i18n';
+import { EuiPage, EuiPageBody, EuiPageContentBody } from '@elastic/eui';
 import {
   CoreStart,
   ChromeBreadcrumb,
   IUiSettingsClient,
 } from '../../../../src/core/public';
 import { NavigationPublicPluginStart } from '../../../../src/plugins/navigation/public';
-
 import { CreateReport } from './report_definitions/create/create_report_definition';
 import { Main } from './main/main';
 import { ReportDetails } from './main/report_details/report_details';
 import { ReportDefinitionDetails } from './main/report_definition_details/report_definition_details';
 import { EditReportDefinition } from './report_definitions/edit/edit_report_definition';
-import { i18n } from '@osd/i18n';
+
 
 export interface CoreInterface {
   http: CoreStart['http'];
@@ -42,9 +37,7 @@ interface ReportsDashboardsAppDeps {
 
 export const ReportsDashboardsApp = ({
   basename,
-  notifications,
   http,
-  navigation,
   chrome,
 }: ReportsDashboardsAppDeps) => {
   // Render the application DOM.
