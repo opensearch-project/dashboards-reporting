@@ -20,6 +20,7 @@ import { ReportDetails } from './main/report_details/report_details';
 import { ReportDefinitionDetails } from './main/report_definition_details/report_definition_details';
 import { EditReportDefinition } from './report_definitions/edit/edit_report_definition';
 
+
 export interface CoreInterface {
   http: CoreStart['http'];
   uiSettings: IUiSettingsClient;
@@ -118,6 +119,7 @@ export const ReportsDashboardsApp = ({
                         httpClient={http}
                         {...props}
                         setBreadcrumbs={chrome.setBreadcrumbs}
+                        chrome={chrome}
                       />
                     )}
                   />

@@ -15,6 +15,12 @@ function setBreadcrumbs(array: []) {
   jest.fn();
 }
 
+const chromeMock = {
+  navGroup: {
+    getNavGroupEnabled: jest.fn().mockReturnValue(false),
+  },
+};
+
 describe('<Main /> panel', () => {
   configure({ adapter: new Adapter() });
   test('render component', (done) => {
@@ -28,7 +34,7 @@ describe('<Main /> panel', () => {
     });
 
     const { container } = render(
-      <Main httpClient={httpClientMock} setBreadcrumbs={setBreadcrumbs} />
+      <Main httpClient={httpClientMock} setBreadcrumbs={setBreadcrumbs} chrome={chromeMock} />
     );
 
     expect(container.firstChild).toMatchSnapshot();
@@ -47,7 +53,7 @@ describe('<Main /> panel', () => {
     });
 
     const { container } = render(
-      <Main httpClient={httpClientMock} setBreadcrumbs={setBreadcrumbs} />
+      <Main httpClient={httpClientMock} setBreadcrumbs={setBreadcrumbs} chrome={chromeMock} />
     );
 
     expect(container.firstChild).toMatchSnapshot();
@@ -65,7 +71,7 @@ describe('<Main /> panel', () => {
     });
 
     const { container } = render(
-      <Main httpClient={httpClientMock} setBreadcrumbs={setBreadcrumbs} />
+      <Main httpClient={httpClientMock} setBreadcrumbs={setBreadcrumbs} chrome={chromeMock} />
     );
 
     expect(container.firstChild).toMatchSnapshot();
@@ -83,7 +89,7 @@ describe('<Main /> panel', () => {
     });
 
     const { container } = render(
-      <Main httpClient={httpClientMock} setBreadcrumbs={setBreadcrumbs} />
+      <Main httpClient={httpClientMock} setBreadcrumbs={setBreadcrumbs} chrome={chromeMock} />
     );
 
     expect(container.firstChild).toMatchSnapshot();
@@ -131,7 +137,7 @@ describe('<Main /> panel', () => {
     });
 
     const component = mount(
-      <Main httpClient={httpClientMock} setBreadcrumbs={setBreadcrumbs} />
+      <Main httpClient={httpClientMock} setBreadcrumbs={setBreadcrumbs} chrome={chromeMock} />
     );
     await act(() => promise);
 
@@ -182,7 +188,7 @@ describe('<Main /> panel', () => {
     });
 
     const component = mount(
-      <Main httpClient={httpClientMock} setBreadcrumbs={setBreadcrumbs} />
+      <Main httpClient={httpClientMock} setBreadcrumbs={setBreadcrumbs} chrome={chromeMock} />
     );
     await act(() => promise);
 
@@ -201,7 +207,7 @@ describe('<Main /> panel', () => {
     });
 
     const component = mount(
-      <Main httpClient={httpClientMock} setBreadcrumbs={setBreadcrumbs} />
+      <Main httpClient={httpClientMock} setBreadcrumbs={setBreadcrumbs} chrome={chromeMock} />
     );
     const generate = component.find('button').at(7);
     try {
