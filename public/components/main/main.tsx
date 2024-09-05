@@ -28,7 +28,6 @@ import {
   permissionsMissingToast,
   permissionsMissingActions,
 } from '../utils/utils';
-import { EuiHeader } from '@opensearch-project/oui';
 
 const reportCountStyles: CSS.Properties = {
   color: 'gray',
