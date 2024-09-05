@@ -9,14 +9,14 @@ exports[`<ReportsTable /> panel render component 1`] = `
       class="euiFlexItem euiSearchBar__searchHolder"
     >
       <div
-        class="euiFormControlLayout euiFormControlLayout--fullWidth"
+        class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
       >
         <div
           class="euiFormControlLayout__childrenWrapper"
         >
           <input
             aria-label="This is a search bar. As you type, the results lower in the page will automatically filter."
-            class="euiFieldSearch euiFieldSearch--fullWidth"
+            class="euiFieldSearch euiFieldSearch--fullWidth euiFieldSearch--compressed"
             placeholder="Search..."
             type="search"
             value=""
@@ -29,7 +29,7 @@ exports[`<ReportsTable /> panel render component 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
+                class="euiIcon euiIcon--small euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
                 focusable="false"
                 height="16"
                 role="img"
@@ -60,7 +60,7 @@ exports[`<ReportsTable /> panel render component 1`] = `
             class="euiPopover__anchor"
           >
             <button
-              class="euiButtonEmpty euiButtonEmpty--text euiFilterButton euiFilterButton--hasIcon"
+              class="euiButtonEmpty euiButtonEmpty--text euiButtonEmpty--small euiFilterButton euiFilterButton--hasIcon"
               type="button"
             >
               <span
@@ -103,7 +103,7 @@ exports[`<ReportsTable /> panel render component 1`] = `
             class="euiPopover__anchor"
           >
             <button
-              class="euiButtonEmpty euiButtonEmpty--text euiFilterButton euiFilterButton--hasIcon"
+              class="euiButtonEmpty euiButtonEmpty--text euiButtonEmpty--small euiFilterButton euiFilterButton--hasIcon"
               type="button"
             >
               <span
@@ -634,14 +634,14 @@ exports[`<ReportsTable /> panel render empty component 1`] = `
       class="euiFlexItem euiSearchBar__searchHolder"
     >
       <div
-        class="euiFormControlLayout euiFormControlLayout--fullWidth"
+        class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
       >
         <div
           class="euiFormControlLayout__childrenWrapper"
         >
           <input
             aria-label="This is a search bar. As you type, the results lower in the page will automatically filter."
-            class="euiFieldSearch euiFieldSearch--fullWidth"
+            class="euiFieldSearch euiFieldSearch--fullWidth euiFieldSearch--compressed"
             placeholder="Search..."
             type="search"
             value=""
@@ -654,7 +654,7 @@ exports[`<ReportsTable /> panel render empty component 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="euiIcon euiIcon--medium euiFormControlLayoutCustomIcon__icon"
+                class="euiIcon euiIcon--small euiFormControlLayoutCustomIcon__icon"
                 focusable="false"
                 height="16"
                 role="img"
@@ -685,7 +685,7 @@ exports[`<ReportsTable /> panel render empty component 1`] = `
             class="euiPopover__anchor"
           >
             <button
-              class="euiButtonEmpty euiButtonEmpty--text euiFilterButton euiFilterButton--hasIcon"
+              class="euiButtonEmpty euiButtonEmpty--text euiButtonEmpty--small euiFilterButton euiFilterButton--hasIcon"
               type="button"
             >
               <span
@@ -729,7 +729,7 @@ exports[`<ReportsTable /> panel render empty component 1`] = `
             class="euiPopover__anchor"
           >
             <button
-              class="euiButtonEmpty euiButtonEmpty--text euiFilterButton euiFilterButton--hasIcon"
+              class="euiButtonEmpty euiButtonEmpty--text euiButtonEmpty--small euiFilterButton euiFilterButton--hasIcon"
               type="button"
             >
               <span
