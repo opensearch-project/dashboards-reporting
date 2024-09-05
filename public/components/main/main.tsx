@@ -8,13 +8,14 @@ import { i18n } from '@osd/i18n';
 import {
   EuiFlexGroup,
   EuiFlexItem,
-  EuiButton,
-  EuiTitle,
+  EuiSmallButton,
   // @ts-ignore
   EuiHorizontalRule,
   EuiSpacer,
   EuiPanel,
   EuiGlobalToastList,
+  EuiText,
+  EuiTitle,
 } from '@elastic/eui';
 import { ReportsTable } from './reports_table';
 import { ReportDefinitions } from './report_definitions_table';
@@ -34,6 +35,8 @@ const reportCountStyles: CSS.Properties = {
 };
 
 export function Main(props) {
+  const { chrome } = props;
+  const getNavGroupEnabled = chrome.navGroup.getNavGroupEnabled();
   const [reportsTableContent, setReportsTableContent] = useState([]);
   const [
     reportDefinitionsTableContent,
@@ -272,20 +275,28 @@ export function Main(props) {
 
   return (
     <div>
-      <EuiPanel paddingSize={'l'}>
+      <EuiTitle size="l">
+        <h1>
+          {!getNavGroupEnabled && i18n.translate('opensearch.reporting.title', {
+            defaultMessage: 'Reporting',
+          })}
+        </h1>
+      </EuiTitle>
+      {!getNavGroupEnabled && <EuiSpacer size='s' />}
+      <EuiPanel paddingSize={'m'}>
         <EuiFlexGroup justifyContent="spaceEvenly">
           <EuiFlexItem>
-            <EuiTitle>
-              <h2>
+            <EuiText size='s'>
+              <h3>
                 {i18n.translate('opensearch.reports.main.title.reports', {
                   defaultMessage: 'Reports',
                 })}{' '}
                 <p style={reportCountStyles}> ({reportsTableContent.length})</p>
-              </h2>
-            </EuiTitle>
+              </h3>
+            </EuiText>
           </EuiFlexItem>
           <EuiFlexItem component="span" grow={false}>
-            <EuiButton
+            <EuiSmallButton
               onClick={refreshReportsTable}
               iconSide="left"
               iconType="refresh"
@@ -294,10 +305,10 @@ export function Main(props) {
                 'opensearch.reports.main.reports.button.refresh',
                 { defaultMessage: 'Refresh' }
               )}
-            </EuiButton>
+            </EuiSmallButton>
           </EuiFlexItem>
         </EuiFlexGroup>
-        <EuiHorizontalRule />
+        <EuiHorizontalRule margin='s' />
         <ReportsTable
           pagination={pagination}
           reportsTableItems={reportsTableContent}
@@ -308,11 +319,11 @@ export function Main(props) {
         />
       </EuiPanel>
       <EuiSpacer />
-      <EuiPanel paddingSize={'l'}>
+      <EuiPanel paddingSize={'m'}>
         <EuiFlexGroup justifyContent="spaceEvenly">
           <EuiFlexItem>
-            <EuiTitle>
-              <h2>
+            <EuiText size='s'>
+              <h3>
                 {i18n.translate(
                   'opensearch.reports.main.title.reportDefinitions',
                   { defaultMessage: 'Report definitions' }
@@ -321,11 +332,11 @@ export function Main(props) {
                   {' '}
                   ({reportDefinitionsTableContent.length})
                 </p>
-              </h2>
-            </EuiTitle>
+              </h3>
+            </EuiText>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton
+            <EuiSmallButton
               onClick={refreshReportsDefinitionsTable}
               iconSide="left"
               iconType="refresh"
@@ -334,10 +345,10 @@ export function Main(props) {
                 'opensearch.reports.main.reportDefinitions.button.refresh',
                 { defaultMessage: 'Refresh' }
               )}
-            </EuiButton>
+            </EuiSmallButton>
           </EuiFlexItem>
           <EuiFlexItem component="span" grow={false}>
-            <EuiButton
+            <EuiSmallButton
               fill={true}
               onClick={() => {
                 window.location.assign('reports-dashboards#/create');
@@ -348,10 +359,10 @@ export function Main(props) {
                 'opensearch.reports.main.reportDefinitions.button.create',
                 { defaultMessage: 'Create' }
               )}
-            </EuiButton>
+            </EuiSmallButton>
           </EuiFlexItem>
         </EuiFlexGroup>
-        <EuiHorizontalRule />
+        <EuiHorizontalRule margin='s' />
         <ReportDefinitions
           pagination={pagination}
           reportDefinitionsTableContent={reportDefinitionsTableContent}

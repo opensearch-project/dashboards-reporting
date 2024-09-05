@@ -15,6 +15,12 @@ function setBreadcrumbs(array: []) {
   jest.fn();
 }
 
+const chromeMock = {
+  navGroup: {
+    getNavGroupEnabled: jest.fn().mockReturnValue(false),
+  },
+};
+
 describe('<ReportDefinitionDetails /> panel', () => {
   let propsMock = {
     match: {
@@ -71,6 +77,7 @@ describe('<ReportDefinitionDetails /> panel', () => {
         props={propsMock}
         match={match}
         setBreadcrumbs={setBreadcrumbs}
+        chrome={chromeMock}
       />
     );
     expect(container.firstChild).toMatchSnapshot();
@@ -126,6 +133,7 @@ describe('<ReportDefinitionDetails /> panel', () => {
         props={propsMock}
         match={match}
         setBreadcrumbs={setBreadcrumbs}
+        chrome={chromeMock}
       />
     );
     expect(container.firstChild).toMatchSnapshot();
@@ -181,6 +189,7 @@ describe('<ReportDefinitionDetails /> panel', () => {
         props={propsMock}
         match={match}
         setBreadcrumbs={setBreadcrumbs}
+        chrome={chromeMock}
       />
     );
 
@@ -225,6 +234,7 @@ describe('<ReportDefinitionDetails /> panel', () => {
         props={propsMock}
         match={match}
         setBreadcrumbs={setBreadcrumbs}
+        chrome={chromeMock}
       />
     );
     await act(() => promise);
@@ -284,6 +294,7 @@ describe('<ReportDefinitionDetails /> panel', () => {
         props={propsMock}
         match={match}
         setBreadcrumbs={setBreadcrumbs}
+        chrome={chromeMock}
       />
     );
 
@@ -346,6 +357,7 @@ describe('<ReportDefinitionDetails /> panel', () => {
         props={propsMock}
         match={match}
         setBreadcrumbs={setBreadcrumbs}
+        chrome={chromeMock}
       />
     );
     await act(() => promise);
@@ -408,6 +420,7 @@ describe('<ReportDefinitionDetails /> panel', () => {
         props={propsMock}
         match={match}
         setBreadcrumbs={setBreadcrumbs}
+        chrome={chromeMock}
       />
     );
     await act(() => promise);
