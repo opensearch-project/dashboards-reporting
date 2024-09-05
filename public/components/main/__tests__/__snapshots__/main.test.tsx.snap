@@ -39,7 +39,7 @@ exports[`<Main /> panel render component 1`] = `
         class="euiFlexItem euiFlexItem--flexGrowZero"
       >
         <button
-          class="euiButton euiButton--primary"
+          class="euiButton euiButton--primary euiButton--small"
           type="button"
         >
           <span
@@ -534,7 +534,7 @@ exports[`<Main /> panel render component 1`] = `
         class="euiFlexItem euiFlexItem--flexGrowZero"
       >
         <button
-          class="euiButton euiButton--primary"
+          class="euiButton euiButton--primary euiButton--small"
           type="button"
         >
           <span
@@ -566,7 +566,7 @@ exports[`<Main /> panel render component 1`] = `
         class="euiFlexItem euiFlexItem--flexGrowZero"
       >
         <button
-          class="euiButton euiButton--primary euiButton--fill"
+          class="euiButton euiButton--primary euiButton--small euiButton--fill"
           id="createReportHomepageButton"
           type="button"
         >
@@ -983,7 +983,7 @@ exports[`<Main /> panel render component after create success 1`] = `
         class="euiFlexItem euiFlexItem--flexGrowZero"
       >
         <button
-          class="euiButton euiButton--primary"
+          class="euiButton euiButton--primary euiButton--small"
           type="button"
         >
           <span
@@ -1480,7 +1480,7 @@ exports[`<Main /> panel render component after create success 1`] = `
         class="euiFlexItem euiFlexItem--flexGrowZero"
       >
         <button
-          class="euiButton euiButton--primary"
+          class="euiButton euiButton--primary euiButton--small"
           type="button"
         >
           <span
@@ -1512,7 +1512,7 @@ exports[`<Main /> panel render component after create success 1`] = `
         class="euiFlexItem euiFlexItem--flexGrowZero"
       >
         <button
-          class="euiButton euiButton--primary euiButton--fill"
+          class="euiButton euiButton--primary euiButton--small euiButton--fill"
           id="createReportHomepageButton"
           type="button"
         >
@@ -1986,7 +1986,7 @@ exports[`<Main /> panel render component after delete success 1`] = `
         class="euiFlexItem euiFlexItem--flexGrowZero"
       >
         <button
-          class="euiButton euiButton--primary"
+          class="euiButton euiButton--primary euiButton--small"
           type="button"
         >
           <span
@@ -2483,7 +2483,7 @@ exports[`<Main /> panel render component after delete success 1`] = `
         class="euiFlexItem euiFlexItem--flexGrowZero"
       >
         <button
-          class="euiButton euiButton--primary"
+          class="euiButton euiButton--primary euiButton--small"
           type="button"
         >
           <span
@@ -2515,7 +2515,7 @@ exports[`<Main /> panel render component after delete success 1`] = `
         class="euiFlexItem euiFlexItem--flexGrowZero"
       >
         <button
-          class="euiButton euiButton--primary euiButton--fill"
+          class="euiButton euiButton--primary euiButton--small euiButton--fill"
           id="createReportHomepageButton"
           type="button"
         >
@@ -2990,7 +2990,7 @@ exports[`<Main /> panel render component after edit success 1`] = `
         class="euiFlexItem euiFlexItem--flexGrowZero"
       >
         <button
-          class="euiButton euiButton--primary"
+          class="euiButton euiButton--primary euiButton--small"
           type="button"
         >
           <span
@@ -3487,7 +3487,7 @@ exports[`<Main /> panel render component after edit success 1`] = `
         class="euiFlexItem euiFlexItem--flexGrowZero"
       >
         <button
-          class="euiButton euiButton--primary"
+          class="euiButton euiButton--primary euiButton--small"
           type="button"
         >
           <span
@@ -3519,7 +3519,7 @@ exports[`<Main /> panel render component after edit success 1`] = `
         class="euiFlexItem euiFlexItem--flexGrowZero"
       >
         <button
-          class="euiButton euiButton--primary euiButton--fill"
+          class="euiButton euiButton--primary euiButton--small euiButton--fill"
           id="createReportHomepageButton"
           type="button"
         >
