@@ -89,7 +89,9 @@ export interface timeRangeParams {
   timeTo: Date;
 }
 
-export function CreateReport(props: { [x: string]: any; setBreadcrumbs?: any; httpClient?: any; }) {
+export function CreateReport(props: { [x: string]: any; setBreadcrumbs?: any; httpClient?: any; chrome: any }) {
+  const { chrome } = props;
+
   let createReportDefinitionRequest: reportDefinitionParams = {
     report_params: {
       report_name: '',
@@ -138,6 +140,7 @@ export function CreateReport(props: { [x: string]: any; setBreadcrumbs?: any; ht
   ] = useState(false);
   const [showCronError, setShowCronError] = useState(false);
   const [showTimeRangeError, setShowTimeRangeError] = useState(false);
+  const getNavGroupEnabled = chrome.navGroup.getNavGroupEnabled();
 
   // preserve the state of the request after an invalid create report definition request
   if (comingFromError) {
@@ -302,12 +305,12 @@ export function CreateReport(props: { [x: string]: any; setBreadcrumbs?: any; ht
       <EuiPageBody>
         <EuiTitle>
           <h1>
-            {i18n.translate('opensearch.reports.createReportDefinition.title', {
+            {!getNavGroupEnabled && i18n.translate('opensearch.reports.createReportDefinition.title', {
               defaultMessage: 'Create report definition',
             })}
           </h1>
         </EuiTitle>
-        <EuiSpacer />
+        {!getNavGroupEnabled && <EuiSpacer size='s' />}
         <ReportSettings
           edit={false}
           editDefinitionId={''} // empty string since we are coming from create

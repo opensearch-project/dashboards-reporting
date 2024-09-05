@@ -10,7 +10,6 @@ import {
   EuiButton,
   EuiEmptyPrompt,
   EuiText,
-  EuiIcon,
 } from '@elastic/eui';
 import { i18n } from '@osd/i18n';
 import { humanReadableDate } from './main_utils';
@@ -50,7 +49,6 @@ const emptyMessageReportDefinitions = (
                   'Get started with OpenSearch Dashboards reporting',
               }
             )}
-            <EuiIcon type="popout" />
           </EuiLink>
         </EuiText>
       </div>
@@ -75,6 +73,7 @@ const emptyMessageReportDefinitions = (
 const reportDefinitionsSearch = {
   box: {
     incremental: true,
+    compressed: true,
   },
   filters: [],
 };
