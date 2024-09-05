@@ -835,12 +835,12 @@ export function ReportSettings(props: ReportSettingProps) {
     <EuiPageContent panelPaddingSize={'l'}>
       <EuiPageHeader>
         <EuiTitle>
-          <h2>
+          <h3>
             {i18n.translate(
               'opensearch.reports.reportSettingProps.form.reportSettings',
               { defaultMessage: 'Report settings' }
             )}
-          </h2>
+          </h3>
         </EuiTitle>
       </EuiPageHeader>
       <EuiHorizontalRule />
