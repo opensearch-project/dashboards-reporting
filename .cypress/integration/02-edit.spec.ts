@@ -24,7 +24,7 @@ describe('Cypress', () => {
     cy.wait(1000);
 
     // update the report name
-    cy.get('#reportSettingsName').type(' update name');
+    cy.get('#reportSettingsName').type(' update name', { force: true });
 
     // update report description
     cy.get('#reportSettingsDescription').type(' update description');
