@@ -6,6 +6,7 @@
 import React, { useEffect, useState } from 'react';
 import { i18n } from '@osd/i18n';
 import {
+  EuiFieldNumber,
   EuiCompressedFieldText,
   EuiFlexGroup,
   EuiFlexItem,
@@ -20,6 +21,10 @@ import {
   EuiCompressedTextArea,
   EuiCompressedCheckboxGroup,
   EuiCompressedComboBox,
+  EuiFormRow,
+  OuiCallOut,
+  EuiText,
+  EuiIcon,
 } from '@elastic/eui';
 import {
   REPORT_SOURCE_RADIOS,
@@ -80,7 +85,7 @@ export function ReportSettings(props: ReportSettingProps) {
     settingsReportSourceErrorMessage,
     showTimeRangeError,
     showTriggerIntervalNaNError,
-    showCronError
+    showCronError,
   } = props;
 
   const [reportName, setReportName] = useState('');
@@ -99,6 +104,7 @@ export function ReportSettings(props: ReportSettingProps) {
     [] as any
   );
   const [savedSearches, setSavedSearches] = useState([] as any);
+  const [savedSearchRecordLimit, setSavedSearchRecordLimit] = useState(10000);
 
   const [notebooksSourceSelect, setNotebooksSourceSelect] = useState([] as any);
   const [notebooks, setNotebooks] = useState([] as any);
@@ -167,7 +173,7 @@ export function ReportSettings(props: ReportSettingProps) {
       reportDefinitionRequest.report_params.core_params.saved_search_id =
         savedSearches[0]?.value;
       reportDefinitionRequest.report_params.core_params.report_format = 'csv';
-      reportDefinitionRequest.report_params.core_params.limit = 10000;
+      reportDefinitionRequest.report_params.core_params.limit = savedSearchRecordLimit;
       reportDefinitionRequest.report_params.core_params.excel = true;
     } else if (e === 'notebooksReportSource') {
       reportDefinitionRequest.report_params.report_source = 'Notebook';
@@ -230,6 +236,12 @@ export function ReportSettings(props: ReportSettingProps) {
     } else {
       reportDefinitionRequest.report_params.core_params.base_url = '';
     }
+  };
+
+  const handleSavedSearchRecordLimit = (e) => {
+    setSavedSearchRecordLimit(e.target.value);
+
+    reportDefinitionRequest.report_params.core_params.limit = e.target.value;
   };
 
   const handleNotebooksSelect = (e) => {
@@ -592,6 +604,13 @@ export function ReportSettings(props: ReportSettingProps) {
         reportDefinitionRequest.report_params.report_source = reportSource;
       }
     });
+
+    if (reportSource == REPORT_SOURCE_TYPES.savedSearch) {
+      setSavedSearchRecordLimit(
+        response.report_definition.report_params.core_params.limit
+      );
+    }
+
     setDefaultFileFormat(
       response.report_definition.report_params.core_params.report_format
     );
@@ -666,8 +685,11 @@ export function ReportSettings(props: ReportSettingProps) {
     await httpClientProps
       .get('../api/observability/notebooks/')
       .catch((error: any) => {
-        console.error('error fetching notebooks, retrying with legacy api', error)
-        return httpClientProps.get('../api/notebooks/')
+        console.error(
+          'error fetching notebooks, retrying with legacy api',
+          error
+        );
+        return httpClientProps.get('../api/notebooks/');
       })
       .then(async (response: any) => {
         let notebooksOptions = getNotebooksOptions(response.data);
@@ -704,7 +726,7 @@ export function ReportSettings(props: ReportSettingProps) {
     reportSourceId === 'dashboardReportSource' ? (
       <div>
         <EuiCompressedFormRow
-        id="reportSourceDashboardSelect"
+          id="reportSourceDashboardSelect"
           label={i18n.translate(
             'opensearch.reports.reportSettingProps.selectDashboard',
             { defaultMessage: 'Select dashboard' }
@@ -778,6 +800,30 @@ export function ReportSettings(props: ReportSettingProps) {
             selectedOptions={savedSearchSourceSelect}
           />
         </EuiCompressedFormRow>
+        <EuiSpacer />
+        <EuiFormRow
+          id="reportSourceSavedSearchRecordLimit"
+          label={i18n.translate(
+            'opensearch.reports.reportSettingProps.form.savedSearchRecordLimit',
+            { defaultMessage: 'Record limit' }
+          )}
+          helpText={
+            savedSearchRecordLimit > 10000 ? (
+              <EuiText color="warning" size="xs">
+                <EuiIcon color="warning" type="alert" size="s" /> Generating
+                very large reports can cause memory issues.
+              </EuiText>
+            ) : (
+              ''
+            )
+          }
+        >
+          <EuiFieldNumber
+            value={savedSearchRecordLimit}
+            onChange={handleSavedSearchRecordLimit}
+            min={1}
+          />
+        </EuiFormRow>
         <EuiSpacer />
       </div>
     ) : null;
