@@ -6,12 +6,8 @@
 import React, { useEffect, useState } from 'react';
 import { i18n } from '@osd/i18n';
 import {
-<<<<<<< HEAD
   EuiFieldText,
-=======
   EuiFieldNumber,
-  EuiCompressedFieldText,
->>>>>>> d4f95c90 ([Feature] Add the ability to configure record limit/count from the UI (#395))
   EuiFlexGroup,
   EuiFlexItem,
   EuiFormRow,
@@ -20,24 +16,13 @@ import {
   EuiPageContent,
   EuiPageContentBody,
   EuiHorizontalRule,
-  EuiText,
   EuiSpacer,
-<<<<<<< HEAD
   EuiRadioGroup,
-  EuiSelect,
   EuiTextArea,
   EuiCheckboxGroup,
   EuiComboBox,
-=======
-  EuiCompressedRadioGroup,
-  EuiCompressedTextArea,
-  EuiCompressedCheckboxGroup,
-  EuiCompressedComboBox,
-  EuiFormRow,
-  OuiCallOut,
   EuiText,
   EuiIcon,
->>>>>>> d4f95c90 ([Feature] Add the ability to configure record limit/count from the UI (#395))
 } from '@elastic/eui';
 import {
   REPORT_SOURCE_RADIOS,
