@@ -11,9 +11,15 @@ import { configure, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { act } from 'react-dom/test-utils';
 
-function setBreadcrumbs(array: []) {
+function setBreadcrumbs(_array: []) {
   jest.fn();
 }
+
+const chromeMock = {
+  navGroup: {
+    getNavGroupEnabled: jest.fn().mockReturnValue(false),
+  },
+};
 
 describe('<Main /> panel', () => {
   configure({ adapter: new Adapter() });
@@ -28,7 +34,11 @@ describe('<Main /> panel', () => {
     });
 
     const { container } = render(
-      <Main httpClient={httpClientMock} setBreadcrumbs={setBreadcrumbs} />
+      <Main
+        httpClient={httpClientMock}
+        setBreadcrumbs={setBreadcrumbs}
+        chrome={chromeMock}
+      />
     );
 
     expect(container.firstChild).toMatchSnapshot();
@@ -47,7 +57,11 @@ describe('<Main /> panel', () => {
     });
 
     const { container } = render(
-      <Main httpClient={httpClientMock} setBreadcrumbs={setBreadcrumbs} />
+      <Main
+        httpClient={httpClientMock}
+        setBreadcrumbs={setBreadcrumbs}
+        chrome={chromeMock}
+      />
     );
 
     expect(container.firstChild).toMatchSnapshot();
@@ -65,14 +79,18 @@ describe('<Main /> panel', () => {
     });
 
     const { container } = render(
-      <Main httpClient={httpClientMock} setBreadcrumbs={setBreadcrumbs} />
+      <Main
+        httpClient={httpClientMock}
+        setBreadcrumbs={setBreadcrumbs}
+        chrome={chromeMock}
+      />
     );
 
     expect(container.firstChild).toMatchSnapshot();
   });
 
   test('render component after delete success', async () => {
-    delete window.location; 
+    delete window.location;
 
     Object.defineProperty(window, 'location', {
       configurable: true,
@@ -83,11 +101,15 @@ describe('<Main /> panel', () => {
     });
 
     const { container } = render(
-      <Main httpClient={httpClientMock} setBreadcrumbs={setBreadcrumbs} />
+      <Main
+        httpClient={httpClientMock}
+        setBreadcrumbs={setBreadcrumbs}
+        chrome={chromeMock}
+      />
     );
 
     expect(container.firstChild).toMatchSnapshot();
-  })
+  });
 
   test('test refresh reports definitions button', async () => {
     const promise = Promise.resolve();
@@ -131,7 +153,11 @@ describe('<Main /> panel', () => {
     });
 
     const component = mount(
-      <Main httpClient={httpClientMock} setBreadcrumbs={setBreadcrumbs} />
+      <Main
+        httpClient={httpClientMock}
+        setBreadcrumbs={setBreadcrumbs}
+        chrome={chromeMock}
+      />
     );
     await act(() => promise);
 
@@ -182,7 +208,11 @@ describe('<Main /> panel', () => {
     });
 
     const component = mount(
-      <Main httpClient={httpClientMock} setBreadcrumbs={setBreadcrumbs} />
+      <Main
+        httpClient={httpClientMock}
+        setBreadcrumbs={setBreadcrumbs}
+        chrome={chromeMock}
+      />
     );
     await act(() => promise);
 
@@ -193,7 +223,7 @@ describe('<Main /> panel', () => {
 
   // TODO: mock catch() error response to contain status code 
   test.skip('test error toasts posted', async () => {
-    jest.spyOn(console, 'log').mockImplementation(() => {}); // silence console log error from main
+    jest.spyOn(console, 'log').mockImplementation(() => { }); // silence console log error from main
     const promise = Promise.resolve();
 
     httpClientMock.get = jest.fn().mockResolvedValue({
@@ -201,7 +231,11 @@ describe('<Main /> panel', () => {
     });
 
     const component = mount(
-      <Main httpClient={httpClientMock} setBreadcrumbs={setBreadcrumbs} />
+      <Main
+        httpClient={httpClientMock}
+        setBreadcrumbs={setBreadcrumbs}
+        chrome={chromeMock}
+      />
     );
     const generate = component.find('button').at(7);
     try {

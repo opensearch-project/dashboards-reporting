@@ -6,7 +6,6 @@
 import React, { Fragment, useState } from 'react';
 import { i18n } from '@osd/i18n';
 import {
-  EuiButton,
   // @ts-ignore
   EuiLink,
   EuiText,
@@ -205,6 +204,7 @@ export function ReportsTable(props) {
   const reportsListSearch = {
     box: {
       incremental: true,
+      compressed: true,
     },
     filters: [
       {
@@ -236,6 +236,7 @@ export function ReportsTable(props) {
         })),
       },
     ],
+    compressed: true,
   };
 
   const displayMessage =

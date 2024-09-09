@@ -14,7 +14,6 @@ import {
   EuiFlexGroup,
   EuiFlexItem,
   EuiLoadingSpinner,
-  EuiButton,
 } from '@elastic/eui';
 import { i18n } from '@osd/i18n';
 import React, { useState } from 'react';
@@ -41,12 +40,12 @@ export function GenerateReportLoadingModal(props: { setShowLoading: any }) {
           <EuiModalHeader>
             <EuiTitle>
               <EuiText textAlign="right">
-                <h2>
+                <h3>
                   {i18n.translate(
                     'opensearch.reports.loading.generatingReport',
                     { defaultMessage: 'Generating report' }
                   )}
-                </h2>
+                </h3>
               </EuiText>
             </EuiTitle>
           </EuiModalHeader>

@@ -7,10 +7,9 @@ import React, { useState } from 'react';
 import {
   EuiLink,
   EuiInMemoryTable,
-  EuiButton,
+  EuiSmallButton,
   EuiEmptyPrompt,
   EuiText,
-  EuiIcon,
 } from '@elastic/eui';
 import { i18n } from '@osd/i18n';
 import { humanReadableDate } from './main_utils';
@@ -50,14 +49,13 @@ const emptyMessageReportDefinitions = (
                   'Get started with OpenSearch Dashboards reporting',
               }
             )}
-            <EuiIcon type="popout" />
           </EuiLink>
         </EuiText>
       </div>
     }
     actions={
       <div>
-        <EuiButton
+        <EuiSmallButton
           onClick={() => {
             window.location.assign('reports-dashboards#/create');
           }}
@@ -66,7 +64,7 @@ const emptyMessageReportDefinitions = (
             'opensearch.reports.reportDefinitionsTable.emptyMessageReports.createReportDefinition',
             { defaultMessage: 'Create report definition' }
           )}
-        </EuiButton>
+        </EuiSmallButton>
       </div>
     }
   />
@@ -75,6 +73,7 @@ const emptyMessageReportDefinitions = (
 const reportDefinitionsSearch = {
   box: {
     incremental: true,
+    compressed: true,
   },
   filters: [],
 };
