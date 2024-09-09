@@ -808,7 +808,7 @@ export function ReportSettings(props: ReportSettingProps) {
             { defaultMessage: 'Record limit' }
           )}
           helpText={
-            savedSearchRecordLimit > 500000 ? (
+            savedSearchRecordLimit > 10000 ? (
               <EuiText color="warning" size="xs">
                 <EuiIcon color="warning" type="alert" size="s" /> Generating
                 very large reports can cause memory issues.
