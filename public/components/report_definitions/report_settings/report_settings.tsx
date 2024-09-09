@@ -22,6 +22,9 @@ import {
   EuiCompressedCheckboxGroup,
   EuiCompressedComboBox,
   EuiFormRow,
+  OuiCallOut,
+  EuiText,
+  EuiIcon,
 } from '@elastic/eui';
 import {
   REPORT_SOURCE_RADIOS,
@@ -82,7 +85,7 @@ export function ReportSettings(props: ReportSettingProps) {
     settingsReportSourceErrorMessage,
     showTimeRangeError,
     showTriggerIntervalNaNError,
-    showCronError
+    showCronError,
   } = props;
 
   const [reportName, setReportName] = useState('');
@@ -603,7 +606,9 @@ export function ReportSettings(props: ReportSettingProps) {
     });
 
     if (reportSource == REPORT_SOURCE_TYPES.savedSearch) {
-      setSavedSearchRecordLimit(response.report_definition.report_params.core_params.limit)
+      setSavedSearchRecordLimit(
+        response.report_definition.report_params.core_params.limit
+      );
     }
 
     setDefaultFileFormat(
@@ -680,8 +685,11 @@ export function ReportSettings(props: ReportSettingProps) {
     await httpClientProps
       .get('../api/observability/notebooks/')
       .catch((error: any) => {
-        console.error('error fetching notebooks, retrying with legacy api', error)
-        return httpClientProps.get('../api/notebooks/')
+        console.error(
+          'error fetching notebooks, retrying with legacy api',
+          error
+        );
+        return httpClientProps.get('../api/notebooks/');
       })
       .then(async (response: any) => {
         let notebooksOptions = getNotebooksOptions(response.data);
@@ -718,7 +726,7 @@ export function ReportSettings(props: ReportSettingProps) {
     reportSourceId === 'dashboardReportSource' ? (
       <div>
         <EuiCompressedFormRow
-        id="reportSourceDashboardSelect"
+          id="reportSourceDashboardSelect"
           label={i18n.translate(
             'opensearch.reports.reportSettingProps.selectDashboard',
             { defaultMessage: 'Select dashboard' }
@@ -799,6 +807,16 @@ export function ReportSettings(props: ReportSettingProps) {
             'opensearch.reports.reportSettingProps.form.savedSearchRecordLimit',
             { defaultMessage: 'Record limit' }
           )}
+          helpText={
+            savedSearchRecordLimit > 500000 ? (
+              <EuiText color="warning" size="xs">
+                <EuiIcon color="warning" type="alert" size="s" /> Generating
+                very large reports can cause memory issues.
+              </EuiText>
+            ) : (
+              ''
+            )
+          }
         >
           <EuiFieldNumber
             value={savedSearchRecordLimit}
