@@ -38,6 +38,7 @@ interface ReportDetails {
   created: string;
   lastUpdated: string;
   source: string;
+  recordLimit: number | undefined;
   time_period: string;
   defaultFileFormat: string;
   state: string | undefined;
@@ -85,6 +86,7 @@ export function ReportDetails(props: { match?: any; setBreadcrumbs?: any; httpCl
     created: '',
     lastUpdated: '',
     source: '',
+    recordLimit: 0,
     time_period: '',
     defaultFileFormat: '',
     state: '',
@@ -218,6 +220,10 @@ export function ReportDetails(props: { match?: any; setBreadcrumbs?: any; httpCl
       created: convertTimestamp(report.time_created),
       lastUpdated: convertTimestamp(report.last_updated),
       source: reportParams.report_source,
+      recordLimit: 
+        reportParams.report_source != 'Saved search' 
+          ? `\u2014` 
+          : reportParams.core_params.limit,
       // TODO:  we have all data needed, time_from, time_to, time_duration,
       // think of a way to better display
       time_period: (reportParams.report_source !== 'Notebook') ? parseTimePeriod(queryUrl) : `\u2014`,
@@ -423,6 +429,13 @@ export function ReportDetails(props: { match?: any; setBreadcrumbs?: any; httpCl
             )}
             reportDetailsComponentContent={sourceURL(reportDetails)}
           />
+            <ReportDetailsComponent
+              reportDetailsComponentTitle={i18n.translate(
+                'opensearch.reports.reportDefinitionsDetails.fields.recordLimit',
+                { defaultMessage: 'Record limit' }
+              )}
+              reportDetailsComponentContent={reportDetails.recordLimit}
+            />
           <ReportDetailsComponent
             reportDetailsComponentTitle={i18n.translate(
               'opensearch.reports.details.reportSettings.timePeriod',
@@ -437,6 +450,8 @@ export function ReportDetails(props: { match?: any; setBreadcrumbs?: any; httpCl
             )}
             reportDetailsComponentContent={fileFormatDownload(reportDetails)}
           />
+          </EuiFlexGroup>
+          <EuiFlexGroup>
           <ReportDetailsComponent
             reportDetailsComponentTitle={i18n.translate(
               'opensearch.reports.details.reportSettings.state',
