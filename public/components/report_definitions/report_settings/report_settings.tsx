@@ -21,8 +21,7 @@ import {
   EuiCheckboxGroup,
   EuiComboBox,
   EuiFormRow,
-  EuiText,
-  EuiIcon,
+  EuiCallOut,
 } from '@elastic/eui';
 import {
   REPORT_SOURCE_RADIOS,
@@ -800,22 +799,26 @@ export function ReportSettings(props: ReportSettingProps) {
           />
         </EuiFormRow>
         <EuiSpacer />
+        {savedSearchRecordLimit > 10000 ? (
+          <>
+            <EuiCallOut
+              color="primary"
+              title={i18n.translate(
+                'opensearch.reports.reportSettingProps.form.savedSearchLargeRecordLimitWarning',
+                { defaultMessage: 'Generating reports with a large number of records can cause memory issues' }
+              )}
+              iconType="iInCircle"
+              size="s"
+            />
+            <EuiSpacer size="xs" />
+          </>
+        ) : null}
         <EuiFormRow
           id="reportSourceSavedSearchRecordLimit"
           label={i18n.translate(
             'opensearch.reports.reportSettingProps.form.savedSearchRecordLimit',
             { defaultMessage: 'Record limit' }
           )}
-          helpText={
-            savedSearchRecordLimit > 10000 ? (
-              <EuiText color="warning" size="xs">
-                <EuiIcon color="warning" type="alert" size="s" /> Generating
-                very large reports can cause memory issues.
-              </EuiText>
-            ) : (
-              ''
-            )
-          }
         >
           <EuiFieldNumber
             value={savedSearchRecordLimit}
