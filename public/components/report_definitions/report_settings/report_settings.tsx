@@ -6,18 +6,9 @@
 import React, { useEffect, useState } from 'react';
 import { i18n } from '@osd/i18n';
 import {
-  EuiFieldText,
   EuiFieldNumber,
-  EuiFlexGroup,
-  EuiFlexItem,
-  EuiPageHeader,
-  EuiTitle,
-  EuiPageContent,
-  EuiPageContentBody,
-  EuiHorizontalRule,
   EuiSpacer,
   EuiRadioGroup,
-  EuiTextArea,
   EuiCheckboxGroup,
   EuiComboBox,
   EuiFormRow,
@@ -799,6 +790,7 @@ export function ReportSettings(props: ReportSettingProps) {
           />
         </EuiFormRow>
         <EuiSpacer />
+<<<<<<< HEAD
         {savedSearchRecordLimit > 10000 ? (
           <>
             <EuiCallOut
@@ -813,12 +805,27 @@ export function ReportSettings(props: ReportSettingProps) {
             <EuiSpacer size="xs" />
           </>
         ) : null}
+=======
+>>>>>>> origin/2.x
         <EuiFormRow
           id="reportSourceSavedSearchRecordLimit"
           label={i18n.translate(
             'opensearch.reports.reportSettingProps.form.savedSearchRecordLimit',
             { defaultMessage: 'Record limit' }
           )}
+<<<<<<< HEAD
+=======
+          helpText={
+            savedSearchRecordLimit > 10000 ? (
+              <EuiText color="warning" size="xs">
+                <EuiIcon color="warning" type="alert" size="s" /> Generating
+                very large reports can cause memory issues.
+              </EuiText>
+            ) : (
+              ''
+            )
+          }
+>>>>>>> origin/2.x
         >
           <EuiFieldNumber
             value={savedSearchRecordLimit}
