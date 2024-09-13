@@ -90,6 +90,7 @@
     "debug": "^4.3.4",
     "browserify-sign": "^4.2.2",
     "braces": "^3.0.3",
-    "micromatch": "^4.0.8"
+    "micromatch": "^4.0.8",
+    "path-to-regexp": "^1.9.0"
   }
 }
