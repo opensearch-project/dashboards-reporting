@@ -10,3 +10,4 @@ Compatible with OpenSearch and OpenSearch Dashboards Version 2.17.0
 ### Bug Fixes
 * [Bugfix] Update UI and handle new navigation ([#416](https://github.com/opensearch-project/dashboards-reporting/pull/416))
 * [Bug] Remove unused import  ([#419](https://github.com/opensearch-project/dashboards-reporting/pull/419))
+* Bump path-to-regexp to 1.9.0 ([#432](https://github.com/opensearch-project/dashboards-reporting/pull/432))
