@@ -26,7 +26,14 @@ export function registerAllPluginNavGroups(core: CoreSetup<ReportsDashboardsPlug
   core.chrome.navGroup.addNavLinksToGroup(DEFAULT_NAV_GROUPS.search, [
     {
       id: PLUGIN_ID,
-      category: DEFAULT_APP_CATEGORIES.analyzeSearch,
+      category: DEFAULT_APP_CATEGORIES.visualizeAndReport,
+      order: 300,
+    },
+  ]);
+  core.chrome.navGroup.addNavLinksToGroup(DEFAULT_NAV_GROUPS.all, [
+    {
+      id: PLUGIN_ID,
+      category: DEFAULT_APP_CATEGORIES.visualizeAndReport,
       order: 300,
     },
   ]);
