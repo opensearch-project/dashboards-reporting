@@ -23,6 +23,15 @@ import {
   EuiCompressedComboBox,
   EuiFormRow,
   EuiCallOut,
+  EuiFlexItem,
+  EuiFlexGroup,
+  EuiTextArea,
+  EuiPageContentBody,
+  EuiPageContent,
+  EuiHorizontalRule,
+  EuiPageHeader,
+  EuiTitle,
+  EuiFieldText,
 } from '@elastic/eui';
 import {
   REPORT_SOURCE_RADIOS,
