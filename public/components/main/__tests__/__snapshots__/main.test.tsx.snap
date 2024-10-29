@@ -73,7 +73,7 @@ exports[`<Main /> panel render component 1`] = `
     />
     <div>
       <div
-        class="euiFlexGroup euiFlexGroup--gutterMedium euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
+        class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
       >
         <div
           class="euiFlexItem euiSearchBar__searchHolder"
@@ -212,7 +212,7 @@ exports[`<Main /> panel render component 1`] = `
         </div>
       </div>
       <div
-        class="euiSpacer euiSpacer--l"
+        class="euiSpacer euiSpacer--m"
       />
       <div
         class="euiBasicTable"
@@ -1017,7 +1017,7 @@ exports[`<Main /> panel render component after create success 1`] = `
     />
     <div>
       <div
-        class="euiFlexGroup euiFlexGroup--gutterMedium euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
+        class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
       >
         <div
           class="euiFlexItem euiSearchBar__searchHolder"
@@ -1158,7 +1158,7 @@ exports[`<Main /> panel render component after create success 1`] = `
         </div>
       </div>
       <div
-        class="euiSpacer euiSpacer--l"
+        class="euiSpacer euiSpacer--m"
       />
       <div
         class="euiBasicTable"
@@ -2020,7 +2020,7 @@ exports[`<Main /> panel render component after delete success 1`] = `
     />
     <div>
       <div
-        class="euiFlexGroup euiFlexGroup--gutterMedium euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
+        class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
       >
         <div
           class="euiFlexItem euiSearchBar__searchHolder"
@@ -2161,7 +2161,7 @@ exports[`<Main /> panel render component after delete success 1`] = `
         </div>
       </div>
       <div
-        class="euiSpacer euiSpacer--l"
+        class="euiSpacer euiSpacer--m"
       />
       <div
         class="euiBasicTable"
@@ -3024,7 +3024,7 @@ exports[`<Main /> panel render component after edit success 1`] = `
     />
     <div>
       <div
-        class="euiFlexGroup euiFlexGroup--gutterMedium euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
+        class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
       >
         <div
           class="euiFlexItem euiSearchBar__searchHolder"
@@ -3165,7 +3165,7 @@ exports[`<Main /> panel render component after edit success 1`] = `
         </div>
       </div>
       <div
-        class="euiSpacer euiSpacer--l"
+        class="euiSpacer euiSpacer--m"
       />
       <div
         class="euiBasicTable"

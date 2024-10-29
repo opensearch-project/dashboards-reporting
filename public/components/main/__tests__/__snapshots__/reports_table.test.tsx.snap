@@ -3,7 +3,7 @@
 exports[`<ReportsTable /> panel render component 1`] = `
 <div>
   <div
-    class="euiFlexGroup euiFlexGroup--gutterMedium euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
+    class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
   >
     <div
       class="euiFlexItem euiSearchBar__searchHolder"
@@ -142,7 +142,7 @@ exports[`<ReportsTable /> panel render component 1`] = `
     </div>
   </div>
   <div
-    class="euiSpacer euiSpacer--l"
+    class="euiSpacer euiSpacer--m"
   />
   <div
     class="euiBasicTable"
@@ -628,7 +628,7 @@ exports[`<ReportsTable /> panel render component 1`] = `
 exports[`<ReportsTable /> panel render empty component 1`] = `
 <div>
   <div
-    class="euiFlexGroup euiFlexGroup--gutterMedium euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
+    class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
   >
     <div
       class="euiFlexItem euiSearchBar__searchHolder"
@@ -769,7 +769,7 @@ exports[`<ReportsTable /> panel render empty component 1`] = `
     </div>
   </div>
   <div
-    class="euiSpacer euiSpacer--l"
+    class="euiSpacer euiSpacer--m"
   />
   <div
     class="euiBasicTable"
