@@ -90,11 +90,21 @@ export const buildRequestBody = (
     .query(esbBoolQuery)
     .version(true);
 
-  if (report._source.sorting.length > 0) {
-    const sortings: Sort[] = report._source.sorting.map((element: string[]) => {
+  let sorting: string[][] = report._source.sorting;
+
+  // We expect a list of [field, order] pairs for sorting. In some migration paths, though it's not
+  // clear why, this list can get unnested in the case of one sort, [["field", "asc"]] becomes
+  // ["field", "asc"]. The true root cause remains a mystery, so we work around it.
+  // See: https://github.com/opensearch-project/dashboards-reporting/issues/371
+  if (sorting.length > 0 && typeof sorting[0] === "string") {
+    sorting = [(sorting as unknown as string[])];
+  }
+
+  if (sorting.length > 0) {
+    const sorts: Sort[] = sorting.map((element: string[]) => {
       return esb.sort(element[0], element[1]);
     });
-    esbSearchQuery.sorts(sortings);
+    esbSearchQuery.sorts(sorts);
   }
 
   // add selected fields to query
