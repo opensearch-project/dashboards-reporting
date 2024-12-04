@@ -19,7 +19,7 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "cron-validator": "^1.1.1",
-    "dompurify": "^2.4.1",
+    "dompurify": "^2.5.4",
     "elastic-builder": "^2.7.1",
     "enzyme-adapter-react-16": "^1.15.2",
     "html2canvas": "1.4.1",
@@ -86,6 +86,8 @@
     "browserify-sign": "^4.2.2",
     "debug": "^4.3.1",
     "**/@babel/traverse": "^7.23.2",
-    "braces": "^3.0.3"
+    "braces": "^3.0.3",
+    "path-to-regexp": "1.9.0",
+    "micromatch": "^4.0.8"
   }
 }
