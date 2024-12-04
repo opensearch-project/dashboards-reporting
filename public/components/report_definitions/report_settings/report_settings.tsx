@@ -18,7 +18,6 @@ import {
   EuiText,
   EuiSpacer,
   EuiRadioGroup,
-  EuiSelect,
   EuiTextArea,
   EuiCheckboxGroup,
   EuiComboBox,
@@ -29,7 +28,6 @@ import {
   HEADER_FOOTER_CHECKBOX,
   REPORT_SOURCE_TYPES,
 } from './report_settings_constants';
-import Showdown from 'showdown';
 import ReactMde from 'react-mde';
 import 'react-mde/lib/styles/css/react-mde-all.css';
 import {
