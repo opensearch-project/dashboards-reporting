@@ -315,7 +315,6 @@ function traverse(data, keys, result = {}) {
       
           value.forEach((item) => {
             Object.keys(item).forEach((subKey) => {
-              console.log(key, subKey);
               const newKey = `${key}.${subKey}`;
               if (!flattenedValues[newKey]) {
                 flattenedValues[newKey] = [];
