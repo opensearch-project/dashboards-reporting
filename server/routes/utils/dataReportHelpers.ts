@@ -307,6 +307,31 @@ function traverse(data, keys, result = {}) {
       Object.keys(data)
         .filter((sourceKey) => sourceKey.startsWith(key + '.'))
         .forEach((sourceKey) => (result[sourceKey] = data[sourceKey]));
+      Object.keys(data).forEach((key) => {
+        const value = data[key];
+      
+        if (Array.isArray(value)) {
+          const flattenedValues = {};
+      
+          value.forEach((item) => {
+            Object.keys(item).forEach((subKey) => {
+              console.log(key, subKey);
+              const newKey = `${key}.${subKey}`;
+              if (!flattenedValues[newKey]) {
+                flattenedValues[newKey] = [];
+              }
+              flattenedValues[newKey].push(item[subKey]);
+            });
+          });
+      
+          // Add flattened values to the result object, ensuring no duplicates
+          Object.keys(flattenedValues).forEach((newKey) => {
+            result[newKey] = flattenedValues[newKey];
+          });
+        } else {
+          result[key] = value;
+        }
+      });
     }
   });
   return result;
