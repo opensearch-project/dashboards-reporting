@@ -304,18 +304,15 @@ function traverse(data: any, keys: string[], result: { [key: string]: any } = {}
   keys.forEach((key) => {
     const value = _.get(data, key, undefined);
     
-    // If the key exists, directly assign the value to the result
     if (value !== undefined) {
       result[key] = value;
     } else {
-      // If the key doesn't exist directly, check for any partial matches in the flattened data
       Object.keys(data)
         .filter((sourceKey) => sourceKey.startsWith(key + '.'))
         .forEach((sourceKey) => {
           result[sourceKey] = data[sourceKey];
         });
       
-      // Check for arrays and flatten their contents into appropriate result keys
       Object.keys(data).forEach((dataKey) => {
         const arrayValue = data[dataKey];
         
@@ -341,7 +338,6 @@ function traverse(data: any, keys: string[], result: { [key: string]: any } = {}
       });
     }
   });
-  console.log(result);
   return result;
 }
 

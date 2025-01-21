@@ -937,12 +937,10 @@ describe('test create saved search report', () => {
         }
       ),
     ];
-    
     const client = mockOpenSearchClient(
       hits,
       '"geoip.country_iso_code", "geoip.city_name", "geoip.location"'
     );
-    
     const { dataUrl } = await createSavedSearchReport(
       input,
       client,
