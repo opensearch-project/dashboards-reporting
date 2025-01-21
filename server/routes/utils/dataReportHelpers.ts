@@ -297,42 +297,51 @@ export const convertToExcel = async (dataset: any) => {
 };
 
 //Return only the selected fields
-function traverse(data, keys, result = {}) {
+function traverse(data: any, keys: string[], result: { [key: string]: any } = {}) {
+  // Flatten the data if necessary (ensure all nested fields are at the top level)
   data = flattenHits(data);
-  const sourceKeys = Object.keys(data);
+
   keys.forEach((key) => {
     const value = _.get(data, key, undefined);
-    if (value !== undefined) result[key] = value;
-    else {
+    
+    // If the key exists, directly assign the value to the result
+    if (value !== undefined) {
+      result[key] = value;
+    } else {
+      // If the key doesn't exist directly, check for any partial matches in the flattened data
       Object.keys(data)
         .filter((sourceKey) => sourceKey.startsWith(key + '.'))
-        .forEach((sourceKey) => (result[sourceKey] = data[sourceKey]));
-      Object.keys(data).forEach((key) => {
-        const value = data[key];
+        .forEach((sourceKey) => {
+          result[sourceKey] = data[sourceKey];
+        });
       
-        if (Array.isArray(value)) {
-          const flattenedValues = {};
-      
-          value.forEach((item) => {
-            Object.keys(item).forEach((subKey) => {
-              const newKey = `${key}.${subKey}`;
-              if (!flattenedValues[newKey]) {
-                flattenedValues[newKey] = [];
-              }
-              flattenedValues[newKey].push(item[subKey]);
-            });
+      // Check for arrays and flatten their contents into appropriate result keys
+      Object.keys(data).forEach((dataKey) => {
+        const arrayValue = data[dataKey];
+        
+        if (Array.isArray(arrayValue)) {
+          const flattenedValues: { [key: string]: any[] } = {};
+
+          arrayValue.forEach((item) => {
+            if (typeof item === 'object' && item !== null) {
+              Object.keys(item).forEach((subKey) => {
+                const newKey = `${dataKey}.${subKey}`;
+                if (!flattenedValues[newKey]) {
+                  flattenedValues[newKey] = [];
+                }
+                flattenedValues[newKey].push(item[subKey]);
+              });
+            }
           });
       
-          // Add flattened values to the result object, ensuring no duplicates
           Object.keys(flattenedValues).forEach((newKey) => {
             result[newKey] = flattenedValues[newKey];
           });
-        } else {
-          result[key] = value;
         }
       });
     }
   });
+  console.log(result);
   return result;
 }
 

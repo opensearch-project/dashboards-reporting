@@ -909,7 +909,9 @@ describe('test create saved search report', () => {
           'geoip.location': { lon: -0.1, lat: 51.5 },
           customer_birth_date: '2023-04-26T04:34:32Z',
           order_date: '2023-04-26T04:34:32Z',
-          products: { created_on: '2023-04-26T04:34:32Z' },
+          products: [
+            { created_on: '2023-04-26T04:34:32Z' }
+          ],
         },
         {
           customer_birth_date: '2023-04-26T04:34:32Z',
@@ -924,7 +926,9 @@ describe('test create saved search report', () => {
           'geoip.location': { lon: -74, lat: 40.8 },
           customer_birth_date: '2023-04-26T04:34:32Z',
           order_date: '2023-04-26T04:34:32Z',
-          products: { created_on: '2023-04-26T04:34:32Z' },
+          products: [
+            { created_on: '2023-04-26T04:34:32Z' }
+          ],
         },
         {
           customer_birth_date: '2023-04-26T04:34:32Z',
@@ -933,10 +937,12 @@ describe('test create saved search report', () => {
         }
       ),
     ];
+    
     const client = mockOpenSearchClient(
       hits,
       '"geoip.country_iso_code", "geoip.city_name", "geoip.location"'
     );
+    
     const { dataUrl } = await createSavedSearchReport(
       input,
       client,
@@ -947,13 +953,15 @@ describe('test create saved search report', () => {
       mockLogger,
       mockTimezone
     );
-
+    
+    console.log(dataUrl, 'here');
+    
     expect(dataUrl).toEqual(
-      'geoip\\.country_iso_code,geoip\\.location\\.lon,geoip\\.location\\.lat,geoip\\.city_name\n' +
-        'GB,-0.1,51.5, \n' +
-        'US,-74,40.8,New York'
-    );
-  }, 20000);
+      'geoip\\.country_iso_code,products\\.created_on,geoip\\.location\\.lon,geoip\\.location\\.lat,geoip\\.city_name\n' +
+      'GB,"[""2023-04-26T04:34:32Z""]",-0.1,51.5, \n' +
+      'US,"[""2023-04-26T04:34:32Z""]",-74,40.8,New York'
+    );    
+  }, 20000);  
 
   test('create report by sanitizing data set for Excel', async () => {
     const hits = [
