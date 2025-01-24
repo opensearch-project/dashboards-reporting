@@ -60,7 +60,10 @@ describe('test create saved search report', () => {
   test('create report with expected file name', async () => {
     const hits: Array<{ _source: any }> = [];
     const client = mockOpenSearchClient(hits);
-    const { timeCreated: _timeCreated, fileName } = await createSavedSearchReport(
+    const {
+      timeCreated: _timeCreated,
+      fileName,
+    } = await createSavedSearchReport(
       input,
       client,
       mockDateFormat,
@@ -1493,8 +1496,10 @@ function mockOpenSearchClient(
           };
         case 'clearScroll':
           return null;
-          default:
-            throw new Error(`Fail due to unexpected function call on client: ${endpoint}`);
+        default:
+          throw new Error(
+            `Fail due to unexpected function call on client: ${endpoint}`
+          );
       }
     });
   return client;
