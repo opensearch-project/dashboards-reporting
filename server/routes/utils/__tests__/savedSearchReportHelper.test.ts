@@ -60,7 +60,7 @@ describe('test create saved search report', () => {
   test('create report with expected file name', async () => {
     const hits: Array<{ _source: any }> = [];
     const client = mockOpenSearchClient(hits);
-    const { timeCreated, fileName } = await createSavedSearchReport(
+    const { timeCreated: _timeCreated, fileName } = await createSavedSearchReport(
       input,
       client,
       mockDateFormat,
@@ -1212,7 +1212,7 @@ test('create report for data set contains null field value', async () => {
 
 test('create report for data set with metadata fields', async () => {
   const metadataFields = { _index: 'nameofindex', _id: 'someid' };
-  let hits = [
+  const hits = [
     hit(
       {
         category: 'c1',
@@ -1493,8 +1493,8 @@ function mockOpenSearchClient(
           };
         case 'clearScroll':
           return null;
-        default:
-          fail('Fail due to unexpected function call on client', endpoint);
+          default:
+            throw new Error(`Fail due to unexpected function call on client: ${endpoint}`);
       }
     });
   return client;
@@ -1572,9 +1572,9 @@ function mockIndexSettings() {
   `);
 }
 
-function hit(source_kv: any, fields_kv = {}) {
+function hit(sourceKv: any, fieldsKv = {}) {
   return {
-    _source: source_kv,
-    fields: fields_kv,
+    _source: sourceKv,
+    fields: fieldsKv,
   };
 }
