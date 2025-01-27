@@ -302,22 +302,18 @@ function traverse(data: any, keys: string[], result: { [key: string]: any } = {}
 
   keys.forEach((key) => {
     const value = _.get(data, key, undefined);
-    
+
     if (value !== undefined) {
       result[key] = value;
     } else {
-      Object.keys(data)
-        .filter((sourceKey) => sourceKey.startsWith(key + '.'))
-        .forEach((sourceKey) => {
-          result[sourceKey] = data[sourceKey];
-        });
-      
-      Object.keys(data).forEach((dataKey) => {
-        const arrayValue = data[dataKey];
-        
-        if (Array.isArray(arrayValue)) {
-          const flattenedValues: { [key: string]: any[] } = {};
+      const flattenedValues: { [key: string]: any[] } = {};
 
+      Object.keys(data).forEach((dataKey) => {
+        if (dataKey.startsWith(key + '.')) {
+          result[dataKey] = data[dataKey];
+        }
+        const arrayValue = data[dataKey];
+        if (Array.isArray(arrayValue)) {
           arrayValue.forEach((item) => {
             if (typeof item === 'object' && item !== null) {
               Object.keys(item).forEach((subKey) => {
@@ -329,14 +325,15 @@ function traverse(data: any, keys: string[], result: { [key: string]: any } = {}
               });
             }
           });
-      
-          Object.keys(flattenedValues).forEach((newKey) => {
-            result[newKey] = flattenedValues[newKey];
-          });
         }
+      });
+
+      Object.keys(flattenedValues).forEach((newKey) => {
+        result[newKey] = flattenedValues[newKey];
       });
     }
   });
+
   return result;
 }
 
