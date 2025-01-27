@@ -235,20 +235,19 @@ export const convertToCSV = async (dataset, csvSeparator) => {
   return convertedData;
 };
 
-function flattenHits(hits, result = {}, prefix = '') {
-  for (const [key, value] of Object.entries(hits)) {
-    if (!hits.hasOwnProperty(key)) continue;
+function flattenHits(hits: any, result: { [key: string]: any } = {}, prefix = '') {
+  Object.entries(hits).forEach(([key, value]) => {
     if (
-      value != null &&
+      value !== null &&
       typeof value === 'object' &&
       !Array.isArray(value) &&
       Object.keys(value).length > 0
     ) {
-      flattenHits(value, result, prefix + key + '.');
+      flattenHits(value, result, `${prefix}${key}.`);
     } else {
-      result[prefix.replace(/^_source\./, '') + key] = value;
+      result[`${prefix.replace(/^_source\./, '')}${key}`] = value;
     }
-  }
+  });
   return result;
 }
 

@@ -912,12 +912,22 @@ describe('test create saved search report', () => {
           'geoip.location': { lon: -0.1, lat: 51.5 },
           customer_birth_date: '2023-04-26T04:34:32Z',
           order_date: '2023-04-26T04:34:32Z',
-          products: [{ created_on: '2023-04-26T04:34:32Z' }],
+          products: [
+            { created_on: '2023-04-26T04:34:32Z', price: 100, category: 'Electronics' },
+            { created_on: '2023-05-01T08:22:00Z', price: 50, category: 'Books' },
+          ],
+          customer: {
+            name: 'John Doe',
+            address: { city: 'London', postcode: 'SW1A 1AA' },
+          },
         },
         {
           customer_birth_date: '2023-04-26T04:34:32Z',
           order_date: '2023-04-26T04:34:32Z',
           'products.created_on': '2023-04-26T04:34:32Z',
+          'customer.name': 'John Doe',
+          'customer.address.city': 'London',
+          'customer.address.postcode': 'SW1A 1AA',
         }
       ),
       hit(
@@ -926,20 +936,40 @@ describe('test create saved search report', () => {
           'geoip.city_name': 'New York',
           'geoip.location': { lon: -74, lat: 40.8 },
           customer_birth_date: '2023-04-26T04:34:32Z',
-          order_date: '2023-04-26T04:34:32Z',
-          products: [{ created_on: '2023-04-26T04:34:32Z' }],
+          products: [{ created_on: '2023-06-10T14:30:00Z', price: 150, category: 'Furniture' }],
+          customer: {
+            name: 'Jane Smith',
+            address: { city: 'New York', postcode: '10001' },
+          },
         },
         {
           customer_birth_date: '2023-04-26T04:34:32Z',
           order_date: '2023-04-26T04:34:32Z',
           'products.created_on': '2023-04-26T04:34:32Z',
+          'customer.name': 'Jane Smith',
+          'customer.address.city': 'New York',
+          'customer.address.postcode': '10001',
         }
       ),
+      hit(
+        {
+          'geoip.country_iso_code': 'CA',
+          'geoip.city_name': 'Toronto',
+          'geoip.location': { lon: -79.38, lat: 43.65 },
+          customer: {
+            name: 'Alice Johnson',
+            address: { city: 'Toronto', postcode: 'M5H 2N2' },
+          },
+        },
+        {}
+      ),
     ];
+  
     const client = mockOpenSearchClient(
       hits,
-      '"geoip.country_iso_code", "geoip.city_name", "geoip.location"'
+      '"geoip.country_iso_code", "geoip.city_name", "geoip.location", "customer.name", "customer.address.city", "customer.address.postcode"'
     );
+  
     const { dataUrl } = await createSavedSearchReport(
       input,
       client,
@@ -950,10 +980,14 @@ describe('test create saved search report', () => {
       mockLogger,
       mockTimezone
     );
+  
+    console.log(dataUrl);
+  
     expect(dataUrl).toEqual(
-      'geoip\\.country_iso_code,products\\.created_on,geoip\\.location\\.lon,geoip\\.location\\.lat,geoip\\.city_name\n' +
-        'GB,"[""2023-04-26T04:34:32Z""]",-0.1,51.5, \n' +
-        'US,"[""2023-04-26T04:34:32Z""]",-74,40.8,New York'
+      'geoip\\.country_iso_code,products\\.created_on,products\\.price,products\\.category,geoip\\.location\\.lon,geoip\\.location\\.lat,customer\\.name,customer\\.address\\.city,customer\\.address\\.postcode,geoip\\.city_name\n' +
+        'GB,"[""2023-04-26T04:34:32Z"",""2023-05-01T08:22:00Z""]","[100,50]","[""Electronics"",""Books""]",-0.1,51.5,John Doe,London,SW1A 1AA, \n' +
+        'US,"[""2023-06-10T14:30:00Z""]",[150],"[""Furniture""]",-74,40.8,Jane Smith,New York,10001,New York\n' +
+        'CA, , , ,-79.38,43.65,Alice Johnson,Toronto,M5H 2N2,Toronto'
     );
   }, 20000);
 
