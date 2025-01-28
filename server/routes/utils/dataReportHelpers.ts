@@ -235,20 +235,19 @@ export const convertToCSV = async (dataset, csvSeparator) => {
   return convertedData;
 };
 
-function flattenHits(hits, result = {}, prefix = '') {
-  for (const [key, value] of Object.entries(hits)) {
-    if (!hits.hasOwnProperty(key)) continue;
+function flattenHits(hits: any, result: { [key: string]: any } = {}, prefix = '') {
+  Object.entries(hits).forEach(([key, value]) => {
     if (
-      value != null &&
+      value !== null &&
       typeof value === 'object' &&
       !Array.isArray(value) &&
       Object.keys(value).length > 0
     ) {
-      flattenHits(value, result, prefix + key + '.');
+      flattenHits(value, result, `${prefix}${key}.`);
     } else {
-      result[prefix.replace(/^_source\./, '') + key] = value;
+      result[`${prefix.replace(/^_source\./, '')}${key}`] = value;
     }
-  }
+  });
   return result;
 }
 
@@ -297,18 +296,44 @@ export const convertToExcel = async (dataset: any) => {
 };
 
 //Return only the selected fields
-function traverse(data, keys, result = {}) {
+function traverse(data: any, keys: string[], result: { [key: string]: any } = {}) {
+  // Flatten the data if necessary (ensure all nested fields are at the top level)
   data = flattenHits(data);
-  const sourceKeys = Object.keys(data);
+
   keys.forEach((key) => {
     const value = _.get(data, key, undefined);
-    if (value !== undefined) result[key] = value;
-    else {
-      Object.keys(data)
-        .filter((sourceKey) => sourceKey.startsWith(key + '.'))
-        .forEach((sourceKey) => (result[sourceKey] = data[sourceKey]));
+
+    if (value !== undefined) {
+      result[key] = value;
+    } else {
+      const flattenedValues: { [key: string]: any[] } = {};
+
+      Object.keys(data).forEach((dataKey) => {
+        if (dataKey.startsWith(key + '.')) {
+          result[dataKey] = data[dataKey];
+        }
+        const arrayValue = data[dataKey];
+        if (Array.isArray(arrayValue)) {
+          arrayValue.forEach((item) => {
+            if (typeof item === 'object' && item !== null) {
+              Object.keys(item).forEach((subKey) => {
+                const newKey = `${dataKey}.${subKey}`;
+                if (!flattenedValues[newKey]) {
+                  flattenedValues[newKey] = [];
+                }
+                flattenedValues[newKey].push(item[subKey]);
+              });
+            }
+          });
+        }
+      });
+
+      Object.keys(flattenedValues).forEach((newKey) => {
+        result[newKey] = flattenedValues[newKey];
+      });
     }
   });
+
   return result;
 }
 
