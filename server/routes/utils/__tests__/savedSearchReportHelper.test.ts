@@ -1507,17 +1507,17 @@ test('create report for deeply nested inventory data set with escaped field name
           categories: {
             subcategories: [
               {
-                items: [{ price: 100 }, { price: 200 }]
+                items: [{ price: 100 }, { price: 200 }],
               },
               {
-                items: [{ price: 300 }, { price: 400 }]
-              }
-            ]
-          }
-        }
+                items: [{ price: 300 }, { price: 400 }],
+              },
+            ],
+          },
+        },
       },
       {
-        'inventory.categories.subcategories.items': `[[{"price":100},{"price":200}],[{"price":300},{"price":400}]]`
+        'inventory.categories.subcategories.items': `[[{"price":100},{"price":200}],[{"price":300},{"price":400}]]`,
       }
     ),
     hit(
@@ -1526,17 +1526,17 @@ test('create report for deeply nested inventory data set with escaped field name
           categories: {
             subcategories: [
               {
-                items: [{ price: 500 }, { price: 600 }]
+                items: [{ price: 500 }, { price: 600 }],
               },
               {
-                items: [{ price: 700 }, { price: 800 }]
-              }
-            ]
-          }
-        }
+                items: [{ price: 700 }, { price: 800 }],
+              },
+            ],
+          },
+        },
       },
       {
-        'inventory.categories.subcategories.items': `[[{"price":500},{"price":600}],[{"price":700},{"price":800}]]`
+        'inventory.categories.subcategories.items': `[[{"price":500},{"price":600}],[{"price":700},{"price":800}]]`,
       }
     ),
     hit(
@@ -1545,16 +1545,16 @@ test('create report for deeply nested inventory data set with escaped field name
           categories: {
             subcategories: [
               {
-                items: [{ price: 900 }]
-              }
-            ]
-          }
-        }
+                items: [{ price: 900 }],
+              },
+            ],
+          },
+        },
       },
       {
-        'inventory.categories.subcategories.items': `[[{"price":900}]]`
+        'inventory.categories.subcategories.items': `[[{"price":900}]]`,
       }
-    )
+    ),
   ];
 
   const client = mockOpenSearchClient(hits);
