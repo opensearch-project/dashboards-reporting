@@ -55,7 +55,7 @@
     "@types/set-interval-async": "^1.0.0",
     "@types/showdown": "^2.0.6",
     "babel-jest": "^27.5.1",
-    "cypress": "^13.6.0",
+    "cypress": "^12.17.4",
     "elastic-builder": "^2.7.1",
     "eslint-plugin-babel": "^5.3.1",
     "eslint-plugin-no-unsanitized": "^3.0.2",
