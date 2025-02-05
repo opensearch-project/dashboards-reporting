@@ -35,6 +35,7 @@ interface visualReportParams {
   header: string;
   footer: string;
   time_duration: string;
+  timeRangeParams: timeRangeParams;
 }
 
 interface dataReportParams {
@@ -42,6 +43,7 @@ interface dataReportParams {
   base_url: string;
   report_format: string;
   time_duration: string;
+  timeRangeParams: timeRangeParams;
 }
 interface triggerType {
   trigger_type: string;

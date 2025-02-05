@@ -40,6 +40,8 @@ const input: BackendReportInstanceType = {
         fileFormat: BACKEND_REPORT_FORMAT.pdf,
         header: '<p>test header</p>',
         footer: '<p>fake footer</p>',
+        timeFrom: "2020-11-11T09:52:00.000Z",
+        timeTo: "2020-11-11T10:22:00.000Z"
       },
       trigger: {
         triggerType: BACKEND_TRIGGER_TYPE.cronSchedule,
@@ -85,6 +87,8 @@ const output = {
         origin: 'http://localhost:5601',
         window_width: 1600,
         window_height: 800,
+        timeFrom: "2020-11-11T09:52:00.000Z",
+        timeTo: "2020-11-11T10:22:00.000Z"
       },
     },
     trigger: {

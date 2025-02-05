@@ -46,6 +46,8 @@ export const uiToBackendReportDefinition = (
         footer,
         limit,
         origin,
+        timeFrom: timeFrom,
+        timeTo: timeTo,
       },
     },
     trigger,
@@ -67,6 +69,8 @@ export const uiToBackendReportDefinition = (
       ...(limit && { limit: limit }),
       ...(header && { header: header }),
       ...(footer && { footer: footer }),
+      ...(timeFrom && { timeFrom: timeFrom }),
+      ...(timeTo && { timeTo: timeTo }),
     },
     trigger: getBackendTrigger(trigger),
     ...(getBackendDelivery(delivery) && {
