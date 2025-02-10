@@ -203,7 +203,7 @@ export function CreateReport(props: {
     setToasts(toasts.filter((toast: any) => toast.id !== removedToast.id));
   };
 
-  const NewTimeRange = {
+  const newTimeRange = {
     timeFrom: new Date(),
     timeTo: new Date(),
   };
