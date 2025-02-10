@@ -312,7 +312,7 @@ export function CreateReport(props: {
           editDefinitionId={''} // empty string since we are coming from create
           reportDefinitionRequest={createReportDefinitionRequest}
           httpClientProps={props.httpClient}
-          timeRange={NewTimeRange}
+          timeRange={newTimeRange}
           showSettingsReportNameError={showSettingsReportNameError}
           settingsReportNameErrorMessage={settingsReportNameErrorMessage}
           showSettingsReportSourceError={showSettingsReportSourceError}
@@ -341,7 +341,7 @@ export function CreateReport(props: {
               onClick={() =>
                 createNewReportDefinition(
                   createReportDefinitionRequest,
-                  NewTimeRange
+                  newTimeRange
                 )
               }
               id={'createNewReportDefinition'}
