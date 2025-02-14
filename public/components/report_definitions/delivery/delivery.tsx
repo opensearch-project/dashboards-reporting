@@ -25,7 +25,7 @@ import {
   testMessageFailureMessage,
 } from './delivery_constants';
 import 'react-mde/lib/styles/css/react-mde-all.css';
-import { reportDefinitionParams } from '../create/create_report_definition';
+import { ReportDefinitionParams } from '../create/create_report_definition';
 import ReactMDE from 'react-mde';
 import { converter } from '../utils';
 import { getAvailableNotificationsChannels } from '../../main/main_utils';
@@ -41,7 +41,7 @@ export let includeDelivery = false;
 export type ReportDeliveryProps = {
   edit: boolean;
   editDefinitionId: string;
-  reportDefinitionRequest: reportDefinitionParams;
+  reportDefinitionRequest: ReportDefinitionParams;
   httpClientProps: any;
   showDeliveryChannelError: boolean;
   deliveryChannelError: string;

@@ -110,7 +110,7 @@ export const backendToUiReportDefinition = (
       name,
       isEnabled,
       source: { type: sourceType, description, id: sourceId, origin },
-      format: { fileFormat, duration, header, footer, limit },
+      format: { fileFormat, duration, header, footer, limit, timeFrom: timeFrom, timeTo: timeTo },
       trigger: { triggerType, schedule },
       delivery,
     },
@@ -131,7 +131,9 @@ export const backendToUiReportDefinition = (
               fileFormat,
               duration,
               baseUrl,
-              origin
+              origin,
+              timeFrom,
+              timeTo,
             )
           : getVisualReportCoreParams(
               fileFormat,
@@ -139,7 +141,9 @@ export const backendToUiReportDefinition = (
               footer,
               duration,
               baseUrl,
-              origin
+              origin,
+              timeFrom,
+              timeTo,
             ),
     },
     trigger: getUiTriggerParams(
@@ -187,7 +191,9 @@ const getVisualReportCoreParams = (
   footer: string = '',
   duration: string,
   baseUrl: string,
-  origin: string
+  origin: string,
+  timeFrom: string,
+  timeTo: string
 ): VisualReportSchemaType => {
   let res: VisualReportSchemaType = {
     base_url: baseUrl,
@@ -196,6 +202,8 @@ const getVisualReportCoreParams = (
     footer: footer,
     time_duration: duration,
     origin: origin,
+    timeFrom: timeFrom,
+    timeTo: timeTo,
   };
   return res;
 };
@@ -234,7 +242,9 @@ const getDataReportCoreParams = (
   fileFormat: BACKEND_REPORT_FORMAT,
   duration: string,
   baseUrl: string,
-  origin: string
+  origin: string,
+  timeFrom: string,
+  timeTo: string
 ): DataReportSchemaType => {
   let res: DataReportSchemaType = {
     base_url: baseUrl,
@@ -243,6 +253,8 @@ const getDataReportCoreParams = (
     time_duration: duration,
     saved_search_id: sourceId,
     origin: origin,
+    timeFrom: timeFrom,
+    timeTo: timeTo,
   };
   return res;
 };

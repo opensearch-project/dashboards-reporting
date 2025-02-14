@@ -29,6 +29,8 @@ const createReportDefinitionInput: ReportDefinitionSchemaType = {
       report_format: FORMAT.pdf,
       time_duration: 'PT5M',
       origin: 'http://localhost:5601',
+      timeFrom: '2012-07-29T09:23:55.300Z',
+      timeTo:'2020-07-29T06:43:55.301Z'
     },
   },
   delivery: {
@@ -61,6 +63,8 @@ const createReportDefinitionNotebookLegacyInput: ReportDefinitionSchemaType = {
       report_format: FORMAT.pdf,
       time_duration: 'PT5M',
       origin: 'http://localhost:5601',
+      timeFrom: '2012-07-29T09:23:55.300Z',
+      timeTo:'2020-07-29T06:43:55.301Z'
     },
   },
   delivery: {
@@ -86,6 +90,8 @@ const createReportDefinitionNotebookInput: ReportDefinitionSchemaType = {
       report_format: FORMAT.pdf,
       time_duration: 'PT5M',
       origin: 'http://localhost:5601',
+      timeFrom: '2012-07-29T09:23:55.300Z',
+      timeTo:'2020-07-29T06:43:55.301Z'
     },
   },
   delivery: {
@@ -111,6 +117,8 @@ const createReportDefinitionNotebookPostNavBarInput: ReportDefinitionSchemaType 
       report_format: FORMAT.pdf,
       time_duration: 'PT5M',
       origin: 'http://localhost:5601',
+      timeFrom: '2012-07-29T09:23:55.300Z',
+      timeTo:'2020-07-29T06:43:55.301Z'
     },
   },
   delivery: {
