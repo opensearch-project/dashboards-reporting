@@ -29,6 +29,8 @@ const input = {
         limit: 10000,
         excel: true,
         origin: 'http://localhost:5601',
+        timeFrom : '2012-07-29T09:23:55.300Z',
+        timeTo: '2020-07-29T06:43:55.301Z',
       },
     },
     delivery: {

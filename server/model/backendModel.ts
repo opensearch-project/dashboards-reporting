@@ -36,6 +36,8 @@ export type BackendReportDefinitionType = {
   format: {
     duration: string;
     fileFormat: BACKEND_REPORT_FORMAT;
+    timeFrom: string;
+    timeTo: string;
     limit?: number;
     header?: string;
     footer?: string;

@@ -60,9 +60,13 @@ export const definitionInputValidation = async (
 
   // if time range is invalid
   const nowDate = new Date(moment.now());
-  if (timeRange.timeFrom > timeRange.timeTo || timeRange.timeTo > nowDate) {
+  if (timeRange.timeFrom > timeRange.timeTo || timeRange.timeTo > nowDate) {  
     setShowTimeRangeError(true);
     error = true;
+  }
+  else{
+    metadata.report_params.core_params.timeFrom = timeRange.timeFrom;
+    metadata.report_params.core_params.timeTo = timeRange.timeTo;
   }
 
   // if cron based and cron input is invalid

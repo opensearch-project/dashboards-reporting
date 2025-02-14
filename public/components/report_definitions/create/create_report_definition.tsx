@@ -23,33 +23,35 @@ import {
 } from '../../utils/utils';
 import { definitionInputValidation } from '../utils/utils';
 
-interface reportParamsType {
+interface ReportParamsType {
   report_name: string;
   report_source: string;
   description: string;
-  core_params: visualReportParams | dataReportParams;
+  core_params: VisualReportParams | DataReportParams;
 }
-interface visualReportParams {
+interface VisualReportParams {
   base_url: string;
   report_format: string;
   header: string;
   footer: string;
   time_duration: string;
+  timeRangeParams: TimeRangeParams;
 }
 
-interface dataReportParams {
+interface DataReportParams {
   saved_search_id: number;
   base_url: string;
   report_format: string;
   time_duration: string;
+  timeRangeParams: TimeRangeParams;
 }
-interface triggerType {
+interface TriggerType {
   trigger_type: string;
   trigger_params?: any;
 }
 
-interface deliveryType {
-  configIds: Array<string>;
+interface DeliveryType {
+  configIds: string[];
   title: string;
   textDescription: string;
   htmlDescription: string;
@@ -77,21 +79,26 @@ interface Cron {
   };
 }
 
-export interface reportDefinitionParams {
-  report_params: reportParamsType;
-  delivery: deliveryType;
-  trigger: triggerType;
+export interface ReportDefinitionParams {
+  report_params: ReportParamsType;
+  delivery: DeliveryType;
+  trigger: TriggerType;
 }
 
-export interface timeRangeParams {
+export interface TimeRangeParams {
   timeFrom: Date;
   timeTo: Date;
 }
 
-export function CreateReport(props: { [x: string]: any; setBreadcrumbs?: any; httpClient?: any; chrome: any }) {
+export function CreateReport(props: {
+  [x: string]: any;
+  setBreadcrumbs?: any;
+  httpClient?: any;
+  chrome: any;
+}) {
   const { chrome } = props;
 
-  let createReportDefinitionRequest: reportDefinitionParams = {
+  let createReportDefinitionRequest: ReportDefinitionParams = {
     report_params: {
       report_name: '',
       report_source: '',
@@ -106,7 +113,7 @@ export function CreateReport(props: { [x: string]: any; setBreadcrumbs?: any; ht
       configIds: [],
       title: '',
       textDescription: '',
-      htmlDescription: ''
+      htmlDescription: '',
     },
     trigger: {
       trigger_type: '',
@@ -192,36 +199,18 @@ export function CreateReport(props: { [x: string]: any; setBreadcrumbs?: any; ht
     addErrorOnCreateToastHandler(errorType);
   };
 
-  const addInvalidTimeRangeToastHandler = () => {
-    const errorToast = {
-      title: i18n.translate(
-        'opensearch.reports.createReportDefinition.error.invalidTimeRange',
-        { defaultMessage: 'Invalid time range selected.' }
-      ),
-      color: 'danger',
-      iconType: 'alert',
-      id: 'timeRangeErrorToast',
-    };
-    // @ts-ignore
-    setToasts(toasts.concat(errorToast));
-  };
-
-  const handleInvalidTimeRangeToast = () => {
-    addInvalidTimeRangeToastHandler();
-  };
-
-  const removeToast = (removedToast: { id: string; }) => {
+  const removeToast = (removedToast: { id: string }) => {
     setToasts(toasts.filter((toast: any) => toast.id !== removedToast.id));
   };
 
-  let timeRange = {
+  const newTimeRange = {
     timeFrom: new Date(),
     timeTo: new Date(),
   };
 
   const createNewReportDefinition = async (
-    metadata: reportDefinitionParams,
-    timeRange: timeRangeParams
+    metadata: ReportDefinitionParams,
+    timeRange: TimeRangeParams
   ) => {
     const { httpClient } = props;
     //TODO: need better handle
@@ -243,7 +232,7 @@ export function CreateReport(props: { [x: string]: any; setBreadcrumbs?: any; ht
       setShowTriggerIntervalNaNError,
       timeRange,
       setShowTimeRangeError,
-      setShowCronError,
+      setShowCronError
     ).then((response) => {
       error = response;
     });
@@ -259,16 +248,20 @@ export function CreateReport(props: { [x: string]: any; setBreadcrumbs?: any; ht
             'Content-Type': 'application/json',
           },
         })
-        .then(async (resp: { scheduler_response: { reportDefinitionId: string; }; }) => {
-          //TODO: consider handle the on demand report generation from server side instead
-          if (metadata.trigger.trigger_type === 'On demand') {
-            const reportDefinitionId =
-              resp.scheduler_response.reportDefinitionId;
-            generateReportFromDefinitionId(reportDefinitionId, httpClient);
+        .then(
+          async (resp: {
+            scheduler_response: { reportDefinitionId: string };
+          }) => {
+            //TODO: consider handle the on demand report generation from server side instead
+            if (metadata.trigger.trigger_type === 'On demand') {
+              const reportDefinitionId =
+                resp.scheduler_response.reportDefinitionId;
+              generateReportFromDefinitionId(reportDefinitionId, httpClient);
+            }
+            window.location.assign(`reports-dashboards#/create=success`);
           }
-          window.location.assign(`reports-dashboards#/create=success`);
-        })
-        .catch((error: {body: { statusCode: number; }; }) => {
+        )
+        .catch((error: { body: { statusCode: number } }) => {
           console.log('error in creating report definition: ' + error);
           if (error.body.statusCode === 403) {
             handleErrorOnCreateToast('permissions');
@@ -304,18 +297,22 @@ export function CreateReport(props: { [x: string]: any; setBreadcrumbs?: any; ht
       <EuiPageBody>
         <EuiTitle>
           <h1>
-            {!getNavGroupEnabled && i18n.translate('opensearch.reports.createReportDefinition.title', {
-              defaultMessage: 'Create report definition',
-            })}
+            {!getNavGroupEnabled &&
+              i18n.translate(
+                'opensearch.reports.createReportDefinition.title',
+                {
+                  defaultMessage: 'Create report definition',
+                }
+              )}
           </h1>
         </EuiTitle>
-        {!getNavGroupEnabled && <EuiSpacer size='s' />}
+        {!getNavGroupEnabled && <EuiSpacer size="s" />}
         <ReportSettings
           edit={false}
           editDefinitionId={''} // empty string since we are coming from create
           reportDefinitionRequest={createReportDefinitionRequest}
-          httpClientProps={props['httpClient']}
-          timeRange={timeRange}
+          httpClientProps={props.httpClient}
+          timeRange={newTimeRange}
           showSettingsReportNameError={showSettingsReportNameError}
           settingsReportNameErrorMessage={settingsReportNameErrorMessage}
           showSettingsReportSourceError={showSettingsReportSourceError}
@@ -344,7 +341,7 @@ export function CreateReport(props: { [x: string]: any; setBreadcrumbs?: any; ht
               onClick={() =>
                 createNewReportDefinition(
                   createReportDefinitionRequest,
-                  timeRange
+                  newTimeRange
                 )
               }
               id={'createNewReportDefinition'}
