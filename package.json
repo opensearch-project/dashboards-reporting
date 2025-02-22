@@ -29,7 +29,7 @@
     "jquery": "^3.5.0",
     "jsdom": "^21.1.2",
     "json-2-csv": "^3.20.0",
-    "jspdf": "^2.5.1",
+    "jspdf": "^3.0.0",
     "react-addons-test-utils": "^15.6.2",
     "react-id-generator": "^3.0.1",
     "react-markdown": "^4.3.1",
