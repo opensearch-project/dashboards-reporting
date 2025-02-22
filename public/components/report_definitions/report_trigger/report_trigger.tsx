@@ -21,7 +21,7 @@ import {
   EuiFieldNumber,
 } from '@elastic/eui';
 import moment, { Moment } from 'moment';
-import { reportDefinitionParams } from '../create/create_report_definition';
+import { ReportDefinitionParams } from '../create/create_report_definition';
 import {
   SCHEDULE_RECURRING_OPTIONS,
   INTERVAL_TIME_PERIODS,
@@ -36,7 +36,7 @@ import { TimezoneSelect } from './timezone';
 type ReportTriggerProps = {
   edit: boolean;
   editDefinitionId: string;
-  reportDefinitionRequest: reportDefinitionParams;
+  reportDefinitionRequest: ReportDefinitionParams;
   httpClientProps: any;
   showTriggerIntervalNaNError: boolean;
   showCronError: boolean;

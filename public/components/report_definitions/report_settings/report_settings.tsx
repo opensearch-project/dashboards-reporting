@@ -35,8 +35,8 @@ import Showdown from 'showdown';
 import ReactMde from 'react-mde';
 import 'react-mde/lib/styles/css/react-mde-all.css';
 import {
-  reportDefinitionParams,
-  timeRangeParams,
+  ReportDefinitionParams,
+  TimeRangeParams,
 } from '../create/create_report_definition';
 import {
   parseInContextUrl,
@@ -59,9 +59,9 @@ import { ReportTrigger } from '../report_trigger';
 type ReportSettingProps = {
   edit: boolean;
   editDefinitionId: string;
-  reportDefinitionRequest: reportDefinitionParams;
+  reportDefinitionRequest: ReportDefinitionParams;
   httpClientProps: any;
-  timeRange: timeRangeParams;
+  timeRange: TimeRangeParams;
   showSettingsReportNameError: boolean;
   settingsReportNameErrorMessage: string;
   showSettingsReportSourceError: boolean;
