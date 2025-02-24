@@ -20,7 +20,6 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "cron-validator": "^1.1.1",
-    "dompurify": "^3.0.11",
     "elastic-builder": "^2.7.1",
     "enzyme-adapter-react-16": "^1.15.5",
     "exceljs": "^4.4.0",
@@ -29,7 +28,7 @@
     "jquery": "^3.5.0",
     "jsdom": "18.0.0",
     "json-2-csv": "^3.20.0",
-    "jspdf": "^2.5.1",
+    "jspdf": "^3.0.0",
     "react-addons-test-utils": "^15.6.2",
     "react-id-generator": "^3.0.1",
     "react-markdown": "^4.3.1",
@@ -45,7 +44,6 @@
   },
   "devDependencies": {
     "@elastic/eslint-import-resolver-kibana": "link:../../packages/osd-eslint-import-resolver-opensearch-dashboards",
-    "@types/dompurify": "^3.0.5",
     "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/jsdom": "^16.2.3",
     "@types/react": "^16.14.23",
