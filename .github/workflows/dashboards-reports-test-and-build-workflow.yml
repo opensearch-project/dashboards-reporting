@@ -5,9 +5,8 @@ on: [pull_request, push]
 env:
   PLUGIN_NAME: reportsDashboards
   ARTIFACT_NAME: reports-dashboards
-  OPENSEARCH_VERSION: 'main'
-  OPENSEARCH_PLUGIN_VERSION: 3.0.0.0
-
+  OPENSEARCH_DASHBOARDS_VERSION: 'main'
+  OPENSEARCH_PLUGIN_VERSION: '3.0.0.0-alpha1'
 
 jobs:
   Get-CI-Image-Tag:
@@ -30,12 +29,12 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: opensearch-project/Opensearch-Dashboards
-          ref: ${{ env.OPENSEARCH_VERSION }}
+          ref: ${{ env.OPENSEARCH_DASHBOARDS_VERSION }}
           path: OpenSearch-Dashboards
 
-      - name: Checkout Plugin	
+      - name: Checkout Plugin
         uses: actions/checkout@v2
-        with:	
+        with:
           path: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
 
       - name: OpenSearch Dashboards Plugin Bootstrap and test
@@ -74,7 +73,6 @@ jobs:
   windows-build:
     runs-on: windows-latest
     steps:
-
       # Enable longer filenames for windows
       - name: Enable longer filenames
         run: git config --system core.longpaths true
@@ -83,7 +81,7 @@ jobs:
         uses: actions/checkout@v1
         with:
           repository: opensearch-project/Opensearch-Dashboards
-          ref: ${{ env.OPENSEARCH_VERSION }}
+          ref: ${{ env.OPENSEARCH_DASHBOARDS_VERSION }}
           path: OpenSearch-Dashboards
 
       - name: Setup Node
@@ -103,9 +101,9 @@ jobs:
       - run: node -v
       - run: yarn -v
 
-      - name: Checkout Plugin	
+      - name: Checkout Plugin
         uses: actions/checkout@v1
-        with:	
+        with:
           path: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
 
       - name: OpenSearch Dashboards Plugin Bootstrap
@@ -127,7 +125,6 @@ jobs:
           yarn build
           mv ./build/*.zip ./build/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}.zip
 
-      
       - name: Upload Artifact For Windows
         uses: actions/upload-artifact@v4.4.0
         with:
@@ -141,7 +138,7 @@ jobs:
         uses: actions/checkout@v1
         with:
           repository: opensearch-project/Opensearch-Dashboards
-          ref: ${{ env.OPENSEARCH_VERSION }}
+          ref: ${{ env.OPENSEARCH_DASHBOARDS_VERSION }}
           path: OpenSearch-Dashboards
 
       - name: Setup Node
@@ -161,9 +158,9 @@ jobs:
       - run: node -v
       - run: yarn -v
 
-      - name: Checkout Plugin	
+      - name: Checkout Plugin
         uses: actions/checkout@v1
-        with:	
+        with:
           path: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
 
       - name: OpenSearch Dashboards Plugin Bootstrap
