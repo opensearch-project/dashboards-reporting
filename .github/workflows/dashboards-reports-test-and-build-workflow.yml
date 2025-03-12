@@ -121,15 +121,15 @@ jobs:
         with:
           timeout_minutes: 30
           max_attempts: 3
-          command: cd OpenSearch-Dashboards && yarn test
+          command: cd OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }} && yarn test
 
       - name: Build Artifact
         run: |
-          cd OpenSearch-Dashboards && yarn build
+          cd ./OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }} && yarn build
           mv ./build/*.zip ./build/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}-${{ runner.os }}.zip
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4.4.0
         with:
           name: dashboards-reports-${{ runner.os }}
-          path: ./OpenSearch-Dashboards/build/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}-${{ runner.os }}.zip
+          path: ./OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}/build/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}-${{ runner.os }}.zip
