@@ -87,7 +87,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version-file: '../OpenSearch-Dashboards/.nvmrc'
+          node-version-file: 'OpenSearch-Dashboards/.nvmrc'
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install Yarn
