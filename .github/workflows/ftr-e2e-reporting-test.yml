@@ -6,7 +6,8 @@ env:
   CI: 1
   # avoid warnings like "tput: No value for $TERM and no -T specified"
   TERM: xterm
-  OPENSEARCH_DASHBOARDS_VERSION: 'main'
+  OPENSEARCH_DASHBOARDS_VERSION: 'feature/node-2x'
+  OPENSEARCH_DASHBOARDS_FTR_VERSION: 'main'
   OPENSEARCH_VERSION: '3.0.0-alpha1'
   OPENSEARCH_PLUGIN_VERSION: '3.0.0.0-alpha1'
   PLUGIN_NAME: dashboards-reporting
@@ -79,7 +80,7 @@ jobs:
         shell: bash
 
       - name: Checkout OpenSearch Dashboards
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           path: OpenSearch-Dashboards
           repository: opensearch-project/OpenSearch-Dashboards
@@ -90,7 +91,7 @@ jobs:
             test
 
       - name: Checkout Dashboards Reporting Plugin in OpenSearch Dashboards Plugins Dir
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           path: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
 
@@ -144,11 +145,11 @@ jobs:
           path: OpenSearch-Dashboards/dashboard.log
 
       - name: Checkout Dashboards Functioanl Test Repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           path: opensearch-dashboards-functional-test
           repository: opensearch-project/opensearch-dashboards-functional-test
-          ref: ${{ env.OPENSEARCH_DASHBOARDS_VERSION }}
+          ref: ${{ env.OPENSEARCH_DASHBOARDS_FTR_VERSION }}
           fetch-depth: 0
 
       - name: Install Cypress
