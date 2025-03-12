@@ -94,7 +94,7 @@ jobs:
         # Need to use bash to avoid having a windows/linux specific step
         shell: bash
         run: |
-          YARN_VERSION=$(node -p "require('../OpenSearch-Dashboards/package.json').engines.yarn")
+          YARN_VERSION=$(node -p "require('OpenSearch-Dashboards/package.json').engines.yarn")
           echo "Installing yarn@$YARN_VERSION"
           npm i -g yarn@$YARN_VERSION
 
@@ -144,14 +144,14 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version-file: '../OpenSearch-Dashboards/.nvmrc'
+          node-version-file: 'OpenSearch-Dashboards/.nvmrc'
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install Yarn
         # Need to use bash to avoid having a windows/linux specific step
         shell: bash
         run: |
-          YARN_VERSION=$(node -p "require('../OpenSearch-Dashboards/package.json').engines.yarn")
+          YARN_VERSION=$(node -p "require('OpenSearch-Dashboards/package.json').engines.yarn")
           echo "Installing yarn@$YARN_VERSION"
           npm i -g yarn@$YARN_VERSION
 
