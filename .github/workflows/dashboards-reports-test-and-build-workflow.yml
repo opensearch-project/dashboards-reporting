@@ -94,7 +94,7 @@ jobs:
         # Need to use bash to avoid having a windows/linux specific step
         shell: bash
         run: |
-          YARN_VERSION=$(node -p "require('OpenSearch-Dashboards/package.json').engines.yarn")
+          YARN_VERSION=$(node -p "require('./OpenSearch-Dashboards/package.json').engines.yarn")
           echo "Installing yarn@$YARN_VERSION"
           npm i -g yarn@$YARN_VERSION
 
@@ -151,7 +151,7 @@ jobs:
         # Need to use bash to avoid having a windows/linux specific step
         shell: bash
         run: |
-          YARN_VERSION=$(node -p "require('OpenSearch-Dashboards/package.json').engines.yarn")
+          YARN_VERSION=$(node -p "require('./OpenSearch-Dashboards/package.json').engines.yarn")
           echo "Installing yarn@$YARN_VERSION"
           npm i -g yarn@$YARN_VERSION
 
