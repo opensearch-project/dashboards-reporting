@@ -55,7 +55,7 @@ OpenSearch Dashboards Reports allows ‘Report Owner’ (engineers, including bu
 [cypress-test-badge]: https://img.shields.io/badge/Cypress%20tests-in%20progress-yellow
 [cypress-test-link]: https://github.com/opensearch-project/opensearch-build/issues/1124
 [cypress-code-badge]: https://img.shields.io/badge/Cypress%20code-blue
-[cypress-code-link]: https://github.com/opensearch-project/dashboards-reporting/tree/main/dashboards-reporting/.cypress/integration
+[cypress-code-link]: https://github.com/opensearch-project/dashboards-reporting/tree/main/.cypress
 [bwc-tests-badge]: https://img.shields.io/badge/BWC%20tests-in%20progress-yellow
 [bwc-tests-link]: https://github.com/opensearch-project/dashboards-reporting/pull/244/files
 [good-first-badge]: https://img.shields.io/github/issues/opensearch-project/dashboards-reporting/good%20first%20issue.svg
@@ -82,10 +82,6 @@ We welcome you to get involved in development, documentation, testing the OpenSe
 ## Setup & Build
 
 Please see [developer guide](DEVELOPER_GUIDE.md).
-
-## Notifications Integration
-
-OpenSearch Dashboards Reports integration with [Notifications](https://github.com/opensearch-project/notifications) is currently in progress. Tracking [here](https://github.com/opensearch-project/dashboards-reports/issues/72)
 
 ## Code of Conduct
 

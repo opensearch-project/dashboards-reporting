@@ -79,18 +79,15 @@ jobs:
         shell: bash
 
       - name: Checkout OpenSearch Dashboards
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           path: OpenSearch-Dashboards
           repository: opensearch-project/OpenSearch-Dashboards
           ref: ${{ env.OPENSEARCH_DASHBOARDS_VERSION }}
           fetch-depth: 0
-          filter: |
-            cypress
-            test
 
       - name: Checkout Dashboards Reporting Plugin in OpenSearch Dashboards Plugins Dir
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           path: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
 
@@ -144,7 +141,7 @@ jobs:
           path: OpenSearch-Dashboards/dashboard.log
 
       - name: Checkout Dashboards Functioanl Test Repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           path: opensearch-dashboards-functional-test
           repository: opensearch-project/opensearch-dashboards-functional-test
