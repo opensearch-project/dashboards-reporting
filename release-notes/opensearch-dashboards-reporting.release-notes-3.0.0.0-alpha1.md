@@ -1,6 +1,6 @@
-## Version 3.0.0.0-aplha1 Release Notes
+## Version 3.0.0.0-alpha1 Release Notes
 
-Compatible with OpenSearch and OpenSearch Dashboards Version 3.0.0-aplha1
+Compatible with OpenSearch and OpenSearch Dashboards Version 3.0.0-alpha1
 
 ### Bug Fixes
 * [Bug]Support for date range in report generation ([#524] (https://github.com/opensearch-project/dashboards-reporting/pull/524))
