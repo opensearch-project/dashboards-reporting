@@ -43,7 +43,6 @@
     "tesseract.js": "^4.0.2"
   },
   "devDependencies": {
-    "@elastic/eslint-import-resolver-kibana": "link:../../packages/osd-eslint-import-resolver-opensearch-dashboards",
     "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/jsdom": "^16.2.3",
     "@types/react": "^16.14.23",
