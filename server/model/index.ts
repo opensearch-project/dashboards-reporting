@@ -42,20 +42,20 @@ export const dataReportSchema = schema.object({
       }
     },
   }),
-  timeFrom: schema.string({
+  timeFrom: schema.maybe(schema.string({
     validate(value) {
       if (isNaN(Date.parse(value))) {
         return `invalid timeFrom: ${value}`;
       }
     },
-  }),
-  timeTo: schema.string({
+  })),
+  timeTo: schema.maybe(schema.string({
     validate(value) {
       if (isNaN(Date.parse(value))) {
         return `invalid timeTo: ${value}`;
       }
     },
-  }),
+  })),
   report_format: schema.oneOf([schema.literal(FORMAT.csv), schema.literal(FORMAT.xlsx)]),
   limit: schema.number({ defaultValue: DEFAULT_MAX_SIZE, min: 0 }),
   excel: schema.boolean({ defaultValue: true }),
@@ -87,20 +87,20 @@ export const visualReportSchema = schema.object({
       }
     },
   }),
-  timeFrom: schema.string({
+  timeFrom: schema.maybe(schema.string({
     validate(value) {
       if (isNaN(Date.parse(value))) {
         return `invalid timeFrom: ${value}`;
       }
     },
-  }),
-  timeTo: schema.string({
+  })),
+  timeTo: schema.maybe(schema.string({
     validate(value) {
       if (isNaN(Date.parse(value))) {
         return `invalid timeTo: ${value}`;
       }
     },
-  }),
+  })),
 });
 
 export const intervalSchema = schema.object({

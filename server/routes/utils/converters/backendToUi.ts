@@ -192,8 +192,8 @@ const getVisualReportCoreParams = (
   duration: string,
   baseUrl: string,
   origin: string,
-  timeFrom: string,
-  timeTo: string
+  timeFrom: string | null = null,
+  timeTo: string | null = null
 ): VisualReportSchemaType => {
   let res: VisualReportSchemaType = {
     base_url: baseUrl,
@@ -202,8 +202,8 @@ const getVisualReportCoreParams = (
     footer: footer,
     time_duration: duration,
     origin: origin,
-    timeFrom: timeFrom,
-    timeTo: timeTo,
+    timeFrom: timeFrom ?? undefined,
+    timeTo: timeTo ?? undefined,
   };
   return res;
 };
@@ -243,8 +243,8 @@ const getDataReportCoreParams = (
   duration: string,
   baseUrl: string,
   origin: string,
-  timeFrom: string,
-  timeTo: string
+  timeFrom: string | null = null,
+  timeTo: string | null = null
 ): DataReportSchemaType => {
   let res: DataReportSchemaType = {
     base_url: baseUrl,
@@ -253,8 +253,8 @@ const getDataReportCoreParams = (
     time_duration: duration,
     saved_search_id: sourceId,
     origin: origin,
-    timeFrom: timeFrom,
-    timeTo: timeTo,
+    timeFrom: timeFrom ?? undefined,
+    timeTo: timeTo ?? undefined,
   };
   return res;
 };
