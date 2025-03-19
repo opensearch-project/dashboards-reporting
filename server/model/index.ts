@@ -42,21 +42,28 @@ export const dataReportSchema = schema.object({
       }
     },
   }),
-  timeFrom: schema.maybe(schema.string({
-    validate(value) {
-      if (isNaN(Date.parse(value))) {
-        return `invalid timeFrom: ${value}`;
-      }
-    },
-  })),
-  timeTo: schema.maybe(schema.string({
-    validate(value) {
-      if (isNaN(Date.parse(value))) {
-        return `invalid timeTo: ${value}`;
-      }
-    },
-  })),
-  report_format: schema.oneOf([schema.literal(FORMAT.csv), schema.literal(FORMAT.xlsx)]),
+  timeFrom: schema.maybe(
+    schema.string({
+      validate(value) {
+        if (isNaN(Date.parse(value))) {
+          return `invalid timeFrom: ${value}`;
+        }
+      },
+    })
+  ),
+  timeTo: schema.maybe(
+    schema.string({
+      validate(value) {
+        if (isNaN(Date.parse(value))) {
+          return `invalid timeTo: ${value}`;
+        }
+      },
+    })
+  ),
+  report_format: schema.oneOf([
+    schema.literal(FORMAT.csv),
+    schema.literal(FORMAT.xlsx),
+  ]),
   limit: schema.number({ defaultValue: DEFAULT_MAX_SIZE, min: 0 }),
   excel: schema.boolean({ defaultValue: true }),
 });
@@ -87,20 +94,24 @@ export const visualReportSchema = schema.object({
       }
     },
   }),
-  timeFrom: schema.maybe(schema.string({
-    validate(value) {
-      if (isNaN(Date.parse(value))) {
-        return `invalid timeFrom: ${value}`;
-      }
-    },
-  })),
-  timeTo: schema.maybe(schema.string({
-    validate(value) {
-      if (isNaN(Date.parse(value))) {
-        return `invalid timeTo: ${value}`;
-      }
-    },
-  })),
+  timeFrom: schema.maybe(
+    schema.string({
+      validate(value) {
+        if (isNaN(Date.parse(value))) {
+          return `invalid timeFrom: ${value}`;
+        }
+      },
+    })
+  ),
+  timeTo: schema.maybe(
+    schema.string({
+      validate(value) {
+        if (isNaN(Date.parse(value))) {
+          return `invalid timeTo: ${value}`;
+        }
+      },
+    })
+  ),
 });
 
 export const intervalSchema = schema.object({
@@ -196,7 +207,7 @@ export const deliverySchema = schema.object({
   configIds: schema.arrayOf(schema.string()),
   title: schema.string(),
   textDescription: schema.string(),
-  htmlDescription: schema.string()
+  htmlDescription: schema.string(),
 });
 
 export const reportParamsSchema = schema.object({
@@ -211,7 +222,7 @@ export const reportParamsSchema = schema.object({
     schema.literal(REPORT_TYPE.dashboard),
     schema.literal(REPORT_TYPE.visualization),
     schema.literal(REPORT_TYPE.savedSearch),
-    schema.literal(REPORT_TYPE.notebook)
+    schema.literal(REPORT_TYPE.notebook),
   ]),
   description: schema.string(),
   core_params: schema.conditional(
@@ -266,7 +277,9 @@ export type ReportSchemaType = TypeOf<typeof reportSchema>;
 export type DataReportSchemaType = TypeOf<typeof dataReportSchema>;
 export type VisualReportSchemaType = TypeOf<typeof visualReportSchema>;
 export type ChannelSchemaType = TypeOf<typeof channelSchema>;
-export type OpenSearchDashboardsUserSchemaType = TypeOf<typeof opensearchDashboardsUserSchema>;
+export type OpenSearchDashboardsUserSchemaType = TypeOf<
+  typeof opensearchDashboardsUserSchema
+>;
 export type DeliverySchemaType = TypeOf<typeof deliverySchema>;
 export type TriggerSchemaType = TypeOf<typeof triggerSchema>;
 export type ScheduleSchemaType = TypeOf<typeof scheduleSchema>;
