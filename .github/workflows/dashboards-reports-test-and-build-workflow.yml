@@ -6,7 +6,7 @@ env:
   PLUGIN_NAME: reportsDashboards
   ARTIFACT_NAME: reports-dashboards
   OPENSEARCH_DASHBOARDS_VERSION: 'main'
-  OPENSEARCH_PLUGIN_VERSION: '3.0.0.0-alpha1'
+  OPENSEARCH_PLUGIN_VERSION: '3.0.0.0-beta1'
 
 jobs:
   Get-CI-Image-Tag:
