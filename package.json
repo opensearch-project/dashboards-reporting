@@ -88,6 +88,8 @@
     "browserify-sign": "^4.2.2",
     "braces": "^3.0.3",
     "micromatch": "^4.0.8",
-    "**/eslint/cross-spawn": "^7.0.5"
+    "**/eslint/cross-spawn": "^7.0.5",
+    "@babel/helpers": "^7.26.10",
+    "@babel/runtime": "^7.26.10"
   }
 }
