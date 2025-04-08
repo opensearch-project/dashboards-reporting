@@ -140,12 +140,6 @@ jobs:
           name: dashboard.logs
           path: OpenSearch-Dashboards/dashboard.log
 
-      - name: Install Cypress
-        run: |
-          npx cypress install
-        shell: bash
-        working-directory: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
-
       - name: Get Cypress version
         id: cypress_version
         run: |
