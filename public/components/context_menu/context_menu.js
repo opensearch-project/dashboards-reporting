@@ -21,6 +21,7 @@ import {
   contextMenuViewReports,
   displayLoadingModal,
   getTimeFieldsFromUrl,
+  positionReportPopover,
   replaceQueryURL,
 } from './context_menu_helpers';
 import {
@@ -150,6 +151,9 @@ $(function () {
           ? popoverMenuDiscover(getUuidFromUrl())
           : popoverMenu(getUuidFromUrl());
         popoverScreen[0].appendChild(reportPopover.children[0]);
+
+        positionReportPopover();
+      
         $('#reportPopover').show();
       } catch (e) {
         console.log('error displaying menu:', e);
