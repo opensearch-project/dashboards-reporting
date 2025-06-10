@@ -361,7 +361,7 @@ function flattenNestedObject(obj: any, parentKey: string, result: { [key: string
           result[`${newKey}[${index}]`] = item;
         }
       });
-    } else if (typeof value === 'object' && value !== null) {
+    } else if (value !== null && typeof value === 'object') {
       flattenNestedObject(value, newKey, result);
     } else {
       result[newKey] = value;
