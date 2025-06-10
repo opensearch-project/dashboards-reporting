@@ -309,22 +309,28 @@ function traverse(data: any, keys: string[], result: { [key: string]: any } = {}
       const flattenedValues: { [key: string]: any[] } = {};
 
       Object.keys(data).forEach((dataKey) => {
-        if (dataKey.startsWith(key + '.')) {
+        const normalizedDataKey = dataKey.replace(/^_source\./, '').replace(/\[\d+\]/g, '');
+        const normalizedKey = key.replace(/\[\d+\]/g, '');
+
+        if (normalizedDataKey === normalizedKey || normalizedDataKey.startsWith(normalizedKey + '.')) {
           result[dataKey] = data[dataKey];
         }
+
         const arrayValue = data[dataKey];
         if (Array.isArray(arrayValue)) {
-          arrayValue.forEach((item) => {
+          arrayValue.forEach((item, index) => {
             if (typeof item === 'object' && item !== null) {
-              Object.keys(item).forEach((subKey) => {
-                const newKey = `${dataKey}.${subKey}`;
-                if (!flattenedValues[newKey]) {
-                  flattenedValues[newKey] = [];
-                }
-                flattenedValues[newKey].push(item[subKey]);
-              });
+              flattenNestedObject(item, `${dataKey}[${index}]`, flattenedValues);
+            } else {
+              const newKey = `${dataKey}[${index}]`;
+              if (!flattenedValues[newKey]) {
+                flattenedValues[newKey] = [];
+              }
+              flattenedValues[newKey].push(item);
             }
           });
+        } else if (typeof arrayValue === 'object' && arrayValue !== null) {
+          flattenNestedObject(arrayValue, dataKey, flattenedValues);
         }
       });
 
@@ -335,6 +341,32 @@ function traverse(data: any, keys: string[], result: { [key: string]: any } = {}
   });
 
   return result;
+}
+
+/**
+ * Recursively flatten nested objects and arrays.
+ * @param obj The object to flatten.
+ * @param parentKey The parent key for the current level.
+ * @param result The result object to store flattened key-value pairs.
+ */
+function flattenNestedObject(obj: any, parentKey: string, result: { [key: string]: any }) {
+  Object.entries(obj).forEach(([key, value]) => {
+    const newKey = `${parentKey}.${key}`;
+
+    if (Array.isArray(value)) {
+      value.forEach((item, index) => {
+        if (typeof item === 'object' && item !== null) {
+          flattenNestedObject(item, `${newKey}[${index}]`, result);
+        } else {
+          result[`${newKey}[${index}]`] = item;
+        }
+      });
+    } else if (typeof value === 'object' && value !== null) {
+      flattenNestedObject(value, newKey, result);
+    } else {
+      result[newKey] = value;
+    }
+  });
 }
 
 /**

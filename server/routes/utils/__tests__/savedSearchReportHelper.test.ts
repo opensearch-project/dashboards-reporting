@@ -932,9 +932,15 @@ describe('test create saved search report', () => {
           },
         },
         {
-          customer_birth_date: '2023-04-26T04:34:32Z',
-          order_date: '2023-04-26T04:34:32Z',
-          'products.created_on': '2023-04-26T04:34:32Z',
+          'geoip.country_iso_code': 'GB',
+          'geoip.location.lon': -0.1,
+          'geoip.location.lat': 51.5,
+          'products[0].created_on': '2023-04-26T04:34:32Z',
+          'products[0].price': 100,
+          'products[0].category': 'Electronics',
+          'products[1].created_on': '2023-05-01T08:22:00Z',
+          'products[1].price': 50,
+          'products[1].category': 'Books',
           'customer.name': 'John Doe',
           'customer.address.city': 'London',
           'customer.address.postcode': 'SW1A 1AA',
@@ -959,31 +965,23 @@ describe('test create saved search report', () => {
           },
         },
         {
-          customer_birth_date: '2023-04-26T04:34:32Z',
-          order_date: '2023-04-26T04:34:32Z',
-          'products.created_on': '2023-04-26T04:34:32Z',
+          'geoip.country_iso_code': 'US',
+          'geoip.city_name': 'New York',
+          'geoip.location.lon': -74,
+          'geoip.location.lat': 40.8,
+          'products[0].created_on': '2023-06-10T14:30:00Z',
+          'products[0].price': 150,
+          'products[0].category': 'Furniture',
           'customer.name': 'Jane Smith',
           'customer.address.city': 'New York',
           'customer.address.postcode': '10001',
         }
       ),
-      hit(
-        {
-          'geoip.country_iso_code': 'CA',
-          'geoip.city_name': 'Toronto',
-          'geoip.location': { lon: -79.38, lat: 43.65 },
-          customer: {
-            name: 'Alice Johnson',
-            address: { city: 'Toronto', postcode: 'M5H 2N2' },
-          },
-        },
-        {}
-      ),
     ];
 
     const client = mockOpenSearchClient(
       hits,
-      '"geoip.country_iso_code", "geoip.city_name", "geoip.location", "customer.name", "customer.address.city", "customer.address.postcode"'
+      '"geoip.country_iso_code", "geoip.city_name", "geoip.location.lon", "geoip.location.lat", "customer.name", "customer.address.city", "customer.address.postcode", "products[0].created_on", "products[0].price", "products[0].category", "products[1].created_on", "products[1].price", "products[1].category"'
     );
 
     const { dataUrl } = await createSavedSearchReport(
@@ -998,10 +996,9 @@ describe('test create saved search report', () => {
     );
 
     expect(dataUrl).toEqual(
-      'geoip\\.country_iso_code,products\\.created_on,products\\.price,products\\.category,geoip\\.location\\.lon,geoip\\.location\\.lat,customer\\.name,customer\\.address\\.city,customer\\.address\\.postcode,geoip\\.city_name\n' +
-        'GB,"[""2023-04-26T04:34:32Z"",""2023-05-01T08:22:00Z""]","[100,50]","[""Electronics"",""Books""]",-0.1,51.5,John Doe,London,SW1A 1AA, \n' +
-        'US,"[""2023-06-10T14:30:00Z""]",[150],"[""Furniture""]",-74,40.8,Jane Smith,New York,10001,New York\n' +
-        'CA, , , ,-79.38,43.65,Alice Johnson,Toronto,M5H 2N2,Toronto'
+      'geoip\\.country_iso_code,products[0]\\.created_on,products[0]\\.price,products[0]\\.category,products[1]\\.created_on,products[1]\\.price,products[1]\\.category,geoip\\.location\\.lon,geoip\\.location\\.lat,customer\\.name,customer\\.address\\.city,customer\\.address\\.postcode,geoip\\.city_name\n' +
+        'GB,2023-04-26T04:34:32Z,100,Electronics,2023-05-01T08:22:00Z,50,Books,-0.1,51.5,John Doe,London,SW1A 1AA, \n' +
+        'US,2023-06-10T14:30:00Z,150,Furniture, , , ,-74,40.8,Jane Smith,New York,10001,New York'
     );
   }, 20000);
 
@@ -1519,7 +1516,10 @@ test('create report for deeply nested inventory data set with escaped field name
         },
       },
       {
-        'inventory.categories.subcategories.items': `[[{"price":100},{"price":200}],[{"price":300},{"price":400}]]`,
+        'inventory.categories.subcategories[0].items[0].price': 100,
+        'inventory.categories.subcategories[0].items[1].price': 200,
+        'inventory.categories.subcategories[1].items[0].price': 300,
+        'inventory.categories.subcategories[1].items[1].price': 400,
       }
     ),
     hit(
@@ -1538,7 +1538,10 @@ test('create report for deeply nested inventory data set with escaped field name
         },
       },
       {
-        'inventory.categories.subcategories.items': `[[{"price":500},{"price":600}],[{"price":700},{"price":800}]]`,
+        'inventory.categories.subcategories[0].items[0].price': 500,
+        'inventory.categories.subcategories[0].items[1].price': 600,
+        'inventory.categories.subcategories[1].items[0].price': 700,
+        'inventory.categories.subcategories[1].items[1].price': 800,
       }
     ),
     hit(
@@ -1554,7 +1557,7 @@ test('create report for deeply nested inventory data set with escaped field name
         },
       },
       {
-        'inventory.categories.subcategories.items': `[[{"price":900}]]`,
+        'inventory.categories.subcategories[0].items[0].price': 900,
       }
     ),
   ];
@@ -1573,10 +1576,10 @@ test('create report for deeply nested inventory data set with escaped field name
   );
 
   expect(dataUrl).toEqual(
-    'inventory\\.categories\\.subcategories\\.items\n' +
-      '"[[{""price"":100},{""price"":200}],[{""price"":300},{""price"":400}]]"\n' +
-      '"[[{""price"":500},{""price"":600}],[{""price"":700},{""price"":800}]]"\n' +
-      '"[[{""price"":900}]]"'
+    'inventory\\.categories\\.subcategories[0]\\.items[0]\\.price|inventory\\.categories\\.subcategories[0]\\.items[1]\\.price|inventory\\.categories\\.subcategories[1]\\.items[0]\\.price|inventory\\.categories\\.subcategories[1]\\.items[1]\\.price\n' +
+      '100|200|300|400\n' +
+      '500|600|700|800\n' +
+      '900| | | '
   );
 }, 20000);
 
