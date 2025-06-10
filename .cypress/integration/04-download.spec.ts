@@ -31,7 +31,7 @@ describe('Cypress', () => {
     cy.get('#downloadReport > span:nth-child(1) > span:nth-child(1)').click({ force: true });
 
     // download PDF
-    cy.get('#generatePDF > span:nth-child(1) > span:nth-child(2)').click({ force: true });
+    cy.get('#generatePDF').click({ force: true });
 
     cy.get('#reportGenerationProgressModal');
   });

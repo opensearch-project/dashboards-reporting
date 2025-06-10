@@ -139,3 +139,28 @@ export const replaceQueryURL = (pageUrl) => {
   );
   return queryUrl;
 };
+
+// Dynamic position function to call after inserting the popover
+export const positionReportPopover = (triggerElementId = 'downloadReport') => {
+  const popover = document.getElementById('reportPopover');
+  const trigger = document.getElementById(triggerElementId);
+
+  if (popover && trigger) {
+    const rect = trigger.getBoundingClientRect();
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+    popover.style.top = `${rect.bottom + scrollTop + 16}px`;
+    popover.style.left = `${rect.left}px`;
+    popover.style.right = 'auto';
+
+    const arrow = popover.querySelector('.euiPopover__panelArrow');
+    if (arrow) {
+      const popoverWidth = popover.offsetWidth;
+      const triggerCenter = rect.left + rect.width / 2;
+      const popoverLeft = rect.left;
+      const arrowOffset = triggerCenter - popoverLeft - 8;
+
+      arrow.setAttribute('style', `left: ${arrowOffset}px; top: 0px;`);
+    }
+  }
+};
