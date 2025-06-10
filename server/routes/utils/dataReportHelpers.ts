@@ -96,8 +96,8 @@ export const buildRequestBody = (
   // clear why, this list can get unnested in the case of one sort, [["field", "asc"]] becomes
   // ["field", "asc"]. The true root cause remains a mystery, so we work around it.
   // See: https://github.com/opensearch-project/dashboards-reporting/issues/371
-  if (sorting.length > 0 && typeof sorting[0] === "string") {
-    sorting = [(sorting as unknown as string[])];
+  if (sorting.length > 0 && typeof sorting[0] === 'string') {
+    sorting = [(sorting as unknown) as string[]];
   }
 
   if (sorting.length > 0) {
@@ -156,10 +156,7 @@ export const getOpenSearchData = (
                 .utc(dateValue)
                 .tz(timezone)
                 .format(dateFormat);
-            } else if (
-              dateValue.length !== 0 &&
-              dateValue instanceof Array
-            ) {
+            } else if (dateValue.length !== 0 && dateValue instanceof Array) {
               fieldDateValue.forEach((element, index) => {
                 data._source[keys][index] = moment
                   .utc(element)
@@ -177,10 +174,7 @@ export const getOpenSearchData = (
               keys.push(
                 moment.utc(fieldDateValue).tz(timezone).format(dateFormat)
               );
-            } else if (
-              dateValue.length !== 0 &&
-              dateValue instanceof Array
-            ) {
+            } else if (dateValue.length !== 0 && dateValue instanceof Array) {
               let tempArray: string[] = [];
               fieldDateValue.forEach((index) => {
                 tempArray.push(
@@ -246,7 +240,11 @@ function flattenHits(
     if (value === null || typeof value !== 'object' || value instanceof Date) {
       result[prefix.replace(/^_source\./, '') + key] = value;
     } else if (Array.isArray(value)) {
-      if (value.every(v => typeof v === 'object' && v !== null && !Array.isArray(v))) {
+      if (
+        value.every(
+          (v) => typeof v === 'object' && v !== null && !Array.isArray(v)
+        )
+      ) {
         const grouped: { [field: string]: string[] } = {};
 
         for (const obj of value) {
@@ -260,7 +258,9 @@ function flattenHits(
         }
 
         for (const [flatKey, flatVals] of Object.entries(grouped)) {
-          result[prefix.replace(/^_source\./, '') + flatKey] = flatVals.join(', ');
+          result[prefix.replace(/^_source\./, '') + flatKey] = flatVals.join(
+            ', '
+          );
         }
       } else {
         result[prefix.replace(/^_source\./, '') + key] = value.join(', ');
@@ -332,11 +332,7 @@ function traverse(
     }
 
     for (const flatKey of Object.keys(flatData)) {
-      if (
-        flatKey === key ||
-        flatKey.startsWith(key + '.') ||
-        flatKey.startsWith(key + '[')
-      ) {
+      if (flatKey === key || flatKey.startsWith(key + '.')) {
         result[flatKey] = flatData[flatKey];
       }
     }
