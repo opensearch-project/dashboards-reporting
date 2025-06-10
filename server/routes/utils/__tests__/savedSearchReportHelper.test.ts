@@ -935,12 +935,9 @@ describe('test create saved search report', () => {
           'geoip.country_iso_code': 'GB',
           'geoip.location.lon': -0.1,
           'geoip.location.lat': 51.5,
-          'products[0].created_on': '2023-04-26T04:34:32Z',
-          'products[0].price': 100,
-          'products[0].category': 'Electronics',
-          'products[1].created_on': '2023-05-01T08:22:00Z',
-          'products[1].price': 50,
-          'products[1].category': 'Books',
+          'products.created_on': '2023-04-26T04:34:32Z, 2023-05-01T08:22:00Z',
+          'products.price': '100, 50',
+          'products.category': 'Electronics, Books',
           'customer.name': 'John Doe',
           'customer.address.city': 'London',
           'customer.address.postcode': 'SW1A 1AA',
@@ -969,9 +966,9 @@ describe('test create saved search report', () => {
           'geoip.city_name': 'New York',
           'geoip.location.lon': -74,
           'geoip.location.lat': 40.8,
-          'products[0].created_on': '2023-06-10T14:30:00Z',
-          'products[0].price': 150,
-          'products[0].category': 'Furniture',
+          'products.created_on': '2023-06-10T14:30:00Z',
+          'products.price': '150',
+          'products.category': 'Furniture',
           'customer.name': 'Jane Smith',
           'customer.address.city': 'New York',
           'customer.address.postcode': '10001',
@@ -981,7 +978,7 @@ describe('test create saved search report', () => {
 
     const client = mockOpenSearchClient(
       hits,
-      '"geoip.country_iso_code", "geoip.city_name", "geoip.location.lon", "geoip.location.lat", "customer.name", "customer.address.city", "customer.address.postcode", "products[0].created_on", "products[0].price", "products[0].category", "products[1].created_on", "products[1].price", "products[1].category"'
+      '"geoip.country_iso_code", "geoip.city_name", "geoip.location.lon", "geoip.location.lat", "customer.name", "customer.address.city", "customer.address.postcode", "products.created_on", "products.price", "products.category"'
     );
 
     const { dataUrl } = await createSavedSearchReport(
@@ -996,9 +993,9 @@ describe('test create saved search report', () => {
     );
 
     expect(dataUrl).toEqual(
-      'geoip\\.country_iso_code,products[0]\\.created_on,products[0]\\.price,products[0]\\.category,products[1]\\.created_on,products[1]\\.price,products[1]\\.category,geoip\\.location\\.lon,geoip\\.location\\.lat,customer\\.name,customer\\.address\\.city,customer\\.address\\.postcode,geoip\\.city_name\n' +
-        'GB,2023-04-26T04:34:32Z,100,Electronics,2023-05-01T08:22:00Z,50,Books,-0.1,51.5,John Doe,London,SW1A 1AA, \n' +
-        'US,2023-06-10T14:30:00Z,150,Furniture, , , ,-74,40.8,Jane Smith,New York,10001,New York'
+      'geoip\\.country_iso_code,geoip\\.location\\.lon,geoip\\.location\\.lat,customer\\.name,customer\\.address\\.city,customer\\.address\\.postcode,products\\.created_on,products\\.price,products\\.category,geoip\\.city_name\n' +
+        'GB,-0.1,51.5,John Doe,London,SW1A 1AA,"2023-04-26T04:34:32Z, 2023-05-01T08:22:00Z","100, 50","Electronics, Books", \n' +
+        'US,-74,40.8,Jane Smith,New York,10001,2023-06-10T14:30:00Z,150,Furniture,New York'
     );
   }, 20000);
 
@@ -1409,9 +1406,9 @@ test('create report with Etc/GMT-2 Timezone', async () => {
 
   expect(dataUrl).toEqual(
     'category,customer_gender,order_date\n' +
-      'c1,Ma,[]\n' +
-      'c2,le,"[""12/16/2021 4:04:55.000 pm""]"\n' +
-      'c3,he,"[""12/17/2021 4:04:55.000 pm"",""12/18/2021 4:04:55.000 pm""]"\n' +
+      'c1,Ma, \n' +
+      'c2,le,12/16/2021 4:04:55.000 pm\n' +
+      'c3,he,"12/17/2021 4:04:55.000 pm, 12/18/2021 4:04:55.000 pm"\n' +
       'c4,te,12/19/2021 4:04:55.000 pm'
   );
 }, 20000);
@@ -1491,9 +1488,9 @@ test('create report with empty/one/multiple(list) date values', async () => {
   );
   expect(dataUrl).toEqual(
     'category,customer_gender,order_date\n' +
-      'c1,Ma,[]\n' +
-      'c2,le,"[""12/16/2021 2:04:55.000 pm""]"\n' +
-      'c3,he,"[""12/17/2021 2:04:55.000 pm"",""12/18/2021 2:04:55.000 pm""]"\n' +
+      'c1,Ma, \n' +
+      'c2,le,12/16/2021 2:04:55.000 pm\n' +
+      'c3,he,"12/17/2021 2:04:55.000 pm, 12/18/2021 2:04:55.000 pm"\n' +
       'c4,te,12/19/2021 2:04:55.000 pm'
   );
 }, 20000);
@@ -1516,10 +1513,7 @@ test('create report for deeply nested inventory data set with escaped field name
         },
       },
       {
-        'inventory.categories.subcategories[0].items[0].price': 100,
-        'inventory.categories.subcategories[0].items[1].price': 200,
-        'inventory.categories.subcategories[1].items[0].price': 300,
-        'inventory.categories.subcategories[1].items[1].price': 400,
+        'inventory.categories.subcategories.items.price': '100, 200, 300, 400',
       }
     ),
     hit(
@@ -1538,10 +1532,7 @@ test('create report for deeply nested inventory data set with escaped field name
         },
       },
       {
-        'inventory.categories.subcategories[0].items[0].price': 500,
-        'inventory.categories.subcategories[0].items[1].price': 600,
-        'inventory.categories.subcategories[1].items[0].price': 700,
-        'inventory.categories.subcategories[1].items[1].price': 800,
+        'inventory.categories.subcategories.items.price': '500, 600, 700, 800',
       }
     ),
     hit(
@@ -1557,13 +1548,15 @@ test('create report for deeply nested inventory data set with escaped field name
         },
       },
       {
-        'inventory.categories.subcategories[0].items[0].price': 900,
+        'inventory.categories.subcategories.items.price': '900',
       }
     ),
   ];
 
-  const client = mockOpenSearchClient(hits);
-
+  const client = mockOpenSearchClient(
+    hits,
+    '"inventory.categories.subcategories.items.price"'
+  );
   const { dataUrl } = await createSavedSearchReport(
     input,
     client,
@@ -1576,10 +1569,10 @@ test('create report for deeply nested inventory data set with escaped field name
   );
 
   expect(dataUrl).toEqual(
-    'inventory\\.categories\\.subcategories[0]\\.items[0]\\.price|inventory\\.categories\\.subcategories[0]\\.items[1]\\.price|inventory\\.categories\\.subcategories[1]\\.items[0]\\.price|inventory\\.categories\\.subcategories[1]\\.items[1]\\.price\n' +
-      '100|200|300|400\n' +
-      '500|600|700|800\n' +
-      '900| | | '
+    'inventory\\.categories\\.subcategories\\.items\\.price\n' +
+      '100, 200, 300, 400\n' +
+      '500, 600, 700, 800\n' +
+      '900'
   );
 }, 20000);
 

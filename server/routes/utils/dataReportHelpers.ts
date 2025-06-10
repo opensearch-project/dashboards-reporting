@@ -235,19 +235,41 @@ export const convertToCSV = async (dataset, csvSeparator) => {
   return convertedData;
 };
 
-function flattenHits(hits: any, result: { [key: string]: any } = {}, prefix = '') {
-  Object.entries(hits).forEach(([key, value]) => {
-    if (
-      value !== null &&
-      typeof value === 'object' &&
-      !Array.isArray(value) &&
-      Object.keys(value).length > 0
-    ) {
-      flattenHits(value, result, `${prefix}${key}.`);
+function flattenHits(
+  input: any,
+  result: { [key: string]: any } = {},
+  prefix = ''
+): { [key: string]: any } {
+  for (const [key, value] of Object.entries(input)) {
+    const newPrefix = `${prefix}${key}.`;
+
+    if (value === null || typeof value !== 'object' || value instanceof Date) {
+      result[prefix.replace(/^_source\./, '') + key] = value;
+    } else if (Array.isArray(value)) {
+      if (value.every(v => typeof v === 'object' && v !== null && !Array.isArray(v))) {
+        const grouped: { [field: string]: string[] } = {};
+
+        for (const obj of value) {
+          const flat = flattenHits(obj, {}, '');
+          for (const [subKey, subVal] of Object.entries(flat)) {
+            if (!grouped[`${key}.${subKey}`]) {
+              grouped[`${key}.${subKey}`] = [];
+            }
+            grouped[`${key}.${subKey}`].push(String(subVal));
+          }
+        }
+
+        for (const [flatKey, flatVals] of Object.entries(grouped)) {
+          result[prefix.replace(/^_source\./, '') + flatKey] = flatVals.join(', ');
+        }
+      } else {
+        result[prefix.replace(/^_source\./, '') + key] = value.join(', ');
+      }
     } else {
-      result[`${prefix.replace(/^_source\./, '')}${key}`] = value;
+      flattenHits(value, result, newPrefix);
     }
-  });
+  }
+
   return result;
 }
 
@@ -296,77 +318,30 @@ export const convertToExcel = async (dataset: any) => {
 };
 
 //Return only the selected fields
-function traverse(data: any, keys: string[], result: { [key: string]: any } = {}) {
-  // Flatten the data if necessary (ensure all nested fields are at the top level)
-  data = flattenHits(data);
+function traverse(
+  data: any,
+  keys: string[],
+  result: { [key: string]: any } = {}
+): { [key: string]: any } {
+  const flatData = flattenHits(data);
 
-  keys.forEach((key) => {
-    const value = _.get(data, key, undefined);
-
-    if (value !== undefined) {
-      result[key] = value;
-    } else {
-      const flattenedValues: { [key: string]: any[] } = {};
-
-      Object.keys(data).forEach((dataKey) => {
-        const normalizedDataKey = dataKey.replace(/^_source\./, '').replace(/\[\d+\]/g, '');
-        const normalizedKey = key.replace(/\[\d+\]/g, '');
-
-        if (normalizedDataKey === normalizedKey || normalizedDataKey.startsWith(normalizedKey + '.')) {
-          result[dataKey] = data[dataKey];
-        }
-
-        const arrayValue = data[dataKey];
-        if (Array.isArray(arrayValue)) {
-          arrayValue.forEach((item, index) => {
-            if (typeof item === 'object' && item !== null) {
-              flattenNestedObject(item, `${dataKey}[${index}]`, flattenedValues);
-            } else {
-              const newKey = `${dataKey}[${index}]`;
-              if (!flattenedValues[newKey]) {
-                flattenedValues[newKey] = [];
-              }
-              flattenedValues[newKey].push(item);
-            }
-          });
-        } else if (typeof arrayValue === 'object' && arrayValue !== null) {
-          flattenNestedObject(arrayValue, dataKey, flattenedValues);
-        }
-      });
-
-      Object.keys(flattenedValues).forEach((newKey) => {
-        result[newKey] = flattenedValues[newKey];
-      });
+  for (const key of keys) {
+    if (flatData[key] !== undefined) {
+      result[key] = flatData[key];
+      continue;
     }
-  });
 
+    for (const flatKey of Object.keys(flatData)) {
+      if (
+        flatKey === key ||
+        flatKey.startsWith(key + '.') ||
+        flatKey.startsWith(key + '[')
+      ) {
+        result[flatKey] = flatData[flatKey];
+      }
+    }
+  }
   return result;
-}
-
-/**
- * Recursively flatten nested objects and arrays.
- * @param obj The object to flatten.
- * @param parentKey The parent key for the current level.
- * @param result The result object to store flattened key-value pairs.
- */
-function flattenNestedObject(obj: any, parentKey: string, result: { [key: string]: any }) {
-  Object.entries(obj).forEach(([key, value]) => {
-    const newKey = `${parentKey}.${key}`;
-
-    if (Array.isArray(value)) {
-      value.forEach((item, index) => {
-        if (typeof item === 'object' && item !== null) {
-          flattenNestedObject(item, `${newKey}[${index}]`, result);
-        } else {
-          result[`${newKey}[${index}]`] = item;
-        }
-      });
-    } else if (value !== null && typeof value === 'object') {
-      flattenNestedObject(value, newKey, result);
-    } else {
-      result[newKey] = value;
-    }
-  });
 }
 
 /**
