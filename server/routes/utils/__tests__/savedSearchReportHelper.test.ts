@@ -1576,6 +1576,112 @@ test('create report for deeply nested inventory data set with escaped field name
   );
 }, 20000);
 
+test('create report for deeply nested arrays', async () => {
+  const hits = [
+    hit(
+      {
+        inventory: {
+          categories: [
+            {
+              name: 'Electronics',
+              subcategories: [
+                {
+                  items: [
+                    { id: 'item1', price: 100 },
+                    { id: 'item2', price: 200 },
+                  ],
+                },
+                {
+                  items: [
+                    { id: 'item3', price: 300 },
+                    { id: 'item4', price: 400 },
+                  ],
+                },
+              ],
+            },
+            {
+              name: 'Books',
+              subcategories: [
+                {
+                  items: [
+                    { id: 'item5', price: 50 },
+                    { id: 'item6', price: 75 },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      },
+      {
+        'inventory.categories.name': 'Electronics, Books',
+        'inventory.categories.subcategories.items.id': 'item1, item2, item3, item4, item5, item6',
+        'inventory.categories.subcategories.items.price': '100, 200, 300, 400, 50, 75',
+      }
+    ),
+  ];
+
+  const client = mockOpenSearchClient(
+    hits,
+    '"inventory.categories.name", "inventory.categories.subcategories.items.id", "inventory.categories.subcategories.items.price"'
+  );
+
+  const { dataUrl } = await createSavedSearchReport(
+    input,
+    client,
+    mockDateFormat,
+    ',',
+    true,
+    undefined,
+    mockLogger,
+    mockTimezone
+  );
+
+  expect(dataUrl).toEqual(
+    'inventory\\.categories\\.name,inventory\\.categories\\.subcategories\\.items\\.id,inventory\\.categories\\.subcategories\\.items\\.price\n' +
+      '"Electronics, Books","item1, item2, item3, item4, item5, item6","100, 200, 300, 400, 50, 75"'
+  );
+}, 20000);
+
+test('create report for arrays of arrays with single numbers', async () => {
+  const hits = [
+    hit(
+      {
+        matrix: [
+          1,
+          [2, 3],
+          [4, 5],
+          6,
+          [7, 8, 9],
+        ],
+      },
+      {
+        'matrix': '1, 2, 3, 4, 5, 6, 7, 8, 9',
+      }
+    ),
+  ];
+
+  const client = mockOpenSearchClient(
+    hits,
+    '"matrix"'
+  );
+
+  const { dataUrl } = await createSavedSearchReport(
+    input,
+    client,
+    mockDateFormat,
+    ',',
+    true,
+    undefined,
+    mockLogger,
+    mockTimezone
+  );
+
+  expect(dataUrl).toEqual(
+    'matrix\n' +
+      '"1, 2,3, 4,5, 6, 7,8,9"'
+  );
+}, 20000);
 /**
  * Mock Elasticsearch client and return different mock objects based on endpoint and parameters.
  */
