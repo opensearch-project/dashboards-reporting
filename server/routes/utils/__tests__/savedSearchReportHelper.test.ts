@@ -994,7 +994,7 @@ describe('test create saved search report', () => {
 
     expect(dataUrl).toEqual(
       'geoip\\.country_iso_code,geoip\\.location\\.lon,geoip\\.location\\.lat,customer\\.name,customer\\.address\\.city,customer\\.address\\.postcode,products\\.created_on,products\\.price,products\\.category,geoip\\.city_name\n' +
-        'GB,-0.1,51.5,John Doe,London,SW1A 1AA,"2023-04-26T04:34:32Z, 2023-05-01T08:22:00Z","100, 50","Electronics, Books", \n' +
+        'GB,-0.1,51.5,John Doe,London,SW1A 1AA,"2023-04-26T04:34:32Z,2023-05-01T08:22:00Z","100,50","Electronics,Books", \n' +
         'US,-74,40.8,Jane Smith,New York,10001,2023-06-10T14:30:00Z,150,Furniture,New York'
     );
   }, 20000);
@@ -1408,7 +1408,7 @@ test('create report with Etc/GMT-2 Timezone', async () => {
     'category,customer_gender,order_date\n' +
       'c1,Ma, \n' +
       'c2,le,12/16/2021 4:04:55.000 pm\n' +
-      'c3,he,"12/17/2021 4:04:55.000 pm, 12/18/2021 4:04:55.000 pm"\n' +
+      'c3,he,"12/17/2021 4:04:55.000 pm,12/18/2021 4:04:55.000 pm"\n' +
       'c4,te,12/19/2021 4:04:55.000 pm'
   );
 }, 20000);
@@ -1490,7 +1490,7 @@ test('create report with empty/one/multiple(list) date values', async () => {
     'category,customer_gender,order_date\n' +
       'c1,Ma, \n' +
       'c2,le,12/16/2021 2:04:55.000 pm\n' +
-      'c3,he,"12/17/2021 2:04:55.000 pm, 12/18/2021 2:04:55.000 pm"\n' +
+      'c3,he,"12/17/2021 2:04:55.000 pm,12/18/2021 2:04:55.000 pm"\n' +
       'c4,te,12/19/2021 2:04:55.000 pm'
   );
 }, 20000);
@@ -1570,8 +1570,8 @@ test('create report for deeply nested inventory data set with escaped field name
 
   expect(dataUrl).toEqual(
     'inventory\\.categories\\.subcategories\\.items\\.price\n' +
-      '100, 200, 300, 400\n' +
-      '500, 600, 700, 800\n' +
+      '100,200,300,400\n' +
+      '500,600,700,800\n' +
       '900'
   );
 }, 20000);
@@ -1639,7 +1639,7 @@ test('create report for deeply nested arrays', async () => {
 
   expect(dataUrl).toEqual(
     'inventory\\.categories\\.name,inventory\\.categories\\.subcategories\\.items\\.id,inventory\\.categories\\.subcategories\\.items\\.price\n' +
-      '"Electronics, Books","item1, item2, item3, item4, item5, item6","100, 200, 300, 400, 50, 75"'
+      '"Electronics,Books","item1,item2,item3,item4,item5,item6","100,200,300,400,50,75"'
   );
 }, 20000);
 
@@ -1679,7 +1679,7 @@ test('create report for arrays of arrays with single numbers', async () => {
 
   expect(dataUrl).toEqual(
     'matrix\n' +
-      '"1, 2,3, 4,5, 6, 7,8,9"'
+      '"1,2,3,4,5,6,7,8,9"'
   );
 }, 20000);
 /**

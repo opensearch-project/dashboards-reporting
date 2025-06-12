@@ -205,7 +205,8 @@ export const getOpenSearchData = (
         let result = traverse(data, report._source.selectedFields);
         hits.push(params.excel ? sanitize(result) : result);
       } else {
-        hits.push(params.excel ? sanitize(data) : data);
+        let result = flattenHits(data);
+        hits.push(params.excel ? sanitize(result) : result);
       }
       // Truncate to expected limit size
       if (hits.length >= params.limit) {
@@ -245,7 +246,7 @@ function flattenHits(
           (v) => typeof v === 'object' && v !== null && !Array.isArray(v)
         )
       ) {
-        const grouped: { [field: string]: string[] } = {};
+        const grouped: { [field: string]: any[] } = {};
 
         for (const obj of value) {
           const flat = flattenHits(obj, {}, '');
@@ -253,17 +254,15 @@ function flattenHits(
             if (!grouped[`${key}.${subKey}`]) {
               grouped[`${key}.${subKey}`] = [];
             }
-            grouped[`${key}.${subKey}`].push(String(subVal));
+            grouped[`${key}.${subKey}`].push(subVal);
           }
         }
 
         for (const [flatKey, flatVals] of Object.entries(grouped)) {
-          result[prefix.replace(/^_source\./, '') + flatKey] = flatVals.join(
-            ', '
-          );
+          result[prefix.replace(/^_source\./, '') + flatKey] = flatVals.join(',');
         }
       } else {
-        result[prefix.replace(/^_source\./, '') + key] = value.join(', ');
+        result[prefix.replace(/^_source\./, '') + key] = value.join(',');
       }
     } else {
       flattenHits(value, result, newPrefix);
@@ -324,7 +323,6 @@ function traverse(
   result: { [key: string]: any } = {}
 ): { [key: string]: any } {
   const flatData = flattenHits(data);
-
   for (const key of keys) {
     if (flatData[key] !== undefined) {
       result[key] = flatData[key];
