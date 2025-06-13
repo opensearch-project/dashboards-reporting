@@ -96,8 +96,8 @@ export const buildRequestBody = (
   // clear why, this list can get unnested in the case of one sort, [["field", "asc"]] becomes
   // ["field", "asc"]. The true root cause remains a mystery, so we work around it.
   // See: https://github.com/opensearch-project/dashboards-reporting/issues/371
-  if (sorting.length > 0 && typeof sorting[0] === "string") {
-    sorting = [(sorting as unknown as string[])];
+  if (sorting.length > 0 && typeof sorting[0] === 'string') {
+    sorting = [(sorting as unknown) as string[]];
   }
 
   if (sorting.length > 0) {
@@ -156,10 +156,7 @@ export const getOpenSearchData = (
                 .utc(dateValue)
                 .tz(timezone)
                 .format(dateFormat);
-            } else if (
-              dateValue.length !== 0 &&
-              dateValue instanceof Array
-            ) {
+            } else if (dateValue.length !== 0 && dateValue instanceof Array) {
               fieldDateValue.forEach((element, index) => {
                 data._source[keys][index] = moment
                   .utc(element)
@@ -177,10 +174,7 @@ export const getOpenSearchData = (
               keys.push(
                 moment.utc(fieldDateValue).tz(timezone).format(dateFormat)
               );
-            } else if (
-              dateValue.length !== 0 &&
-              dateValue instanceof Array
-            ) {
+            } else if (dateValue.length !== 0 && dateValue instanceof Array) {
               let tempArray: string[] = [];
               fieldDateValue.forEach((index) => {
                 tempArray.push(
@@ -211,7 +205,8 @@ export const getOpenSearchData = (
         let result = traverse(data, report._source.selectedFields);
         hits.push(params.excel ? sanitize(result) : result);
       } else {
-        hits.push(params.excel ? sanitize(data) : data);
+        let result = flattenHits(data);
+        hits.push(params.excel ? sanitize(result) : result);
       }
       // Truncate to expected limit size
       if (hits.length >= params.limit) {
@@ -235,19 +230,45 @@ export const convertToCSV = async (dataset, csvSeparator) => {
   return convertedData;
 };
 
-function flattenHits(hits: any, result: { [key: string]: any } = {}, prefix = '') {
-  Object.entries(hits).forEach(([key, value]) => {
-    if (
-      value !== null &&
-      typeof value === 'object' &&
-      !Array.isArray(value) &&
-      Object.keys(value).length > 0
-    ) {
-      flattenHits(value, result, `${prefix}${key}.`);
+function flattenHits(
+  input: any,
+  result: { [key: string]: any } = {},
+  prefix = ''
+): { [key: string]: any } {
+  for (const [key, value] of Object.entries(input)) {
+    const newPrefix = `${prefix}${key}.`;
+
+    if (value === null || typeof value !== 'object' || value instanceof Date) {
+      result[prefix.replace(/^_source\./, '') + key] = value;
+    } else if (Array.isArray(value)) {
+      if (
+        value.every(
+          (v) => typeof v === 'object' && v !== null && !Array.isArray(v)
+        )
+      ) {
+        const grouped: { [field: string]: any[] } = {};
+
+        for (const obj of value) {
+          const flat = flattenHits(obj, {}, '');
+          for (const [subKey, subVal] of Object.entries(flat)) {
+            if (!grouped[`${key}.${subKey}`]) {
+              grouped[`${key}.${subKey}`] = [];
+            }
+            grouped[`${key}.${subKey}`].push(subVal);
+          }
+        }
+
+        for (const [flatKey, flatVals] of Object.entries(grouped)) {
+          result[prefix.replace(/^_source\./, '') + flatKey] = flatVals.join(',');
+        }
+      } else {
+        result[prefix.replace(/^_source\./, '') + key] = value.join(',');
+      }
     } else {
-      result[`${prefix.replace(/^_source\./, '')}${key}`] = value;
+      flattenHits(value, result, newPrefix);
     }
-  });
+  }
+
   return result;
 }
 
@@ -296,44 +317,24 @@ export const convertToExcel = async (dataset: any) => {
 };
 
 //Return only the selected fields
-function traverse(data: any, keys: string[], result: { [key: string]: any } = {}) {
-  // Flatten the data if necessary (ensure all nested fields are at the top level)
-  data = flattenHits(data);
-
-  keys.forEach((key) => {
-    const value = _.get(data, key, undefined);
-
-    if (value !== undefined) {
-      result[key] = value;
-    } else {
-      const flattenedValues: { [key: string]: any[] } = {};
-
-      Object.keys(data).forEach((dataKey) => {
-        if (dataKey.startsWith(key + '.')) {
-          result[dataKey] = data[dataKey];
-        }
-        const arrayValue = data[dataKey];
-        if (Array.isArray(arrayValue)) {
-          arrayValue.forEach((item) => {
-            if (typeof item === 'object' && item !== null) {
-              Object.keys(item).forEach((subKey) => {
-                const newKey = `${dataKey}.${subKey}`;
-                if (!flattenedValues[newKey]) {
-                  flattenedValues[newKey] = [];
-                }
-                flattenedValues[newKey].push(item[subKey]);
-              });
-            }
-          });
-        }
-      });
-
-      Object.keys(flattenedValues).forEach((newKey) => {
-        result[newKey] = flattenedValues[newKey];
-      });
+function traverse(
+  data: any,
+  keys: string[],
+  result: { [key: string]: any } = {}
+): { [key: string]: any } {
+  const flatData = flattenHits(data);
+  for (const key of keys) {
+    if (flatData[key] !== undefined) {
+      result[key] = flatData[key];
+      continue;
     }
-  });
 
+    for (const flatKey of Object.keys(flatData)) {
+      if (flatKey === key || flatKey.startsWith(key + '.')) {
+        result[flatKey] = flatData[flatKey];
+      }
+    }
+  }
   return result;
 }
 
