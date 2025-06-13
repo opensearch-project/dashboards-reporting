@@ -1615,8 +1615,10 @@ test('create report for deeply nested arrays', async () => {
       },
       {
         'inventory.categories.name': 'Electronics, Books',
-        'inventory.categories.subcategories.items.id': 'item1, item2, item3, item4, item5, item6',
-        'inventory.categories.subcategories.items.price': '100, 200, 300, 400, 50, 75',
+        'inventory.categories.subcategories.items.id':
+          'item1, item2, item3, item4, item5, item6',
+        'inventory.categories.subcategories.items.price':
+          '100, 200, 300, 400, 50, 75',
       }
     ),
   ];
@@ -1647,24 +1649,15 @@ test('create report for arrays of arrays with single numbers', async () => {
   const hits = [
     hit(
       {
-        matrix: [
-          1,
-          [2, 3],
-          [4, 5],
-          6,
-          [7, 8, 9],
-        ],
+        matrix: [1, [2, 3], [4, 5], 6, [7, 8, 9]],
       },
       {
-        'matrix': '1, 2, 3, 4, 5, 6, 7, 8, 9',
+        matrix: '1, 2, 3, 4, 5, 6, 7, 8, 9',
       }
     ),
   ];
 
-  const client = mockOpenSearchClient(
-    hits,
-    '"matrix"'
-  );
+  const client = mockOpenSearchClient(hits, '"matrix"');
 
   const { dataUrl } = await createSavedSearchReport(
     input,
@@ -1677,10 +1670,7 @@ test('create report for arrays of arrays with single numbers', async () => {
     mockTimezone
   );
 
-  expect(dataUrl).toEqual(
-    'matrix\n' +
-      '"1,2,3,4,5,6,7,8,9"'
-  );
+  expect(dataUrl).toEqual('matrix\n' + '"1,2,3,4,5,6,7,8,9"');
 }, 20000);
 /**
  * Mock Elasticsearch client and return different mock objects based on endpoint and parameters.
