@@ -5,7 +5,7 @@ This document contains a list of maintainers in this repo. See [opensearch-proje
 ## Current Maintainers
 
 | Maintainer                | GitHub ID                                              | Affiliation |
-| ------------------------- | ----------------------------------------------------- | ----------- |
+| ------------------------- | ------------------------------------------------------ | ----------- |
 | Eric Wei                  | [mengweieric](https://github.com/mengweieric)          | Amazon      |
 | Joshua Li                 | [joshuali925](https://github.com/joshuali925)          | Amazon      |
 | Shenoy Pratik             | [ps48](https://github.com/ps48)                        | Amazon      |
