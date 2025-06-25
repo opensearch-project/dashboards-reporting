@@ -133,9 +133,28 @@ jobs:
           fi
         working-directory: OpenSearch-Dashboards
 
+      - name: Check OpenSearch Dashboards API Status
+        run: |
+          for i in {1..30}; do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:5601/api/status || true)
+            if [ "$STATUS" = "200" ]; then
+              echo "OpenSearch Dashboards is up!"
+              exit 0
+            fi
+            echo "Waiting for OpenSearch Dashboards (status: $STATUS)..."
+            sleep 10
+          done
+          echo "OpenSearch Dashboards did not become ready in time."
+          exit 1
+        working-directory: OpenSearch-Dashboards
+
+      - name: Run Cypress tests
+        run: |
+          yarn cypress:run --browser chrome --headless
+        working-directory: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
+
       - name: Upload Dashboards logs
         uses: actions/upload-artifact@v4.4.0
-        if: failure()
         with:
           name: dashboard.logs
           path: OpenSearch-Dashboards/dashboard.log
