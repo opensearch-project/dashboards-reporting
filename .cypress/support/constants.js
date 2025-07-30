@@ -7,3 +7,5 @@ export const ADMIN_AUTH = {
   username: 'admin',
   password: 'admin',
 };
+
+export const BASE_PATH = Cypress.config('baseUrl');
