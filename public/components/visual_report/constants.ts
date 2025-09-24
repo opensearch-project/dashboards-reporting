@@ -20,6 +20,7 @@ export enum VISUAL_REPORT_TYPE {
 export enum SELECTOR {
   dashboard = '#dashboardViewport',
   visualization = '.visEditor__content',
+  visualizations = '.visualize',
   notebook = '.euiPageBody',
 }
 
