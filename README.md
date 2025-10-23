@@ -73,7 +73,7 @@ OpenSearch Dashboards Reports allows ‘Report Owner’ (engineers, including bu
 
 ## Documentation & Forum
 
-Please see our technical [documentation](https://opensearch.org/docs/dashboards/reporting/) to learn more about its features. For additional help with the plugin, including questions about opening an issue, try the OpenSearch [Forum](https://forum.opensearch.org/c/opensearch-dashboards/reports/51).
+Please see our technical [documentation](https://docs.opensearch.org/latest/reporting/) to learn more about its features. For additional help with the plugin, including questions about opening an issue, try the OpenSearch [Forum](https://forum.opensearch.org/c/opensearch-dashboards/reports/51).
 
 ## Contributing
 
