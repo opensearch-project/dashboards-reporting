@@ -23,7 +23,7 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "cron-validator": "^1.1.1",
-    "dompurify": "^2.4.1",
+    "dompurify": "^3.3.0",
     "elastic-builder": "^2.7.1",
     "enzyme-adapter-react-16": "^1.15.2",
     "html2canvas": "1.4.1",
@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "@elastic/eslint-import-resolver-kibana": "link:../../packages/osd-eslint-import-resolver-opensearch-dashboards",
-    "@types/dompurify": "^2.3.3",
+    "@types/dompurify": "^3.0.5",
     "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/jsdom": "^16.2.3",
     "@types/react": "^16.9.36",
@@ -78,7 +78,9 @@
     "glob-parent": "^5.1.2",
     "css-what": "^5.0.1",
     "ansi-regex": "5.0.1",
-    "json-schema": "0.4.0"
+    "json-schema": "0.4.0",
+    "form-data": "^2.5.5",
+    "dompurify": "^3.3.0"
 
   }
 }
