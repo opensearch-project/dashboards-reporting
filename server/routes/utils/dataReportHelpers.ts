@@ -157,7 +157,6 @@ export const getOpenSearchData = (
                 .tz(timezone)
                 .format(dateFormat);
             } else if (dateValue && dateValue.length !== 0 && dateValue instanceof Array) {
-              console.log('dateValue', dateValue);
               fieldDateValue && fieldDateValue.forEach((element, index) => {
                 data._source[keys][index] = moment
                   .utc(element)
@@ -169,10 +168,9 @@ export const getOpenSearchData = (
             }
             // else to cover cases with nested date fields
           } else {
-            let keyElement = keys.shift();
+            let keyElement = keys.shift();P
             // if conditions to determine if the date field's value is an array or a string
             if (fieldDateValue && typeof fieldDateValue === 'string') {
-              console.log('fieldDateValue', fieldDateValue);
               keys.push(
                 moment.utc(fieldDateValue).tz(timezone).format(dateFormat)
               );
