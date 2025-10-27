@@ -3,7 +3,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-// Mock the ExcelBuilder to avoid ES module issues
 jest.mock('../excelBuilder', () => ({
   ExcelBuilder: jest.fn().mockImplementation(() => ({
     addHeaders: jest.fn().mockReturnThis(),
