@@ -1005,11 +1005,11 @@ exports[`<ReportsTable /> panel render empty component 1`] = `
                              
                             <a
                               class="euiLink euiLink--primary"
-                              href="https://opensearch.org/docs/dashboards/reporting/"
+                              href="https://docs.opensearch.org/3.3/reporting/report-dashboard-index/"
                               rel="noopener noreferrer"
                               target="_blank"
                             >
-                              Get started with OpenSearch Dashboards reporting
+                              Get started with dashboard reporting
                               <svg
                                 aria-hidden="true"
                                 class="euiIcon euiIcon--medium"

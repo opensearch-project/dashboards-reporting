@@ -1,0 +1,8 @@
+{
+  "attempt": 0,
+  "callRestart": false,
+  "deleteUser": false,
+  "deleteRole": false,
+  "deletePolicies": false,
+  "deleteRolesMapping": false
+}

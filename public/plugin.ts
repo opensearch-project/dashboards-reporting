@@ -21,6 +21,7 @@ import {
   ReportsDashboardsPluginSetup,
   ReportsDashboardsPluginStart,
 } from './types';
+import { pluginsService } from './components/utils/plugins_service';
 
 export interface ReportingPluginSetupDependencies {
   dataSource: DataSourcePluginSetup;
@@ -42,11 +43,10 @@ export class ReportsDashboardsPlugin
           defaultMessage: PLUGIN_NAME,
         }),
         category: {
-          id: 'opensearch',
-          label: i18n.translate('opensearch.reports.categoryName', {
-            defaultMessage: 'OpenSearch Plugins',
-          }),
-          order: 2000,
+          id: 'explore',
+          label: 'Explore',
+          order: 100,
+          euiIconType: 'search',
         },
         order: 2000,
         async mount(params: AppMountParameters) {
@@ -68,8 +68,12 @@ export class ReportsDashboardsPlugin
     return {};
   }
 
-  public start(core: CoreStart): ReportsDashboardsPluginStart {
+  public start(
+    core: CoreStart,
+    plugins: ReportsDashboardsPluginStart
+  ): ReportsDashboardsPluginStart {
     applicationService.init(core.application);
+    pluginsService.init(plugins);
     return {};
   }
 

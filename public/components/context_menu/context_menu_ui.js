@@ -55,12 +55,18 @@ export const popoverMenu = (savedObjectAvailable) => {
                     <div>
                       <${button} class="${buttonClass}" type="button" data-test-subj="downloadPanel-GeneratePDF" id="generatePDF">
                         <span data-html2canvas-ignore class="euiContextMenu__itemLayout">
-                          <span data-html2canvas-ignore class="euiContextMenuItem__text">${i18n.translate('opensearch.reports.menu.visual.downloadPdf', { defaultMessage: 'Download PDF' })}</span>
+                          <span data-html2canvas-ignore class="euiContextMenuItem__text">${i18n.translate(
+                            'opensearch.reports.menu.visual.downloadPdf',
+                            { defaultMessage: 'Download PDF' }
+                          )}</span>
                         </span>
                       </${button}>
                       <${button} class="${buttonClass}" type="button" data-test-subj="downloadPanel-GeneratePNG" id="generatePNG">
                         <span data-html2canvas-ignore class="euiContextMenu__itemLayout">
-                          <span data-html2canvas-ignore class="euiContextMenuItem__text">${i18n.translate('opensearch.reports.menu.visual.downloadPng', { defaultMessage: 'Download PNG' })}</span>
+                          <span data-html2canvas-ignore class="euiContextMenuItem__text">${i18n.translate(
+                            'opensearch.reports.menu.visual.downloadPng',
+                            { defaultMessage: 'Download PNG' }
+                          )}</span>
                         </span>
                       </${button}>
                     </div>
@@ -68,25 +74,36 @@ export const popoverMenu = (savedObjectAvailable) => {
                 </div>
                 <div class="euiContextMenuPanelTitle euiContextMenuPanelTitle--small">
                   <span data-html2canvas-ignore class="euiContextMenu__itemLayout">
-                    ${i18n.translate('opensearch.reports.menu.visual.scheduleAndShare', { defaultMessage: 'Schedule and share' })}
+                    ${i18n.translate(
+                      'opensearch.reports.menu.visual.scheduleAndShare',
+                      { defaultMessage: 'Schedule and share' }
+                    )}
                   </span>
                 </div>
                 <div>
                   <${button} class="${buttonClass}" type="button" data-test-subj="downloadPanel-GeneratePDF" id="createReportDefinition">
                     <span data-html2canvas-ignore class="euiContextMenu__itemLayout">
-                      <span data-html2canvas-ignore class="euiContextMenuItem__text">${i18n.translate('opensearch.reports.menu.visual.createReportDefinition', { defaultMessage: 'Create report definition' })}</span>
+                      <span data-html2canvas-ignore class="euiContextMenuItem__text">${i18n.translate(
+                        'opensearch.reports.menu.visual.createReportDefinition',
+                        { defaultMessage: 'Create report definition' }
+                      )}</span>
                     </span>
                   </${button}>
                 </div>
                 <div class="euiContextMenuPanelTitle euiContextMenuPanelTitle--small">
                   <span data-html2canvas-ignore class="euiContextMenu__itemLayout">
-                    ${i18n.translate('opensearch.reports.menu.visual.view', { defaultMessage: 'View' })}
+                    ${i18n.translate('opensearch.reports.menu.visual.view', {
+                      defaultMessage: 'View',
+                    })}
                   </span>
                 </div>
                 <div>
                   <button class="euiContextMenuItem" type="button" data-test-subj="downloadPanel-GeneratePDF" id="viewReports">
                     <span data-html2canvas-ignore class="euiContextMenu__itemLayout">
-                      <span data-html2canvas-ignore class="euiContextMenuItem__text">${i18n.translate('opensearch.reports.menu.visual.viewReports', { defaultMessage: 'View reports' })}</span>
+                      <span data-html2canvas-ignore class="euiContextMenuItem__text">${i18n.translate(
+                        'opensearch.reports.menu.visual.viewReports',
+                        { defaultMessage: 'View reports' }
+                      )}</span>
                     </span>
                   </button>
                 </div>
@@ -244,7 +261,7 @@ export const permissionsMissingOnGeneration = () => {
   <div class="euiText euiText--small euiToastBody">
     <p>${i18n.translate('opensearch.reports.menu.insufficientPermissions', {
       defaultMessage:
-        'Insufficient permissions. Reach out to your OpenSearch Dashboards administrator.',
+        'Insufficient permissions. Reach out to your administrator.',
     })}</p>
   </div>
   </div>

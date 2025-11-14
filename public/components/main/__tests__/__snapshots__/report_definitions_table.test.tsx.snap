@@ -224,7 +224,32 @@ exports[`<ReportDefinitions /> panel render component 1`] = `
                 aria-live="polite"
                 aria-sort="none"
                 class="euiTableHeaderCell"
-                data-test-subj="tableHeaderCell_status_5"
+                data-test-subj="tableHeaderCell_notificationsEnabled_5"
+                role="columnheader"
+                scope="col"
+              >
+                <button
+                  class="euiTableHeaderButton"
+                  data-test-subj="tableHeaderSortButton"
+                  type="button"
+                >
+                  <span
+                    class="euiTableCellContent"
+                  >
+                    <span
+                      class="euiTableCellContent__text"
+                      title="Notifications"
+                    >
+                      Notifications
+                    </span>
+                  </span>
+                </button>
+              </th>
+              <th
+                aria-live="polite"
+                aria-sort="none"
+                class="euiTableHeaderCell"
+                data-test-subj="tableHeaderCell_status_6"
                 role="columnheader"
                 scope="col"
               >
@@ -348,6 +373,22 @@ exports[`<ReportDefinitions /> panel render component 1`] = `
                 <div
                   class="euiTableRowCell__mobileHeader euiTableRowCell--hideForDesktop"
                 >
+                  Notifications
+                </div>
+                <div
+                  class="euiTableCellContent"
+                >
+                  <span
+                    class="euiTableCellContent__text"
+                  />
+                </div>
+              </td>
+              <td
+                class="euiTableRowCell"
+              >
+                <div
+                  class="euiTableRowCell__mobileHeader euiTableRowCell--hideForDesktop"
+                >
                   Status
                 </div>
                 <div
@@ -453,6 +494,22 @@ exports[`<ReportDefinitions /> panel render component 1`] = `
                   >
                     Invalid Date @ Invalid Date
                   </div>
+                </div>
+              </td>
+              <td
+                class="euiTableRowCell"
+              >
+                <div
+                  class="euiTableRowCell__mobileHeader euiTableRowCell--hideForDesktop"
+                >
+                  Notifications
+                </div>
+                <div
+                  class="euiTableCellContent"
+                >
+                  <span
+                    class="euiTableCellContent__text"
+                  />
                 </div>
               </td>
               <td
@@ -838,7 +895,32 @@ exports[`<ReportDefinitions /> panel render empty table 1`] = `
                 aria-live="polite"
                 aria-sort="none"
                 class="euiTableHeaderCell"
-                data-test-subj="tableHeaderCell_status_5"
+                data-test-subj="tableHeaderCell_notificationsEnabled_5"
+                role="columnheader"
+                scope="col"
+              >
+                <button
+                  class="euiTableHeaderButton"
+                  data-test-subj="tableHeaderSortButton"
+                  type="button"
+                >
+                  <span
+                    class="euiTableCellContent"
+                  >
+                    <span
+                      class="euiTableCellContent__text"
+                      title="Notifications"
+                    >
+                      Notifications
+                    </span>
+                  </span>
+                </button>
+              </th>
+              <th
+                aria-live="polite"
+                aria-sort="none"
+                class="euiTableHeaderCell"
+                data-test-subj="tableHeaderCell_status_6"
                 role="columnheader"
                 scope="col"
               >
@@ -867,7 +949,7 @@ exports[`<ReportDefinitions /> panel render empty table 1`] = `
             >
               <td
                 class="euiTableRowCell euiTableRowCell--isMobileFullWidth"
-                colspan="6"
+                colspan="7"
               >
                 <div
                   class="euiTableCellContent euiTableCellContent--alignCenter"
@@ -905,11 +987,11 @@ exports[`<ReportDefinitions /> panel render empty table 1`] = `
                                
                               <a
                                 class="euiLink euiLink--primary"
-                                href="https://opensearch.org/docs/dashboards/reporting/"
+                                href="https://docs.opensearch.org/3.3/reporting/report-dashboard-index/"
                                 rel="noopener noreferrer"
                                 target="_blank"
                               >
-                                Get started with OpenSearch Dashboards reporting
+                                Get started with dashboard reporting
                                 <svg
                                   aria-hidden="true"
                                   aria-label="External link"

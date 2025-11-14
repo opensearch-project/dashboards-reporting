@@ -12,10 +12,11 @@ jobs:
     steps:
       # Drafts your next Release notes as Pull Requests are merged into "main"
       - name: Update draft release notes
-        uses: release-drafter/release-drafter@v5
+        # https://github.com/release-drafter/release-drafter/compare/v5.25.0...v6.0.0
+        uses: release-drafter/release-drafter@v6
         with:
           config-name: draft-release-notes-config.yml
           tag: (None)
-          version: 3.0.0.0
+          version: 3.3.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

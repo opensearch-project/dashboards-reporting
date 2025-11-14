@@ -1,0 +1,39 @@
+{
+  "data": {
+    "affected_items": [
+      {
+        "disabled": false,
+        "name": "wazuh1",
+        "node_name": "master",
+        "node_type": "master",
+        "key": "test1234",
+        "port": 1516,
+        "bind_addr": "0.0.0.0",
+        "nodes": ["0.0.0.0"],
+        "hidden": "no",
+        "haproxy_helper": {
+          "haproxy_disabled": false,
+          "haproxy_address": "wazuh-proxy",
+          "haproxy_user": "haproxy",
+          "haproxy_password": "haproxy",
+          "frequency": 60,
+          "agent_reconnection_stability_time": 60,
+          "agent_chunk_size": 300,
+          "haproxy_protocol": "http",
+          "haproxy_backend": "wazuh_cluster",
+          "agent_reconnection_time": 5,
+          "haproxy_port": 5555,
+          "haproxy_resolver": null,
+          "imbalance_tolerance": 0.1,
+          "remove_disconnected_node_after": 240,
+          "excluded_nodes": []
+        }
+      }
+    ],
+    "total_affected_items": 1,
+    "total_failed_items": 0,
+    "failed_items": []
+  },
+  "message": "Active configuration was successfully read in specified node",
+  "error": 0
+}

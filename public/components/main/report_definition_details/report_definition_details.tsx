@@ -21,6 +21,7 @@ import {
   EuiOverlayMask,
   EuiConfirmModal,
 } from '@elastic/eui';
+import moment from 'moment';
 import {
   ReportDetailsComponent,
   trimAndRenderAsText,
@@ -30,12 +31,12 @@ import {
   generateReportFromDefinitionId,
 } from '../main_utils';
 import { ReportDefinitionSchemaType } from '../../../../server/model';
-import moment from 'moment';
 import {
   permissionsMissingToast,
   permissionsMissingActions,
 } from '../../utils/utils';
 import { GenerateReportLoadingModal } from '../loading_modal';
+import { REPORTING_NOTIFICATIONS_DASHBOARDS_API } from '../../../../common';
 
 const ON_DEMAND = 'On demand';
 
@@ -54,11 +55,19 @@ interface ReportDefinitionDetails {
   triggerType: string;
   scheduleDetails: string;
   baseUrl: string;
+  channelName: string;
 }
 
-export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: any; httpClient?: any; chrome: any }) {
+export function ReportDefinitionDetails(props: {
+  match?: any;
+  setBreadcrumbs?: any;
+  httpClient?: any;
+  chrome: any;
+}) {
   const { chrome } = props;
-  const [reportDefinitionDetails, setReportDefinitionDetails] = useState<ReportDefinitionDetails>({
+  const [reportDefinitionDetails, setReportDefinitionDetails] = useState<
+    ReportDefinitionDetails
+  >({
     name: '',
     description: '',
     created: '',
@@ -72,7 +81,8 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
     reportFooter: '',
     triggerType: '',
     scheduleDetails: '',
-    baseUrl: ''
+    baseUrl: '',
+    emailrecipients: [],
   });
   const [
     reportDefinitionRawResponse,
@@ -81,14 +91,16 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
   const [toasts, setToasts] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
-  const reportDefinitionId = props.match['params']['reportDefinitionId'];
+  const reportDefinitionId = props.match.params.reportDefinitionId;
   const getNavGroupEnabled = chrome.navGroup.getNavGroupEnabled();
 
   const handleLoading = (e: boolean | ((prevState: boolean) => boolean)) => {
     setShowLoading(e);
   };
 
-  const handleShowDeleteModal = (e: boolean | ((prevState: boolean) => boolean)) => {
+  const handleShowDeleteModal = (
+    e: boolean | ((prevState: boolean) => boolean)
+  ) => {
     setShowDeleteModal(e);
   };
 
@@ -270,7 +282,7 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
     addErrorDeletingReportDefinitionToastHandler();
   };
 
-  const removeToast = (removedToast: { id: string; }) => {
+  const removeToast = (removedToast: { id: string }) => {
     setToasts(toasts.filter((toast: any) => toast.id !== removedToast.id));
   };
 
@@ -278,7 +290,7 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
     setReportDefinitionDetails(e);
   };
 
-  const handleReportDefinitionRawResponse = (e: {} ) => {
+  const handleReportDefinitionRawResponse = (e: {}) => {
     setReportDefinitionRawResponse(e);
   };
 
@@ -342,9 +354,8 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
               values: { time: date.toTimeString() },
             }
           );
-        }
-        // By interval
-        else {
+        } else {
+          // By interval
           const date = new Date(
             trigger.trigger_params.schedule.interval.start_time
           );
@@ -361,9 +372,8 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
             }
           );
         }
-      }
-      // Cron
-      else if (trigger.trigger_params.schedule_type === 'Cron based') {
+      } else if (trigger.trigger_params.schedule_type === 'Cron based') {
+        // Cron
         scheduleDetails = i18n.translate(
           'opensearch.reports.reportDefinitionsDetails.schedule.cronBased',
           {
@@ -379,9 +389,9 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
     return scheduleDetails;
   };
 
-  const getReportDefinitionDetailsMetadata = (
+  const getReportDefinitionDetailsMetadata = async (
     data: ReportDefinitionSchemaType
-  ) : ReportDefinitionDetails => {
+  ): Promise<ReportDefinitionDetails> => {
     const reportDefinition: ReportDefinitionSchemaType = data;
     const {
       report_params: reportParams,
@@ -402,91 +412,105 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
       },
     } = reportParams;
 
-    let readableDate = new Date(timeCreated);
-    let displayCreatedDate =
+    const readableDate = new Date(timeCreated);
+    const displayCreatedDate =
       readableDate.toDateString() + ' ' + readableDate.toLocaleTimeString();
 
-    let readableUpdatedDate = new Date(lastUpdated);
-    let displayUpdatedDate =
+    const readableUpdatedDate = new Date(lastUpdated);
+    const displayUpdatedDate =
       readableUpdatedDate.toDateString() +
       ' ' +
       readableUpdatedDate.toLocaleTimeString();
 
-    let reportDefinitionDetails = {
+    const reportDefinitionDetailsMetaData = {
       name: reportParams.report_name,
       description:
         reportParams.description === '' ? `\u2014` : reportParams.description,
       created: displayCreatedDate,
       lastUpdated: displayUpdatedDate,
       source: reportParams.report_source,
-      recordLimit: 
-        reportParams.report_source != 'Saved search' 
-          ? `\u2014` 
+      recordLimit:
+        reportParams.report_source !== 'Saved search'
+          ? `\u2014`
           : reportParams.core_params.limit,
-      baseUrl: baseUrl,
+      baseUrl,
       // TODO: need better display
       timePeriod: moment.duration(timeDuration).humanize(),
       fileFormat: reportFormat,
       reportHeader:
         reportParams.core_params.hasOwnProperty('header') &&
-        reportParams.core_params.header != ''
+        reportParams.core_params.header !== ''
           ? reportParams.core_params.header
           : `\u2014`,
       reportFooter:
         reportParams.core_params.hasOwnProperty('footer') &&
-        reportParams.core_params.footer != ''
+        reportParams.core_params.footer !== ''
           ? reportParams.core_params.footer
           : `\u2014`,
-      triggerType: triggerType,
+      triggerType,
       scheduleDetails: triggerParams
         ? humanReadableScheduleDetails(data.trigger)
         : `\u2014`,
       status: reportDefinition.status,
+      channelName: '',
+      emailSubject: delivery.title,
+      emailBody: delivery.textDescription,
     };
-    return reportDefinitionDetails;
+
+    if (delivery.configIds.length > 0) {
+      const configsChannels = await getConfigChannel(delivery.configIds);
+      reportDefinitionDetailsMetaData.channelName = configsChannels
+        .map((channel) => channel.config.name)
+        .join(', ');
+    }
+    return reportDefinitionDetailsMetaData;
   };
 
   useEffect(() => {
     const { httpClient } = props;
     httpClient
-    .get(`../api/reporting/reportDefinitions/${reportDefinitionId}`)
-    .then((response: {report_definition: ReportDefinitionSchemaType}) => {
-      handleReportDefinitionRawResponse(response);
-      handleReportDefinitionDetails(getReportDefinitionDetailsMetadata(response.report_definition));
-      props.setBreadcrumbs([
-        {
-          text: i18n.translate(
-            'opensearch.reports.reportDefinitionsDetails.schedule.breadcrumb.reporting',
-            { defaultMessage: 'Reporting' }
-          ),
-          href: '#',
-        },
-        {
-          text: i18n.translate(
-            'opensearch.reports.reportDefinitionsDetails.schedule.breadcrumb.reportDefinitionDetails',
+      .get(`../api/reporting/reportDefinitions/${reportDefinitionId}`)
+      .then(
+        async (response: { report_definition: ReportDefinitionSchemaType }) => {
+          handleReportDefinitionRawResponse(response);
+          handleReportDefinitionDetails(
+            await getReportDefinitionDetailsMetadata(response.report_definition)
+          );
+          props.setBreadcrumbs([
             {
-              defaultMessage: 'Report definition details: {name}',
-              values: {
-                name: response.report_definition.report_params.report_name,
-              },
+              text: i18n.translate(
+                'opensearch.reports.reportDefinitionsDetails.schedule.breadcrumb.reporting',
+                { defaultMessage: 'Reporting' }
+              ),
+              href: '#',
+            },
+            {
+              text: i18n.translate(
+                'opensearch.reports.reportDefinitionsDetails.schedule.breadcrumb.reportDefinitionDetails',
+                {
+                  defaultMessage: 'Report definition details: {name}',
+                  values: {
+                    name: response.report_definition.report_params.report_name,
+                  },
+                }
+              ),
+            },
+          ]);
+        }
+      )
+      .catch((error: any) => {
+        console.error(
+          i18n.translate(
+            'opensearch.reports.reportDefinitionsDetails.schedule.breadcrumb.error',
+            {
+              defaultMessage:
+                'error when getting report definition details: {error}',
+              values: { error },
             }
-          ),
-        },
-      ]);
-    })
-    .catch((error: any) => {
-      console.error(
-        i18n.translate(
-          'opensearch.reports.reportDefinitionsDetails.schedule.breadcrumb.error',
-          {
-            defaultMessage:
-              'error when getting report definition details: {error}',
-            values: { error: error },
-          }
-        )
-      );
-      handleDetailsErrorToast();
-    });
+          )
+        );
+        handleDetailsErrorToast();
+      });
   }, []);
 
   const downloadIconDownload = async () => {
@@ -495,8 +519,8 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
     handleLoading(false);
   };
 
-  const fileFormatDownload = (data: { [x: string]: any; }) => {
-    let formatUpper = data['fileFormat'];
+  const fileFormatDownload = (data: { [x: string]: any }) => {
+    let formatUpper = data.fileFormat;
     formatUpper = fileFormatsUpper[formatUpper];
     return (
       <EuiLink
@@ -513,15 +537,17 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
     return (
       <EuiLink
         id="reportDefinitionSourceURL"
-        href={`${data.baseUrl}`} target="_blank"
+        href={`${data.baseUrl}`}
+        target="_blank"
       >
-        {data['source']}
+        {data.source}
       </EuiLink>
     );
   };
 
   const changeScheduledReportDefinitionStatus = (statusChange: string) => {
-    let updatedReportDefinition = reportDefinitionRawResponse.report_definition;
+    const updatedReportDefinition =
+      reportDefinitionRawResponse.report_definition;
     if (statusChange === 'Disable') {
       updatedReportDefinition.trigger.trigger_params.enabled = false;
       updatedReportDefinition.status = 'Disabled';
@@ -535,12 +561,12 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
         body: JSON.stringify(updatedReportDefinition),
         params: reportDefinitionId.toString(),
       })
-      .then(() => {
+      .then(async () => {
         const updatedRawResponse = { report_definition: {} };
         updatedRawResponse.report_definition = updatedReportDefinition;
         handleReportDefinitionRawResponse(updatedRawResponse);
         setReportDefinitionDetails(
-          getReportDefinitionDetailsMetadata(updatedReportDefinition)
+          await getReportDefinitionDetailsMetadata(updatedReportDefinition)
         );
         if (statusChange === 'Enable') {
           handleSuccessChangingScheduleStatusToast('enable');
@@ -548,7 +574,7 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
           handleSuccessChangingScheduleStatusToast('disable');
         }
       })
-      .catch((error: { body: { statusCode: number; }; }) => {
+      .catch((error: { body: { statusCode: number } }) => {
         console.error('error in updating report definition status:', error);
         if (error.body.statusCode === 403) {
           handleErrorChangingScheduleStatusToast('permissions');
@@ -579,7 +605,7 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
   const generateReportFromDetails = async () => {
     const { httpClient } = props;
     handleLoading(true);
-    let generateReportSuccess = await generateReportFromDefinitionId(
+    const generateReportSuccess = await generateReportFromDefinitionId(
       reportDefinitionId,
       httpClient
     );
@@ -602,7 +628,7 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
       .then(() => {
         window.location.assign(`reports-dashboards#/delete=success`);
       })
-      .catch((error: { body: { statusCode: number; }; }) => {
+      .catch((error: { body: { statusCode: number } }) => {
         console.log('error when deleting report definition:', error);
         if (error.body.statusCode === 403) {
           handlePermissionsMissingDeleteToast();
@@ -673,17 +699,110 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
     <GenerateReportLoadingModal setShowLoading={setShowLoading} />
   ) : null;
 
+  const addToast = (toast: any) => {
+    setToasts(toasts.concat(toast));
+  };
+
+  const getConfigChannel = async (idChannels: string[]): Promise<any[]> => {
+    const { httpClient } = props;
+
+    if (!idChannels?.length) {
+      return [];
+    }
+
+    try {
+      const results = await Promise.allSettled(
+        idChannels.map(async (id) => {
+          const { config_list: configList } = await httpClient.get(
+            `${REPORTING_NOTIFICATIONS_DASHBOARDS_API.GET_CONFIG}/${id}`
+          );
+          return configList;
+        })
+      );
+      const successfulConfigs = results
+        .filter(
+          (result): result is PromiseFulfilledResult<any> =>
+            result.status === 'fulfilled'
+        )
+        .map((result) => result.value)
+        .flat();
+
+      const failedResults = results
+        .map((result, index) => ({ result, id: idChannels[index] }))
+        .filter(({ result }) => result.status === 'rejected');
+
+      if (failedResults.length > 0) {
+        addToast({
+          title: i18n.translate(
+            'opensearch.reports.reportDefinitionsDetails.toast.failedChannelConfigs',
+            { defaultMessage: 'Failed to fetch some channel configs.' }
+          ),
+          color: 'danger',
+          iconType: 'alert',
+          id: 'failedChannelConfigsToast',
+          text: `${failedResults
+            .map(({ id, result }) => `ID: ${id}, Error: ${result.reason}`)
+            .join(', ')}`,
+        });
+      }
+      return successfulConfigs;
+    } catch (error) {
+      addToast({
+        title: i18n.translate(
+          'opensearch.reports.reportDefinitionsDetails.toast.errorFetchingChannelConfigs',
+          { defaultMessage: 'Error fetching channel configs.' }
+        ),
+        color: 'danger',
+        iconType: 'alert',
+        id: 'errorFetchingChannelConfigsToast',
+        text: error.message || 'Unknown error occurred',
+      });
+    }
+  };
+
+  const notificationSection = (
+    <EuiFlexGroup>
+      <ReportDetailsComponent
+        reportDetailsComponentTitle={i18n.translate(
+          'opensearch.reports.reportDefinitionsDetails.fields.channel',
+          { defaultMessage: 'Channel name' }
+        )}
+        reportDetailsComponentContent={reportDefinitionDetails.channelName}
+      />
+      <ReportDetailsComponent
+        reportDetailsComponentTitle={i18n.translate(
+          'opensearch.reports.reportDefinitionsDetails.fields.emailSubject',
+          { defaultMessage: 'Email subject' }
+        )}
+        reportDetailsComponentContent={reportDefinitionDetails.emailSubject}
+      />
+      <ReportDetailsComponent
+        reportDetailsComponentTitle={i18n.translate(
+          'opensearch.reports.reportDefinitionsDetails.fields.emailBody',
+          { defaultMessage: 'Email body' }
+        )}
+        reportDetailsComponentContent={trimAndRenderAsText(
+          reportDefinitionDetails.emailBody
+        )}
+      />
+      <EuiFlexItem />
+    </EuiFlexGroup>
+  );
+
   return (
     <>
       <EuiTitle size="l">
         <h1>
-          {!getNavGroupEnabled && i18n.translate('opensearch.reports.reportDefinitionsDetails.title', {
-              defaultMessage: 'Report definition details',
-            }
-          )}
+          {!getNavGroupEnabled &&
+            i18n.translate(
+              'opensearch.reports.reportDefinitionsDetails.title',
+              {
+                defaultMessage: 'Report definition details',
+              }
+            )}
         </h1>
       </EuiTitle>
-      {!getNavGroupEnabled && <EuiSpacer size='s' />}
+      {!getNavGroupEnabled && <EuiSpacer size="s" />}
       <EuiPageContent panelPaddingSize={'l'}>
         <EuiPageHeader>
           <EuiFlexGroup>
@@ -754,9 +873,7 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
               'opensearch.reports.reportDefinitionsDetails.fields.description',
               { defaultMessage: 'Description' }
             )}
-            reportDetailsComponentContent={
-              reportDefinitionDetails.description
-            }
+            reportDetailsComponentContent={reportDefinitionDetails.description}
           />
           <ReportDetailsComponent
             reportDetailsComponentTitle={i18n.translate(
@@ -770,9 +887,7 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
               'opensearch.reports.reportDefinitionsDetails.fields.lastUpdated',
               { defaultMessage: 'Last updated' }
             )}
-            reportDetailsComponentContent={
-              reportDefinitionDetails.lastUpdated
-            }
+            reportDetailsComponentContent={reportDefinitionDetails.lastUpdated}
           />
         </EuiFlexGroup>
         <EuiSpacer />
@@ -834,6 +949,7 @@ export function ReportDefinitionDetails(props: { match?: any; setBreadcrumbs?: a
         </EuiFlexGroup>
         <EuiSpacer />
         {triggerSection}
+        {notificationSection}
       </EuiPageContent>
       <EuiGlobalToastList
         toasts={toasts}

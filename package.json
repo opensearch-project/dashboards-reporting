@@ -4,6 +4,14 @@
   "description": "OpenSearch Dashboards Reports Plugin",
   "license": "Apache-2.0",
   "main": "index.ts",
+  "opensearchDashboards": {
+    "version": "3.3.0",
+    "templateVersion": "3.3.0"
+  },
+  "wazuh": {
+    "version": "5.0.0",
+    "revision": "00"
+  },
   "scripts": {
     "osd": "node ../../scripts/osd",
     "opensearch": "node ../../scripts/opensearch",

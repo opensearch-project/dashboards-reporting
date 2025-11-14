@@ -13,3 +13,6 @@ package-lock.json
 .cypress/screenshots
 .cypress/videos
 .cypress/downloads
+docker/data
+docker/wazuh-indexer/*
+!docker/wazuh-indexer/.gitkeep

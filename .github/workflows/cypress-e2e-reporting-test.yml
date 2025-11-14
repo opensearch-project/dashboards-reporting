@@ -1,14 +1,17 @@
 name: Cypress E2E Dashboards Reporting Plugin Test
 
-on: [pull_request, push]
+# Wazuh: They are removed because they do not work
+# on: 
+#   pull_request:
+#     types: [opened, synchronize, reopened, ready_for_review]
 
 env:
   CI: 1
   # avoid warnings like "tput: No value for $TERM and no -T specified"
   TERM: xterm
-  OPENSEARCH_DASHBOARDS_VERSION: 'main'
-  OPENSEARCH_VERSION: '3.0.0-beta1'
-  OPENSEARCH_PLUGIN_VERSION: '3.0.0.0-beta1'
+  OPENSEARCH_DASHBOARDS_VERSION: '3.1'
+  OPENSEARCH_VERSION: '3.1.0'
+  OPENSEARCH_PLUGIN_VERSION: '3.1.0.0'
   PLUGIN_NAME: dashboards-reporting
 
 jobs:
@@ -20,31 +23,31 @@ jobs:
         os: [ubuntu-latest]
         jdk: [21]
     runs-on: ${{ matrix.os }}
+    if: github.event.pull_request.draft == false
 
     steps:
       - name: Set up JDK
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v4
         with:
+          distribution: 'temurin'
           java-version: ${{ matrix.jdk }}
 
       - name: Download Job Scheduler artifact
-        uses: suisei-cn/actions-download-file@v1.4.0
-        with:
-          url: https://aws.oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=org.opensearch.plugin&a=opensearch-job-scheduler&v=${{ env.OPENSEARCH_PLUGIN_VERSION }}-SNAPSHOT&p=zip
-          target: plugin-artifacts/
-          filename: job-scheduler.zip
+        run: |
+          mkdir -p plugin-artifacts
+          wget -O plugin-artifacts/job-scheduler.zip "https://aws.oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=org.opensearch.plugin&a=opensearch-job-scheduler&v=${{ env.OPENSEARCH_PLUGIN_VERSION }}-SNAPSHOT&p=zip"
+        shell: bash
 
       - name: Download Reports Scheduler artifact
-        uses: suisei-cn/actions-download-file@v1.4.0
-        with:
-          url: https://aws.oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=org.opensearch.plugin&a=opensearch-reports-scheduler&v=${{ env.OPENSEARCH_PLUGIN_VERSION }}-SNAPSHOT&p=zip
-          target: plugin-artifacts/
-          filename: reports-scheduler.zip
+        run: |
+          mkdir -p plugin-artifacts
+          wget -O plugin-artifacts/reports-scheduler.zip "https://aws.oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=org.opensearch.plugin&a=opensearch-reports-scheduler&v=${{ env.OPENSEARCH_PLUGIN_VERSION }}-SNAPSHOT&p=zip"
+        shell: bash
 
       - name: Download OpenSearch
-        uses: peternied/download-file@v2
-        with:
-          url: https://artifacts.opensearch.org/snapshots/core/opensearch/${{ env.OPENSEARCH_VERSION }}-SNAPSHOT/opensearch-min-${{ env.OPENSEARCH_VERSION }}-SNAPSHOT-linux-x64-latest.tar.gz
+        run: |
+          wget 'https://artifacts.opensearch.org/snapshots/core/opensearch/${{ env.OPENSEARCH_VERSION }}-SNAPSHOT/opensearch-min-${{ env.OPENSEARCH_VERSION }}-SNAPSHOT-linux-x64-latest.tar.gz' --retry-connrefused --tries=3 --no-dns-cache --progress=bar:force:noscroll --verbose
+        shell: bash
 
       - name: Extract OpenSearch
         run: |
@@ -98,7 +101,7 @@ jobs:
         working-directory: OpenSearch-Dashboards
         shell: bash
 
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ steps.tool-versions.outputs.node_version }}
           registry-url: 'https://registry.npmjs.org'
@@ -125,10 +128,10 @@ jobs:
       - name: Check If OpenSearch Dashboards Is Ready
         if: ${{ runner.os == 'Linux' }}
         run: |
-          if timeout 1200 grep -q "bundles compiled successfully after" <(tail -n0 -f dashboard.log); then
+          if timeout 2400 grep -q "bundles compiled successfully after" <(tail -n0 -f dashboard.log); then
             echo "OpenSearch Dashboards compiled successfully."
           else
-            echo "Timeout for 1200 seconds reached. OpenSearch Dashboards did not finish compiling."
+            echo "Timeout for 2400 seconds reached. OpenSearch Dashboards did not finish compiling."
             exit 1
           fi
         working-directory: OpenSearch-Dashboards
@@ -152,14 +155,14 @@ jobs:
         working-directory: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
 
       - name: Capture failure screenshots
-        uses: actions/upload-artifact@v4.4.0
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: cypress-screenshots-${{ matrix.os }}
           path: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}/.cypress/screenshots
 
       - name: Capture test video
-        uses: actions/upload-artifact@v4.4.0
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: cypress-videos-${{ matrix.os }}

@@ -21,10 +21,14 @@ import {
   EuiIcon,
   EuiGlobalToastList,
 } from '@elastic/eui';
-import { fileFormatsUpper, generateReportById } from '../main_utils';
+import dateMath from '@elastic/datemath';
+import {
+  fileFormatsUpper,
+  generateReportById,
+  sendTestNotificationsMessage,
+} from '../main_utils';
 import { GenerateReportLoadingModal } from '../loading_modal';
 import { ReportSchemaType } from '../../../../server/model';
-import dateMath from '@elastic/datemath';
 import {
   permissionsMissingActions,
   permissionsMissingToast,
@@ -50,7 +54,10 @@ interface ReportDetails {
   queryUrl: string;
 }
 
-export const ReportDetailsComponent = (props: { reportDetailsComponentTitle: any; reportDetailsComponentContent: any; }) => {
+export const ReportDetailsComponent = (props: {
+  reportDetailsComponentTitle: any;
+  reportDetailsComponentContent: any;
+}) => {
   const { reportDetailsComponentTitle, reportDetailsComponentContent } = props;
 
   return (
@@ -79,7 +86,12 @@ export const formatEmails = (emails: string[]) => {
   return Array.isArray(emails) ? emails.join(', ') : emails;
 };
 
-export function ReportDetails(props: { match?: any; setBreadcrumbs?: any; httpClient: any; chrome: any; }) {
+export function ReportDetails(props: {
+  match?: any;
+  setBreadcrumbs?: any;
+  httpClient: any;
+  chrome: any;
+}) {
   const [reportDetails, setReportDetails] = useState<ReportDetails>({
     reportName: '',
     description: '',
@@ -95,12 +107,12 @@ export function ReportDetails(props: { match?: any; setBreadcrumbs?: any; httpCl
     triggerType: '',
     scheduleType: '',
     scheduleDetails: '',
-    queryUrl: ''
+    queryUrl: '',
   });
   const [toasts, setToasts] = useState([]);
   const [showLoading, setShowLoading] = useState(false);
 
-  const reportId = props.match['params']['reportId'];
+  const reportId = props.match.params.reportId;
 
   const handleLoading = (e: boolean | ((prevState: boolean) => boolean)) => {
     setShowLoading(e);
@@ -162,7 +174,7 @@ export function ReportDetails(props: { match?: any; setBreadcrumbs?: any; httpCl
     addSuccessToastHandler();
   };
 
-  const removeToast = (removedToast: { id: any; }) => {
+  const removeToast = (removedToast: { id: any }) => {
     setToasts(toasts.filter((toast: any) => toast.id !== removedToast.id));
   };
 
@@ -173,22 +185,24 @@ export function ReportDetails(props: { match?: any; setBreadcrumbs?: any; httpCl
   const convertTimestamp = (timestamp: number | undefined) => {
     let displayDate = `\u2014`;
     if (timestamp) {
-      let readableDate = new Date(timestamp);
+      const readableDate = new Date(timestamp);
       displayDate = readableDate.toLocaleString();
     }
     return displayDate;
   };
 
   const parseTimePeriod = (queryUrl: string) => {
-    let [fromDateString, toDateString]: RegExpMatchArray | null = queryUrl.match(
-      timeRangeMatcher
-    );
+    let [
+      ,
+      fromDateString,
+      toDateString,
+    ]: RegExpMatchArray | null = queryUrl.match(timeRangeMatcher);
 
     fromDateString = decodeURIComponent(fromDateString.replace(/[']+/g, ''));
     toDateString = decodeURIComponent(toDateString.replace(/[']+/g, ''));
 
-    let fromDateParsed = dateMath.parse(fromDateString);
-    let toDateParsed = dateMath.parse(toDateString, { roundUp: true });
+    const fromDateParsed = dateMath.parse(fromDateString);
+    const toDateParsed = dateMath.parse(toDateString, { roundUp: true });
 
     const fromTimePeriod = fromDateParsed?.toDate();
     const toTimePeriod = toDateParsed?.toDate();
@@ -197,12 +211,10 @@ export function ReportDetails(props: { match?: any; setBreadcrumbs?: any; httpCl
     );
   };
 
-  const getReportDetailsData = (
-    report: ReportSchemaType
-  ): ReportDetails => {
+  const getReportDetailsData = (report: ReportSchemaType): ReportDetails => {
     const {
       report_definition: reportDefinition,
-      last_updated: lastUpdated,
+      // last_updated: lastUpdated,
       state,
       query_url: queryUrl,
     } = report;
@@ -213,38 +225,41 @@ export function ReportDetails(props: { match?: any; setBreadcrumbs?: any; httpCl
     } = trigger;
     const coreParams = reportParams.core_params;
     // covert timestamp to local date-time string
-    let reportDetails = {
+    const reportDetailsData = {
       reportName: reportParams.report_name,
       description:
         reportParams.description === '' ? `\u2014` : reportParams.description,
       created: convertTimestamp(report.time_created),
       lastUpdated: convertTimestamp(report.last_updated),
       source: reportParams.report_source,
-      recordLimit: 
-        reportParams.report_source != 'Saved search' 
-          ? `\u2014` 
+      recordLimit:
+        reportParams.report_source !== 'Saved search'
+          ? `\u2014`
           : reportParams.core_params.limit,
       // TODO:  we have all data needed, time_from, time_to, time_duration,
       // think of a way to better display
-      time_period: (reportParams.report_source !== 'Notebook') ? parseTimePeriod(queryUrl) : `\u2014`,
+      time_period:
+        reportParams.report_source !== 'Notebook'
+          ? parseTimePeriod(queryUrl)
+          : `\u2014`,
       defaultFileFormat: coreParams.report_format,
-      state: state,
+      state,
       reportHeader:
         reportParams.core_params.hasOwnProperty('header') &&
-          reportParams.core_params.header != ''
+        reportParams.core_params.header !== ''
           ? reportParams.core_params.header
           : `\u2014`,
       reportFooter:
         reportParams.core_params.hasOwnProperty('footer') &&
-          reportParams.core_params.footer != ''
+        reportParams.core_params.footer !== ''
           ? reportParams.core_params.footer
           : `\u2014`,
-      triggerType: triggerType,
+      triggerType,
       scheduleType: triggerParams ? triggerParams.schedule_type : `\u2014`,
       scheduleDetails: `\u2014`,
-      queryUrl: queryUrl,
+      queryUrl,
     };
-    return reportDetails;
+    return reportDetailsData;
   };
 
   useEffect(() => {
@@ -289,11 +304,16 @@ export function ReportDetails(props: { match?: any; setBreadcrumbs?: any; httpCl
       handleErrorToast,
       handlePermissionsMissingDownloadToast
     );
+    await sendTestNotificationsMessage(
+      reportId,
+      props.httpClient,
+      reportDetails
+    );
     handleLoading(false);
   };
 
   const fileFormatDownload = (data: ReportDetails) => {
-    let formatUpper = data['defaultFileFormat'];
+    let formatUpper = data.defaultFileFormat;
     formatUpper = fileFormatsUpper[formatUpper];
     return (
       <EuiLink onClick={downloadIconDownload}>
@@ -307,9 +327,10 @@ export function ReportDetails(props: { match?: any; setBreadcrumbs?: any; httpCl
     return (
       <EuiLink
         id="reportDetailsSourceURL"
-        href={`${data.queryUrl}`} target="_blank"
+        href={`${data.queryUrl}`}
+        target="_blank"
       >
-        {data['source']}
+        {data.source}
       </EuiLink>
     );
   };
@@ -351,7 +372,7 @@ export function ReportDetails(props: { match?: any; setBreadcrumbs?: any; httpCl
           reportDetailsComponentContent={''}
         />
       </EuiFlexGroup>
-    )
+    );
 
   const showLoadingModal = showLoading ? (
     <GenerateReportLoadingModal setShowLoading={setShowLoading} />
@@ -363,12 +384,13 @@ export function ReportDetails(props: { match?: any; setBreadcrumbs?: any; httpCl
     <>
       <EuiTitle size="l">
         <h1>
-          {!getNavGroupEnabled && i18n.translate('opensearch.reports.details.title', {
-            defaultMessage: 'Report details',
-          })}
+          {!getNavGroupEnabled &&
+            i18n.translate('opensearch.reports.details.title', {
+              defaultMessage: 'Report details',
+            })}
         </h1>
       </EuiTitle>
-      {!getNavGroupEnabled && <EuiSpacer size='s' />}
+      {!getNavGroupEnabled && <EuiSpacer size="s" />}
       <EuiPageContent>
         <EuiPageHeader>
           <EuiFlexGroup>
@@ -429,13 +451,13 @@ export function ReportDetails(props: { match?: any; setBreadcrumbs?: any; httpCl
             )}
             reportDetailsComponentContent={sourceURL(reportDetails)}
           />
-            <ReportDetailsComponent
-              reportDetailsComponentTitle={i18n.translate(
-                'opensearch.reports.reportDefinitionsDetails.fields.recordLimit',
-                { defaultMessage: 'Record limit' }
-              )}
-              reportDetailsComponentContent={reportDetails.recordLimit}
-            />
+          <ReportDetailsComponent
+            reportDetailsComponentTitle={i18n.translate(
+              'opensearch.reports.reportDefinitionsDetails.fields.recordLimit',
+              { defaultMessage: 'Record limit' }
+            )}
+            reportDetailsComponentContent={reportDetails.recordLimit}
+          />
           <ReportDetailsComponent
             reportDetailsComponentTitle={i18n.translate(
               'opensearch.reports.details.reportSettings.timePeriod',
@@ -450,8 +472,8 @@ export function ReportDetails(props: { match?: any; setBreadcrumbs?: any; httpCl
             )}
             reportDetailsComponentContent={fileFormatDownload(reportDetails)}
           />
-          </EuiFlexGroup>
-          <EuiFlexGroup>
+        </EuiFlexGroup>
+        <EuiFlexGroup>
           <ReportDetailsComponent
             reportDetailsComponentTitle={i18n.translate(
               'opensearch.reports.details.reportSettings.state',

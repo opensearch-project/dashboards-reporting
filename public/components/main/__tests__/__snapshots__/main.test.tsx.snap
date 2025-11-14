@@ -447,11 +447,11 @@ exports[`<Main /> panel render component 1`] = `
                                  
                                 <a
                                   class="euiLink euiLink--primary"
-                                  href="https://opensearch.org/docs/dashboards/reporting/"
+                                  href="https://docs.opensearch.org/3.3/reporting/report-dashboard-index/"
                                   rel="noopener noreferrer"
                                   target="_blank"
                                 >
-                                  Get started with OpenSearch Dashboards reporting
+                                  Get started with dashboard reporting
                                   <svg
                                     aria-hidden="true"
                                     class="euiIcon euiIcon--medium euiIcon-isLoading"
@@ -808,7 +808,32 @@ exports[`<Main /> panel render component 1`] = `
                     aria-live="polite"
                     aria-sort="none"
                     class="euiTableHeaderCell"
-                    data-test-subj="tableHeaderCell_status_5"
+                    data-test-subj="tableHeaderCell_notificationsEnabled_5"
+                    role="columnheader"
+                    scope="col"
+                  >
+                    <button
+                      class="euiTableHeaderButton"
+                      data-test-subj="tableHeaderSortButton"
+                      type="button"
+                    >
+                      <span
+                        class="euiTableCellContent"
+                      >
+                        <span
+                          class="euiTableCellContent__text"
+                          title="Notifications"
+                        >
+                          Notifications
+                        </span>
+                      </span>
+                    </button>
+                  </th>
+                  <th
+                    aria-live="polite"
+                    aria-sort="none"
+                    class="euiTableHeaderCell"
+                    data-test-subj="tableHeaderCell_status_6"
                     role="columnheader"
                     scope="col"
                   >
@@ -837,7 +862,7 @@ exports[`<Main /> panel render component 1`] = `
                 >
                   <td
                     class="euiTableRowCell euiTableRowCell--isMobileFullWidth"
-                    colspan="6"
+                    colspan="7"
                   >
                     <div
                       class="euiTableCellContent euiTableCellContent--alignCenter"
@@ -875,11 +900,11 @@ exports[`<Main /> panel render component 1`] = `
                                    
                                   <a
                                     class="euiLink euiLink--primary"
-                                    href="https://opensearch.org/docs/dashboards/reporting/"
+                                    href="https://docs.opensearch.org/3.3/reporting/report-dashboard-index/"
                                     rel="noopener noreferrer"
                                     target="_blank"
                                   >
-                                    Get started with OpenSearch Dashboards reporting
+                                    Get started with dashboard reporting
                                     <svg
                                       aria-hidden="true"
                                       aria-label="External link"
@@ -1394,11 +1419,11 @@ exports[`<Main /> panel render component after create success 1`] = `
                                  
                                 <a
                                   class="euiLink euiLink--primary"
-                                  href="https://opensearch.org/docs/dashboards/reporting/"
+                                  href="https://docs.opensearch.org/3.3/reporting/report-dashboard-index/"
                                   rel="noopener noreferrer"
                                   target="_blank"
                                 >
-                                  Get started with OpenSearch Dashboards reporting
+                                  Get started with dashboard reporting
                                   <svg
                                     aria-hidden="true"
                                     class="euiIcon euiIcon--medium"
@@ -1755,7 +1780,32 @@ exports[`<Main /> panel render component after create success 1`] = `
                     aria-live="polite"
                     aria-sort="none"
                     class="euiTableHeaderCell"
-                    data-test-subj="tableHeaderCell_status_5"
+                    data-test-subj="tableHeaderCell_notificationsEnabled_5"
+                    role="columnheader"
+                    scope="col"
+                  >
+                    <button
+                      class="euiTableHeaderButton"
+                      data-test-subj="tableHeaderSortButton"
+                      type="button"
+                    >
+                      <span
+                        class="euiTableCellContent"
+                      >
+                        <span
+                          class="euiTableCellContent__text"
+                          title="Notifications"
+                        >
+                          Notifications
+                        </span>
+                      </span>
+                    </button>
+                  </th>
+                  <th
+                    aria-live="polite"
+                    aria-sort="none"
+                    class="euiTableHeaderCell"
+                    data-test-subj="tableHeaderCell_status_6"
                     role="columnheader"
                     scope="col"
                   >
@@ -1784,7 +1834,7 @@ exports[`<Main /> panel render component after create success 1`] = `
                 >
                   <td
                     class="euiTableRowCell euiTableRowCell--isMobileFullWidth"
-                    colspan="6"
+                    colspan="7"
                   >
                     <div
                       class="euiTableCellContent euiTableCellContent--alignCenter"
@@ -1822,11 +1872,11 @@ exports[`<Main /> panel render component after create success 1`] = `
                                    
                                   <a
                                     class="euiLink euiLink--primary"
-                                    href="https://opensearch.org/docs/dashboards/reporting/"
+                                    href="https://docs.opensearch.org/3.3/reporting/report-dashboard-index/"
                                     rel="noopener noreferrer"
                                     target="_blank"
                                   >
-                                    Get started with OpenSearch Dashboards reporting
+                                    Get started with dashboard reporting
                                     <svg
                                       aria-label="External link"
                                       class="euiIcon euiIcon--small euiLink__externalIcon"
@@ -2397,11 +2447,11 @@ exports[`<Main /> panel render component after delete success 1`] = `
                                  
                                 <a
                                   class="euiLink euiLink--primary"
-                                  href="https://opensearch.org/docs/dashboards/reporting/"
+                                  href="https://docs.opensearch.org/3.3/reporting/report-dashboard-index/"
                                   rel="noopener noreferrer"
                                   target="_blank"
                                 >
-                                  Get started with OpenSearch Dashboards reporting
+                                  Get started with dashboard reporting
                                   <svg
                                     aria-hidden="true"
                                     class="euiIcon euiIcon--medium"
@@ -2758,7 +2808,32 @@ exports[`<Main /> panel render component after delete success 1`] = `
                     aria-live="polite"
                     aria-sort="none"
                     class="euiTableHeaderCell"
-                    data-test-subj="tableHeaderCell_status_5"
+                    data-test-subj="tableHeaderCell_notificationsEnabled_5"
+                    role="columnheader"
+                    scope="col"
+                  >
+                    <button
+                      class="euiTableHeaderButton"
+                      data-test-subj="tableHeaderSortButton"
+                      type="button"
+                    >
+                      <span
+                        class="euiTableCellContent"
+                      >
+                        <span
+                          class="euiTableCellContent__text"
+                          title="Notifications"
+                        >
+                          Notifications
+                        </span>
+                      </span>
+                    </button>
+                  </th>
+                  <th
+                    aria-live="polite"
+                    aria-sort="none"
+                    class="euiTableHeaderCell"
+                    data-test-subj="tableHeaderCell_status_6"
                     role="columnheader"
                     scope="col"
                   >
@@ -2787,7 +2862,7 @@ exports[`<Main /> panel render component after delete success 1`] = `
                 >
                   <td
                     class="euiTableRowCell euiTableRowCell--isMobileFullWidth"
-                    colspan="6"
+                    colspan="7"
                   >
                     <div
                       class="euiTableCellContent euiTableCellContent--alignCenter"
@@ -2825,11 +2900,11 @@ exports[`<Main /> panel render component after delete success 1`] = `
                                    
                                   <a
                                     class="euiLink euiLink--primary"
-                                    href="https://opensearch.org/docs/dashboards/reporting/"
+                                    href="https://docs.opensearch.org/3.3/reporting/report-dashboard-index/"
                                     rel="noopener noreferrer"
                                     target="_blank"
                                   >
-                                    Get started with OpenSearch Dashboards reporting
+                                    Get started with dashboard reporting
                                     <svg
                                       aria-label="External link"
                                       class="euiIcon euiIcon--small euiLink__externalIcon"
@@ -3401,11 +3476,11 @@ exports[`<Main /> panel render component after edit success 1`] = `
                                  
                                 <a
                                   class="euiLink euiLink--primary"
-                                  href="https://opensearch.org/docs/dashboards/reporting/"
+                                  href="https://docs.opensearch.org/3.3/reporting/report-dashboard-index/"
                                   rel="noopener noreferrer"
                                   target="_blank"
                                 >
-                                  Get started with OpenSearch Dashboards reporting
+                                  Get started with dashboard reporting
                                   <svg
                                     aria-hidden="true"
                                     class="euiIcon euiIcon--medium"
@@ -3762,7 +3837,32 @@ exports[`<Main /> panel render component after edit success 1`] = `
                     aria-live="polite"
                     aria-sort="none"
                     class="euiTableHeaderCell"
-                    data-test-subj="tableHeaderCell_status_5"
+                    data-test-subj="tableHeaderCell_notificationsEnabled_5"
+                    role="columnheader"
+                    scope="col"
+                  >
+                    <button
+                      class="euiTableHeaderButton"
+                      data-test-subj="tableHeaderSortButton"
+                      type="button"
+                    >
+                      <span
+                        class="euiTableCellContent"
+                      >
+                        <span
+                          class="euiTableCellContent__text"
+                          title="Notifications"
+                        >
+                          Notifications
+                        </span>
+                      </span>
+                    </button>
+                  </th>
+                  <th
+                    aria-live="polite"
+                    aria-sort="none"
+                    class="euiTableHeaderCell"
+                    data-test-subj="tableHeaderCell_status_6"
                     role="columnheader"
                     scope="col"
                   >
@@ -3791,7 +3891,7 @@ exports[`<Main /> panel render component after edit success 1`] = `
                 >
                   <td
                     class="euiTableRowCell euiTableRowCell--isMobileFullWidth"
-                    colspan="6"
+                    colspan="7"
                   >
                     <div
                       class="euiTableCellContent euiTableCellContent--alignCenter"
@@ -3829,11 +3929,11 @@ exports[`<Main /> panel render component after edit success 1`] = `
                                    
                                   <a
                                     class="euiLink euiLink--primary"
-                                    href="https://opensearch.org/docs/dashboards/reporting/"
+                                    href="https://docs.opensearch.org/3.3/reporting/report-dashboard-index/"
                                     rel="noopener noreferrer"
                                     target="_blank"
                                   >
-                                    Get started with OpenSearch Dashboards reporting
+                                    Get started with dashboard reporting
                                     <svg
                                       aria-label="External link"
                                       class="euiIcon euiIcon--small euiLink__externalIcon"

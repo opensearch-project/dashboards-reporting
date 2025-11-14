@@ -13,6 +13,12 @@ import { configure, mount, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { act } from 'react-dom/test-utils';
 
+jest.mock('../../../utils/plugins_service', () => ({
+  pluginsService: {
+    hasPlugin: jest.fn().mockReturnValue(true),
+  },
+}));
+
 const emptyRequest = {
   report_params: {
     report_name: '',
@@ -28,7 +34,7 @@ const emptyRequest = {
     configIds: [],
     title: '',
     textDescription: '',
-    htmlDescription: ''
+    htmlDescription: '',
   },
   trigger: {
     trigger_type: '',
@@ -39,7 +45,7 @@ const emptyRequest = {
   status: '',
 };
 
-let timeRange = {
+const timeRange = {
   timeFrom: new Date(123456789),
   timeTo: new Date(1234567890),
 };
@@ -57,8 +63,8 @@ const dashboardHits = {
           title: 'Mock Dashboard',
         },
         notebook: {
-          name: 'mock notebook name'
-        }
+          name: 'mock notebook name',
+        },
       },
     },
   ],
@@ -74,7 +80,7 @@ const visualizationHits = {
           title: 'Mock Visualization',
         },
         notebook: {
-          name: 'mock notebook name'
+          name: 'mock notebook name',
         },
       },
     },
@@ -90,7 +96,7 @@ const savedSearchHits = {
           title: 'Mock saved search value',
         },
         notebook: {
-          name: 'mock notebook name'
+          name: 'mock notebook name',
         },
       },
     },
@@ -115,9 +121,9 @@ describe('<ReportSettings /> panel', () => {
     expect(container.firstChild).toMatchSnapshot();
   });
 
-  test('render edit, dashboard source', async () => {
+  test('render edit, dashboard source (Dashboard)', async () => {
     const promise = Promise.resolve();
-    let report_definition = {
+    const reportDefinition = {
       report_params: {
         report_name: 'test create report definition trigger',
         report_source: 'Dashboard',
@@ -134,7 +140,7 @@ describe('<ReportSettings /> panel', () => {
         configIds: [],
         title: '',
         textDescription: '',
-        htmlDescription: ''
+        htmlDescription: '',
       },
       trigger: {
         trigger_type: 'Schedule',
@@ -146,15 +152,15 @@ describe('<ReportSettings /> panel', () => {
             interval: {
               period: 1,
               start_time: 123456789,
-              unit: 'Days'
-            }
-          }
+              unit: 'Days',
+            },
+          },
         },
       },
     };
 
     httpClientMock.get = jest.fn().mockResolvedValue({
-      report_definition,
+      report_definition: reportDefinition,
       hits: dashboardHits,
     });
 
@@ -173,9 +179,9 @@ describe('<ReportSettings /> panel', () => {
     await act(() => promise);
   });
 
-  test('render edit, visualization source', async () => {
+  test('render edit, visualization source (Visualization)', async () => {
     const promise = Promise.resolve();
-    let report_definition = {
+    const reportDefinition = {
       report_params: {
         report_name: 'test create report definition trigger',
         report_source: 'Visualization',
@@ -192,7 +198,7 @@ describe('<ReportSettings /> panel', () => {
         configIds: [],
         title: '',
         textDescription: '',
-        htmlDescription: ''
+        htmlDescription: '',
       },
       trigger: {
         trigger_type: 'Schedule',
@@ -204,15 +210,15 @@ describe('<ReportSettings /> panel', () => {
             interval: {
               period: 1,
               start_time: 123456789,
-              unit: 'Days'
-            }
-          }
+              unit: 'Days',
+            },
+          },
         },
       },
     };
 
     httpClientMock.get = jest.fn().mockResolvedValue({
-      report_definition,
+      report_definition: reportDefinition,
       hits: visualizationHits,
     });
 
@@ -233,7 +239,7 @@ describe('<ReportSettings /> panel', () => {
 
   test('render edit, saved search source', async () => {
     const promise = Promise.resolve();
-    let report_definition = {
+    const reportDefinition = {
       report_params: {
         report_name: 'test create report definition trigger',
         report_source: 'Saved search',
@@ -253,7 +259,7 @@ describe('<ReportSettings /> panel', () => {
         configIds: [],
         title: '',
         textDescription: '',
-        htmlDescription: ''
+        htmlDescription: '',
       },
       trigger: {
         trigger_type: 'Schedule',
@@ -265,15 +271,15 @@ describe('<ReportSettings /> panel', () => {
             interval: {
               period: 1,
               start_time: 123456789,
-              unit: 'Days'
-            }
-          }
+              unit: 'Days',
+            },
+          },
         },
       },
     };
 
     httpClientMock.get = jest.fn().mockResolvedValue({
-      report_definition,
+      report_definition: reportDefinition,
       hits: savedSearchHits,
     });
 
@@ -292,9 +298,9 @@ describe('<ReportSettings /> panel', () => {
     await act(() => promise);
   });
 
-  test('render edit, dashboard source', async () => {
+  test('render edit, dashboard source (Saved search)', async () => {
     const promise = Promise.resolve();
-    let report_definition = {
+    const reportDefinition = {
       report_params: {
         report_name: 'test create report definition trigger',
         report_source: 'Saved search',
@@ -324,15 +330,15 @@ describe('<ReportSettings /> panel', () => {
             interval: {
               period: 1,
               start_time: 123456789,
-              unit: 'Days'
-            }
-          }
+              unit: 'Days',
+            },
+          },
         },
       },
     };
 
     httpClientMock.get = jest.fn().mockResolvedValue({
-      report_definition,
+      report_definition: reportDefinition,
       hits: dashboardHits,
     });
 
@@ -351,9 +357,9 @@ describe('<ReportSettings /> panel', () => {
     await act(() => promise);
   });
 
-  test('render edit, visualization source', async () => {
+  test('render edit, visualization source (Saved search)', async () => {
     const promise = Promise.resolve();
-    let report_definition = {
+    const reportDefinition = {
       report_params: {
         report_name: 'test create report definition trigger',
         report_source: 'Saved search',
@@ -373,7 +379,7 @@ describe('<ReportSettings /> panel', () => {
         configIds: [],
         title: '',
         textDescription: '',
-        htmlDescription: ''
+        htmlDescription: '',
       },
       trigger: {
         trigger_type: 'Schedule',
@@ -385,15 +391,15 @@ describe('<ReportSettings /> panel', () => {
             interval: {
               period: 1,
               start_time: 123456789,
-              unit: 'Days'
-            }
-          }
+              unit: 'Days',
+            },
+          },
         },
       },
     };
 
     httpClientMock.get = jest.fn().mockResolvedValue({
-      report_definition,
+      report_definition: reportDefinition,
       hits: visualizationHits,
     });
 
@@ -412,7 +418,6 @@ describe('<ReportSettings /> panel', () => {
     await act(() => promise);
   });
 
-
   test('dashboard create from in-context', async () => {
     window = Object.create(window);
     Object.defineProperty(window, 'location', {
@@ -425,7 +430,7 @@ describe('<ReportSettings /> panel', () => {
 
     const promise = Promise.resolve();
 
-    let report_definition = {
+    const reportDefinition = {
       report_params: {
         report_name: 'test create report definition trigger',
         report_source: 'Dashboard',
@@ -442,7 +447,7 @@ describe('<ReportSettings /> panel', () => {
         configIds: [],
         title: '',
         textDescription: '',
-        htmlDescription: ''
+        htmlDescription: '',
       },
       trigger: {
         trigger_type: 'Schedule',
@@ -454,15 +459,15 @@ describe('<ReportSettings /> panel', () => {
             interval: {
               period: 1,
               start_time: 123456789,
-              unit: 'Days'
-            }
-          }
+              unit: 'Days',
+            },
+          },
         },
       },
     };
 
     httpClientMock.get = jest.fn().mockResolvedValue({
-      report_definition,
+      report_definition: reportDefinition,
       hits: dashboardHits,
     });
 
@@ -496,7 +501,7 @@ describe('<ReportSettings /> panel', () => {
 
     const promise = Promise.resolve();
 
-    let report_definition = {
+    const reportDefinition = {
       report_params: {
         report_name: 'test create report definition trigger',
         report_source: 'Visualization',
@@ -513,7 +518,7 @@ describe('<ReportSettings /> panel', () => {
         configIds: [],
         title: '',
         textDescription: '',
-        htmlDescription: ''
+        htmlDescription: '',
       },
       trigger: {
         trigger_type: 'Schedule',
@@ -525,15 +530,15 @@ describe('<ReportSettings /> panel', () => {
             interval: {
               period: 1,
               start_time: 123456789,
-              unit: 'Days'
-            }
-          }
+              unit: 'Days',
+            },
+          },
         },
       },
     };
 
     httpClientMock.get = jest.fn().mockResolvedValue({
-      report_definition,
+      report_definition: reportDefinition,
       hits: visualizationHits,
     });
 
@@ -566,7 +571,7 @@ describe('<ReportSettings /> panel', () => {
 
     const promise = Promise.resolve();
 
-    let report_definition = {
+    const reportDefinition = {
       report_params: {
         report_name: 'test create report definition trigger',
         report_source: 'Saved search',
@@ -586,7 +591,7 @@ describe('<ReportSettings /> panel', () => {
         configIds: [],
         title: '',
         textDescription: '',
-        htmlDescription: ''
+        htmlDescription: '',
       },
       trigger: {
         trigger_type: 'Schedule',
@@ -595,7 +600,7 @@ describe('<ReportSettings /> panel', () => {
     };
 
     httpClientMock.get = jest.fn().mockResolvedValue({
-      report_definition,
+      report_definition: reportDefinition,
       hits: savedSearchHits,
     });
 
@@ -616,7 +621,7 @@ describe('<ReportSettings /> panel', () => {
 
   test('simulate click on dashboard combo box', async () => {
     const promise = Promise.resolve();
-    let report_definition = {
+    const reportDefinition = {
       report_params: {
         report_name: 'test create report definition trigger',
         report_source: 'Saved search',
@@ -636,7 +641,7 @@ describe('<ReportSettings /> panel', () => {
         configIds: [],
         title: '',
         textDescription: '',
-        htmlDescription: ''
+        htmlDescription: '',
       },
       trigger: {
         trigger_type: 'Schedule',
@@ -648,15 +653,15 @@ describe('<ReportSettings /> panel', () => {
             interval: {
               period: 1,
               start_time: 123456789,
-              unit: 'Days'
-            }
-          }
+              unit: 'Days',
+            },
+          },
         },
       },
     };
 
     httpClientMock.get = jest.fn().mockResolvedValue({
-      report_definition,
+      report_definition: reportDefinition,
       hits: dashboardHits,
     });
 
@@ -668,19 +673,20 @@ describe('<ReportSettings /> panel', () => {
         timeRange={timeRange}
         showSettingsReportNameError={false}
         showTimeRangeError={false}
-      />
-    , {disableLifecycleMethods: true});
+      />,
+      { disableLifecycleMethods: true }
+    );
     await act(() => promise);
 
     const comboBox = component.find('EuiCompressedComboBox').at(0);
-    comboBox.simulate('change', [{value: 'test', label: 'test'}]);
+    comboBox.simulate('change', [{ value: 'test', label: 'test' }]);
 
     await act(() => promise);
   });
 
   test('simulate click on visualization combo box', async () => {
     const promise = Promise.resolve();
-    let report_definition = {
+    const reportDefinition = {
       report_params: {
         report_name: 'test create report definition trigger',
         report_source: 'Visualization',
@@ -697,7 +703,7 @@ describe('<ReportSettings /> panel', () => {
         configIds: [],
         title: '',
         textDescription: '',
-        htmlDescription: ''
+        htmlDescription: '',
       },
       trigger: {
         trigger_type: 'Schedule',
@@ -709,15 +715,15 @@ describe('<ReportSettings /> panel', () => {
             interval: {
               period: 1,
               start_time: 123456789,
-              unit: 'Days'
-            }
-          }
+              unit: 'Days',
+            },
+          },
         },
       },
     };
 
     httpClientMock.get = jest.fn().mockResolvedValue({
-      report_definition,
+      report_definition: reportDefinition,
       hits: visualizationHits,
     });
 
@@ -736,7 +742,9 @@ describe('<ReportSettings /> panel', () => {
     const reportSourceRadio = component.find('EuiRadioGroup').at(0);
     const visualizationRadio = reportSourceRadio.find('EuiRadio').at(1);
 
-    visualizationRadio.find('input').simulate('change', 'visualizationReportSource');
+    visualizationRadio
+      .find('input')
+      .simulate('change', 'visualizationReportSource');
     await act(() => promise);
     const comboBox = component.find('EuiCompressedComboBox').at(0);
 
@@ -750,7 +758,7 @@ describe('<ReportSettings /> panel', () => {
 
   test('simulate click on saved search combo box', async () => {
     const promise = Promise.resolve();
-    let report_definition = {
+    const reportDefinition = {
       report_params: {
         report_name: 'test create report definition trigger',
         report_source: 'Saved search',
@@ -767,7 +775,7 @@ describe('<ReportSettings /> panel', () => {
         configIds: [],
         title: '',
         textDescription: '',
-        htmlDescription: ''
+        htmlDescription: '',
       },
       trigger: {
         trigger_type: 'Schedule',
@@ -779,15 +787,15 @@ describe('<ReportSettings /> panel', () => {
             interval: {
               period: 1,
               start_time: 123456789,
-              unit: 'Days'
-            }
-          }
+              unit: 'Days',
+            },
+          },
         },
       },
     };
 
     httpClientMock.get = jest.fn().mockResolvedValue({
-      report_definition,
+      report_definition: reportDefinition,
       hits: savedSearchHits,
     });
 
@@ -806,13 +814,15 @@ describe('<ReportSettings /> panel', () => {
     const reportSourceRadio = component.find('EuiRadioGroup').at(0);
     const visualizationRadio = reportSourceRadio.find('EuiRadio').at(2);
 
-    visualizationRadio.find('input').simulate('change', 'savedSearchReportSource');
+    visualizationRadio
+      .find('input')
+      .simulate('change', 'savedSearchReportSource');
     await act(() => promise);
     const comboBox = component.find('EuiCompressedComboBox').at(0);
 
     act(() => {
       comboBox.props().onChange([{ value: 'test', label: 'test' }]);
-    })
+    });
     component.update();
 
     await act(() => promise);

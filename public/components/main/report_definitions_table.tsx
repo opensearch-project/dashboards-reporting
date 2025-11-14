@@ -13,6 +13,7 @@ import {
 } from '@elastic/eui';
 import { i18n } from '@osd/i18n';
 import { humanReadableDate } from './main_utils';
+import { versionOpensearchShort } from '../utils/utils';
 
 const emptyMessageReportDefinitions = (
   <EuiEmptyPrompt
@@ -39,14 +40,14 @@ const emptyMessageReportDefinitions = (
             { defaultMessage: 'To learn more, see' }
           )}{' '}
           <EuiLink
-            href="https://opensearch.org/docs/dashboards/reporting/"
+            // Wazuh: If OpenSearch fix the link, remove this comment and use their link
+            href={`https://docs.opensearch.org/${versionOpensearchShort}/reporting/report-dashboard-index/`}
             target="_blank"
           >
             {i18n.translate(
               'opensearch.reports.reportDefinitionsTable.emptyMessageReports.getStarted',
               {
-                defaultMessage:
-                  'Get started with OpenSearch Dashboards reporting',
+                defaultMessage: 'Get started with dashboard reporting',
               }
             )}
           </EuiLink>
@@ -80,9 +81,8 @@ const reportDefinitionsSearch = {
 
 export function ReportDefinitions(props) {
   const { pagination, reportDefinitionsTableContent } = props;
-
-  const [sortField, setSortField] = useState('lastUpdated');
-  const [sortDirection, setSortDirection] = useState('des');
+  const [sortField] = useState('lastUpdated');
+  const [sortDirection] = useState('des');
 
   const sorting = {
     sort: {
@@ -105,7 +105,7 @@ export function ReportDefinitions(props) {
   };
 
   const navigateToDefinitionDetails = (name: any) => {
-    let id = getDefinitionTableItemId(name);
+    const id = getDefinitionTableItemId(name);
     window.location.assign(
       `reports-dashboards#/report_definition_details/${id}`
     );
@@ -168,9 +168,18 @@ export function ReportDefinitions(props) {
         { defaultMessage: 'Last Updated' }
       ),
       render: (date) => {
-        let readable = humanReadableDate(date);
+        const readable = humanReadableDate(date);
         return <EuiText size="s">{readable}</EuiText>;
       },
+    },
+    {
+      field: 'notificationsEnabled',
+      name: i18n.translate(
+        'opensearch.reports.reportDefinitionsTable.columns.notificationsEnabled',
+        { defaultMessage: 'Notifications' }
+      ),
+      sortable: true,
+      truncateText: false,
     },
     {
       field: 'status',

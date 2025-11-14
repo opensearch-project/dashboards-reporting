@@ -13,10 +13,10 @@ export const reportTableMockResponse = [
       query_url: 'test_query_url_value.com',
       report_definition: {
         delivery: {
-          delivery_type: 'OpenSearch Dashboards user',
-          delivery_params: {
-            opensearch_dashboards_recipients: [],
-          },
+          title: 'New report',
+          textDescription: 'New report available to view',
+          htmlDescription: '<p>New report available to view</p>',
+          configIds: ['VnOVQ5IBH5EsCNGPWgec'],
         },
         report_params: {
           report_name: 'Test report table response',
@@ -47,12 +47,16 @@ export const reportTableMockResponse = [
 
 export const mockReportsTableItems = [
   {
+    channel: ['VnOVQ5IBH5EsCNGPWgec'],
+    emailRecipients: undefined,
+    textDescription: 'New report available to view',
+    htmldescription: '<p>New report available to view</p>',
+    title: 'New report',
     id: '123456',
     reportName: 'Test report table response',
     type: 'On demand',
-    sender: '—',
+    sender: undefined,
     opensearchDashboardsRecipients: '—',
-    emailRecipients: '—',
     reportSource: 'Dashboard',
     timeCreated: undefined,
     state: undefined,
@@ -84,8 +88,10 @@ export const reportDefinitionsTableMockResponse = [
           },
         },
         delivery: {
-          delivery_type: 'OpenSearch Dashboards user',
-          delivery_params: { opensearch_dashboards_recipients: [] },
+          title: 'New report',
+          textDescription: 'New report available to view',
+          htmlDescription: '<p>New report available to view</p>',
+          configIds: ['VnOVQ5IBH5EsCNGPWgec'],
         },
         trigger: {
           trigger_type: 'Schedule',
@@ -114,6 +120,7 @@ export const reportDefinitionsTableMockContent = [
     type: 'Schedule',
     owner: '—',
     source: 'Dashboard',
+    notificationsEnabled: 'Enabled',
     baseUrl: 'test_base_url.com',
     lastUpdated: 1602713211007,
     details: 'Recurring',

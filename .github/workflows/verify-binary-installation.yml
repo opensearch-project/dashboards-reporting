@@ -1,8 +1,11 @@
 name: 'Install Dashboards with Plugin via Binary'
 
-on: [push, pull_request]
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
 env:
-  OPENSEARCH_VERSION: '3.0.0-beta1'
+  OPENSEARCH_VERSION: '3.3.0'
   CI: 1
   # avoid warnings like "tput: No value for $TERM and no -T specified"
   TERM: xterm
@@ -16,6 +19,7 @@ jobs:
         os: [ubuntu-latest]
         # TODO: add windows support when OSD core is stable on windows
     runs-on: ${{ matrix.os }}
+    if: github.event.pull_request.draft == false
     steps:
       - name: Checkout Branch
         uses: actions/checkout@v4
@@ -29,14 +33,14 @@ jobs:
         shell: bash
 
       - name: Run Opensearch
-        uses: derek-ho/start-opensearch@v2
+        uses: derek-ho/start-opensearch@v6
         with:
           opensearch-version: ${{ env.OPENSEARCH_VERSION }}
           security-enabled: false
 
       - name: Run Dashboard
         id: setup-dashboards
-        uses: derek-ho/setup-opensearch-dashboards@v2
+        uses: derek-ho/setup-opensearch-dashboards@v3
         with:
           plugin_name: dashboards-reporting
           built_plugin_name: reportsDashboards

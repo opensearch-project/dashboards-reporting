@@ -10,7 +10,8 @@
   "optionalPlugins": [
     "share",
     "dataSource",
-    "dataSourceManagement"
+    "dataSourceManagement",
+    "observabilityDashboards"
   ],
   "server": true,
   "ui": true,

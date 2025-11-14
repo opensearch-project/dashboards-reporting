@@ -1,6 +1,9 @@
 name: Lint
 
-on: [pull_request]
+on:
+  pull_request:
+    types:
+      [opened, synchronize, reopened, ready_for_review]
 
 env:
   PLUGIN_NAME: dashboards-reporting
@@ -10,6 +13,7 @@ jobs:
   build:
     name: Lint
     runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
 
     steps:
       - name: Checkout OpenSearch Dashboards
@@ -33,7 +37,7 @@ jobs:
           echo "::set-output name=yarn_version::$(node -p "(require('./OpenSearch-Dashboards/package.json').engines.yarn).match(/[.0-9]+/)[0]")"
 
       - name: Setup node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ steps.versions_step.outputs.node_version }}
           registry-url: 'https://registry.npmjs.org'
@@ -66,13 +70,7 @@ jobs:
           CHANGED_FILES=$(cat /tmp/changed_files.txt)
           echo "These are the changed files: $CHANGED_FILES"
           if [[ -n "$CHANGED_FILES" ]]; then
-            echo "Linting changed files..."
-            while IFS= read -r file; do
-              if [[ $file == *.js || $file == *.ts || $file == *.tsx ]]; then
-                echo "linting file $file"
-                yarn lint "$file"
-              fi
-            done < /tmp/changed_files.txt
+            yarn lint $(echo "$CHANGED_FILES" | grep -E '\.(js|jsx|ts|tsx)$')
           else
             echo "No matched files to lint."
           fi

@@ -22,6 +22,7 @@ import {
   permissionsMissingActions,
 } from '../../utils/utils';
 import { definitionInputValidation } from '../utils/utils';
+import { ReportDelivery } from '../delivery';
 
 interface ReportParamsType {
   report_name: string;
@@ -213,7 +214,7 @@ export function CreateReport(props: {
     timeRange: TimeRangeParams
   ) => {
     const { httpClient } = props;
-    //TODO: need better handle
+    // TODO: need better handle
     if (
       metadata.trigger.trigger_type === 'On demand' &&
       metadata.trigger.trigger_params !== undefined
@@ -252,7 +253,7 @@ export function CreateReport(props: {
           async (resp: {
             scheduler_response: { reportDefinitionId: string };
           }) => {
-            //TODO: consider handle the on demand report generation from server side instead
+            // TODO: consider handle the on demand report generation from server side instead
             if (metadata.trigger.trigger_type === 'On demand') {
               const reportDefinitionId =
                 resp.scheduler_response.reportDefinitionId;
@@ -261,9 +262,9 @@ export function CreateReport(props: {
             window.location.assign(`reports-dashboards#/create=success`);
           }
         )
-        .catch((error: { body: { statusCode: number } }) => {
-          console.log('error in creating report definition: ' + error);
-          if (error.body.statusCode === 403) {
+        .catch((errorRequest: { body: { statusCode: number } }) => {
+          console.log('error in creating report definition: ' + errorRequest);
+          if (errorRequest.body.statusCode === 403) {
             handleErrorOnCreateToast('permissions');
           } else {
             handleErrorOnCreateToast('API');
@@ -320,6 +321,12 @@ export function CreateReport(props: {
           showTimeRangeError={showTimeRangeError}
           showTriggerIntervalNaNError={showTriggerIntervalNaNError}
           showCronError={showCronError}
+        />
+        <EuiSpacer />
+        <ReportDelivery
+          edit={false}
+          reportDefinitionRequest={createReportDefinitionRequest}
+          httpClientProps={props.httpClient}
         />
         <EuiSpacer />
         <EuiFlexGroup justifyContent="flexEnd">
