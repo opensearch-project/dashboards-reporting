@@ -144,7 +144,7 @@ export const getOpenSearchData = (
         let keys;
         keys = dateField.split('.');
         const dateValue = data._source[dateField];
-        const fieldDateValue = fields !== undefined ? fields[dateField] : undefined;
+        const fieldDateValue = fields?.[dateField];
         const isDateFieldPresent = isKeyPresent(data._source, dateField);
 
         if (isDateFieldPresent) {
@@ -156,12 +156,8 @@ export const getOpenSearchData = (
                 .utc(dateValue)
                 .tz(timezone)
                 .format(dateFormat);
-            } else if (
-              dateValue.length !== 0 &&
-              dateValue instanceof Array &&
-              fieldDateValue !== undefined
-            ) {
-              fieldDateValue.forEach((element, index) => {
+            } else if (dateValue?.length !== 0 && dateValue instanceof Array) {
+              fieldDateValue?.forEach((element, index) => {
                 data._source[keys][index] = moment
                   .utc(element)
                   .tz(timezone)
@@ -174,15 +170,11 @@ export const getOpenSearchData = (
           } else {
             let keyElement = keys.shift();
             // if conditions to determine if the date field's value is an array or a string
-            if (fieldDateValue !== undefined && typeof fieldDateValue === 'string') {
+            if (fieldDateValue && typeof fieldDateValue === 'string') {
               keys.push(moment.utc(fieldDateValue).tz(timezone).format(dateFormat));
-            } else if (
-              dateValue.length !== 0 &&
-              dateValue instanceof Array &&
-              fieldDateValue !== undefined
-            ) {
+            } else if (dateValue?.length !== 0 && dateValue instanceof Array) {
               let tempArray: string[] = [];
-              fieldDateValue.forEach((index) => {
+              fieldDateValue?.forEach((index) => {
                 tempArray.push(
                   moment.utc(index).tz(timezone).format(dateFormat)
                 );

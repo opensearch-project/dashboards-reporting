@@ -135,7 +135,12 @@ const generateInContextReport = async (
 
 // try to match uuid and user entered custom-id followed by '?' in URL, which would be the saved search id for discover URL
 // custom id example: v1s-f00-b4r1-01, Filebeat-Apache-Dashboard-ecs,
-const getUuidFromUrl = () => window.location.href.match(/([0-9a-zA-Z-]+)\?/);
+const getUuidFromUrl = () => {
+  let href = window.location.href;
+  // Remove security_tenant parameter to avoid interference
+  href = href.replace(/[?&]security_tenant=[^&#]*/g, '');
+  return href.match(/([0-9a-zA-Z-]+)\?/);
+};
 const isDiscover = () => window.location.href.includes('discover');
 
 // open Download drop-down

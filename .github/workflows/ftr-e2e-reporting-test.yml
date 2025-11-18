@@ -7,8 +7,8 @@ env:
   # avoid warnings like "tput: No value for $TERM and no -T specified"
   TERM: xterm
   OPENSEARCH_DASHBOARDS_VERSION: '2.x'
-  OPENSEARCH_VERSION: '2.14.0'
-  OPENSEARCH_PLUGIN_VERSION: '2.14.0.0'
+  OPENSEARCH_VERSION: '2.19.0'
+  OPENSEARCH_PLUGIN_VERSION: '2.19.0.0'
   PLUGIN_NAME: dashboards-reporting
 
 jobs:
@@ -128,10 +128,10 @@ jobs:
       - name : Check If OpenSearch Dashboards Is Ready
         if: ${{ runner.os == 'Linux' }}
         run: |
-          if timeout 600 grep -q "bundles compiled successfully after" <(tail -n0 -f dashboard.log); then
+          if timeout 1800 grep -q "bundles compiled successfully after" <(tail -n0 -f dashboard.log); then
             echo "OpenSearch Dashboards compiled successfully."
           else
-            echo "Timeout for 600 seconds reached. OpenSearch Dashboards did not finish compiling."
+            echo "Timeout for 1800 seconds reached. OpenSearch Dashboards did not finish compiling."
             exit 1
           fi
         working-directory: OpenSearch-Dashboards
