@@ -73,11 +73,6 @@ jobs:
         run: curl http://localhost:9200/
         shell: bash
 
-      - name: Show OpenSearch Logs
-        if: always()
-        run: cat ./opensearch-${{ env.OPENSEARCH_VERSION }}-SNAPSHOT/logs/opensearch.log
-        shell: bash
-
       - name: Checkout OpenSearch Dashboards
         uses: actions/checkout@v2
         with:
