@@ -32,14 +32,14 @@ jobs:
         with:
           url: https://aws.oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=org.opensearch.plugin&a=opensearch-job-scheduler&v=${{ env.OPENSEARCH_PLUGIN_VERSION }}-SNAPSHOT&p=zip
           target: plugin-artifacts/
-          filename: job-scheduler.zip
+          filename: opensearch-job-scheduler.zip
 
       - name: Download Reports Scheduler artifact
         uses: suisei-cn/actions-download-file@v1.4.0
         with:
           url: https://aws.oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=org.opensearch.plugin&a=opensearch-reports-scheduler&v=${{ env.OPENSEARCH_PLUGIN_VERSION }}-SNAPSHOT&p=zip
           target: plugin-artifacts/
-          filename: reports-scheduler.zip
+          filename: opensearch-reports-scheduler.zip
 
       - name: Download OpenSearch
         uses: peternied/download-file@v2
@@ -54,12 +54,12 @@ jobs:
 
       - name: Install Job Scheduler
         run: |
-          /bin/bash -c "yes | ./opensearch-${{ env.OPENSEARCH_VERSION }}-SNAPSHOT/bin/opensearch-plugin install file:$(pwd)/plugin-artifacts/job-scheduler.zip"
+          /bin/bash -c "yes | ./opensearch-${{ env.OPENSEARCH_VERSION }}-SNAPSHOT/bin/opensearch-plugin install file:$(pwd)/plugin-artifacts/opensearch-job-scheduler.zip"
         shell: bash
     
       - name: Install Reports Scheduler
         run: |
-          /bin/bash -c "yes | ./opensearch-${{ env.OPENSEARCH_VERSION }}-SNAPSHOT/bin/opensearch-plugin install file:$(pwd)/plugin-artifacts/reports-scheduler.zip"
+          /bin/bash -c "yes | ./opensearch-${{ env.OPENSEARCH_VERSION }}-SNAPSHOT/bin/opensearch-plugin install file:$(pwd)/plugin-artifacts/opensearch-reports-scheduler.zip"
         shell: bash
 
       - name: Run OpenSearch
@@ -71,6 +71,11 @@ jobs:
       - name: Check OpenSearch Running on Linux
         if: ${{ runner.os != 'Windows'}}
         run: curl http://localhost:9200/
+        shell: bash
+
+      - name: Show OpenSearch Logs
+        if: always()
+        run: cat ./opensearch-${{ env.OPENSEARCH_VERSION }}-SNAPSHOT/logs/opensearch.log
         shell: bash
 
       - name: Checkout OpenSearch Dashboards
