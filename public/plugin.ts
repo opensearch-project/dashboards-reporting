@@ -22,6 +22,7 @@ import {
   ReportsDashboardsPluginStart,
 } from './types';
 import { pluginsService } from './components/utils/plugins_service';
+import { generateInContextPDFReport } from './components/context_menu/context_menu';
 
 export interface ReportingPluginSetupDependencies {
   dataSource: DataSourcePluginSetup;
@@ -74,7 +75,11 @@ export class ReportsDashboardsPlugin
   ): ReportsDashboardsPluginStart {
     applicationService.init(core.application);
     pluginsService.init(plugins);
-    return {};
+    return {
+      // Wazuh Dashboard Reporting - Generate PDF report exposed method
+      generateInContextPDFReport
+      // End Wazuh Dashboard Reporting - Generate PDF report exposed method
+    };
   }
 
   public stop() {}
