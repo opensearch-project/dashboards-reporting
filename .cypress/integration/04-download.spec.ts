@@ -85,9 +85,9 @@ describe('Cypress', () => {
 
     cy.url().should('include', 'report_definition_details');
 
-    cy.get('#generateReportFromDetailsButton').should('exist');
+     cy.get('#generateReportFromDetailsFileFormat').should('exist');
 
-    cy.get('#generateReportFromDetailsButton').click({ force: true });
+    cy.get('#generateReportFromDetailsFileFormat').click({ force: true });
 
     cy.get('#downloadInProgressLoadingModal');
   });
