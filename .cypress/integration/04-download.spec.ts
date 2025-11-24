@@ -72,7 +72,7 @@ describe('Cypress', () => {
   });
 
   it('Download from Report definition details page', () => {
-    // create an on-demand report definition 
+   // create an on-demand report definition
 
     cy.visit(`${Cypress.env('opensearchDashboards')}/app/reports-dashboards#/`);
     cy.location('pathname', { timeout: 60000 }).should(
@@ -81,14 +81,18 @@ describe('Cypress', () => {
     );
     cy.wait(10000);
 
-    cy.get('tr.euiTableRow-isSelectable:nth-child(1) > td:nth-child(1) > div:nth-child(2) > button:nth-child(1)').first().click(); 
+    cy.get('tr.euiTableRow-isSelectable:nth-child(1) > td:nth-child(1) > div:nth-child(2) > button:nth-child(1)').first().click();
 
     cy.url().should('include', 'report_definition_details');
 
-     cy.get('#generateReportFromDetailsFileFormat').should('exist');
+    cy.wait(5000);
+
+    cy.get('#generateReportFromDetailsFileFormat').should('exist');
 
     cy.get('#generateReportFromDetailsFileFormat').click({ force: true });
 
-    cy.get('#downloadInProgressLoadingModal');
+    cy.get('.euiToastHeader__title')
+      .contains('Successfully generated report')
+      .should('exist');
   });
 });
