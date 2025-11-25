@@ -346,7 +346,7 @@ export function ReportSettings(props: ReportSettingProps) {
             ['unordered-list', 'ordered-list', 'checked-list'],
           ]}
           generateMarkdownPreview={(markdown) =>
-             Promise.resolve(DOMPurify.sanitize(converter.makeHtml(markdown)))
+            Promise.resolve(DOMPurify.sanitize(converter.makeHtml(markdown)))
           }
         />
       </EuiFormRow>
@@ -369,7 +369,7 @@ export function ReportSettings(props: ReportSettingProps) {
             ['unordered-list', 'ordered-list', 'checked-list'],
           ]}
           generateMarkdownPreview={(markdown) =>
-             Promise.resolve(DOMPurify.sanitize(converter.makeHtml(markdown)))
+            Promise.resolve(DOMPurify.sanitize(converter.makeHtml(markdown)))
           }
         />
       </EuiFormRow>
