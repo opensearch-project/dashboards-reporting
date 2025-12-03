@@ -19,7 +19,6 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "cron-validator": "^1.1.1",
-    "dompurify": "^2.4.1",
     "elastic-builder": "^2.7.1",
     "enzyme-adapter-react-16": "^1.15.5",
     "html2canvas": "1.4.1",
@@ -73,6 +72,7 @@
     "css-what": "^5.0.1",
     "ansi-regex": "5.0.1",
     "json-schema": "0.4.0",
-    "ws": "^7.4.6"
+    "ws": "^7.4.6",
+    "form-data": "^4.0.4"
   }
 }
