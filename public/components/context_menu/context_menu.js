@@ -156,10 +156,14 @@ const generateInContextReport = async (
 };
 
 // try to match uuid followed by '?' in URL, which would be the saved search id for discover URL
-const getUuidFromUrl = () =>
-  window.location.href.match(
+const getUuidFromUrl = () => {
+  let href = window.location.href;
+  // Remove security_tenant parameter to avoid interference
+  href = href.replace(/[?&]security_tenant=[^&#]*/g, '');
+  return href.match(
     /(\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b)\?/
   );
+};
 const isDiscover = () => window.location.href.includes('discover');
 
 // open Download drop-down
