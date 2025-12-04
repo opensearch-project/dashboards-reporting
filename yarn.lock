@@ -2245,6 +2245,11 @@ dompurify@^2.2.0:
   resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-2.4.1.tgz#f9cb1a275fde9af6f2d0a2644ef648dd6847b631"
   integrity sha512-ewwFzHzrrneRjxzmK6oVz/rZn9VWspGFRDb4/rRtIsM1n36t9AKma/ye8syCpcw+XJ25kOK/hOG7t1j2I2yBqA==
 
+dompurify@^2.5.7:
+  version "2.5.8"
+  resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-2.5.8.tgz#2809d89d7e528dc7a071dea440d7376df676f824"
+  integrity sha512-o1vSNgrmYMQObbSSvF/1brBYEQPHhV1+gsmrusO7/GXtp1T9rCS8cXFqVxK/9crT1jA6Ccv+5MTSjBNqr7Sovw==
+
 domutils@^2.0.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/domutils/-/domutils-2.2.0.tgz#f3ce1610af5c30280bde1b71f84b018b958f32cf"

@@ -23,6 +23,7 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "cron-validator": "^1.1.1",
+    "dompurify": "^2.5.7",
     "elastic-builder": "^2.7.1",
     "enzyme-adapter-react-16": "^1.15.2",
     "html2canvas": "1.4.1",
