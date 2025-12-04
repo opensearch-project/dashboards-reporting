@@ -23,7 +23,7 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-
+import createDOMPurify from 'dompurify';
 import React, { useEffect, useState } from 'react';
 import { i18n } from '@osd/i18n';
 import {
@@ -327,6 +327,7 @@ export function ReportSettings(props: ReportSettingProps) {
       setCheckboxIdSelectHeaderFooter(newCheckboxIdToSelectedMap);
     };
 
+    const DOMPurify = createDOMPurify(window);
     const showFooter = checkboxIdSelectHeaderFooter.footer ? (
       <EuiFormRow
         label={i18n.translate('opensearch.reports.reportSettingProps.footer', {
@@ -344,7 +345,7 @@ export function ReportSettings(props: ReportSettingProps) {
             ['unordered-list', 'ordered-list', 'checked-list'],
           ]}
           generateMarkdownPreview={(markdown) =>
-            Promise.resolve(converter.makeHtml(markdown))
+            Promise.resolve(DOMPurify.sanitize(converter.makeHtml(markdown)))
           }
         />
       </EuiFormRow>
@@ -367,7 +368,7 @@ export function ReportSettings(props: ReportSettingProps) {
             ['unordered-list', 'ordered-list', 'checked-list'],
           ]}
           generateMarkdownPreview={(markdown) =>
-            Promise.resolve(converter.makeHtml(markdown))
+            Promise.resolve(DOMPurify.sanitize(converter.makeHtml(markdown)))
           }
         />
       </EuiFormRow>
