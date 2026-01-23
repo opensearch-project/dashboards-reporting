@@ -47,6 +47,11 @@ jobs:
         shell: bash
         working-directory: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
 
+      - name: Install gawk
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gawk
+
       - name: Download Job Scheduler artifact (latest snapshot from ci.opensearch.org)
         shell: bash
         run: |
@@ -62,7 +67,7 @@ jobs:
 
           SNAPSHOT_VALUE="$(
             curl -fsSL "$DIR_URL/maven-metadata.xml" \
-              | awk '
+              | gawk '
                   /<snapshotVersion>/ {in=1; ext=""; val=""; next}
                   in && /<extension>/ {gsub(/.*<extension>|<\/extension>.*/,""); ext=$0}
                   in && /<value>/     {gsub(/.*<value>|<\/value>.*/,""); val=$0}
@@ -92,7 +97,7 @@ jobs:
 
           SNAPSHOT_VALUE="$(
             curl -fsSL "$DIR_URL/maven-metadata.xml" \
-              | awk '
+              | gawk '
                   /<snapshotVersion>/ {in=1; ext=""; val=""; next}
                   in && /<extension>/ {gsub(/.*<extension>|<\/extension>.*/,""); ext=$0}
                   in && /<value>/     {gsub(/.*<value>|<\/value>.*/,""); val=$0}
