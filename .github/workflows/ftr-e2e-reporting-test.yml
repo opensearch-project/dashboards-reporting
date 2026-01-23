@@ -47,70 +47,33 @@ jobs:
         shell: bash
         working-directory: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
 
-      - name: Install gawk
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gawk
-
-      - name: Download Job Scheduler artifact (latest snapshot from ci.opensearch.org)
+      - name: Download Job Scheduler artifact
         shell: bash
         run: |
-          set -euo pipefail
-
           BASE="https://ci.opensearch.org/ci/dbc/snapshots/maven"
-          GROUP="org.opensearch.plugin"
+          GROUP_PATH="org/opensearch/plugin"
           ARTIFACT="opensearch-job-scheduler"
           VERSION="${{ env.PLUGIN_VERSION }}-SNAPSHOT"
-
-          GROUP_PATH="${GROUP//./\/}"
-          DIR_URL="$BASE/$GROUP_PATH/$ARTIFACT/$VERSION"
-
-          SNAPSHOT_VALUE="$(
-            curl -fsSL "$DIR_URL/maven-metadata.xml" \
-              | gawk '
-                  /<snapshotVersion>/ {in=1; ext=""; val=""; next}
-                  in && /<extension>/ {gsub(/.*<extension>|<\/extension>.*/,""); ext=$0}
-                  in && /<value>/     {gsub(/.*<value>|<\/value>.*/,""); val=$0}
-                  in && /<\/snapshotVersion>/ {
-                    if (ext=="zip" && val!="") { print val; exit }
-                    in=0
-                  }
-                '
-          )"
-
-          FILE="$ARTIFACT-$SNAPSHOT_VALUE.zip"
+          
+          METADATA_URL="$BASE/$GROUP_PATH/$ARTIFACT/$VERSION/maven-metadata.xml"
+          SNAPSHOT_VALUE=$(curl -fsSL "$METADATA_URL" | grep -A1 '<extension>zip</extension>' | grep '<value>' | sed 's/.*<value>\(.*\)<\/value>.*/\1/')
+          
           mkdir -p plugin-artifacts
-          curl -fL --retry 5 --retry-delay 2 -o plugin-artifacts/job-scheduler.zip "$DIR_URL/$FILE"
+          curl -fL --retry 5 -o plugin-artifacts/job-scheduler.zip "$BASE/$GROUP_PATH/$ARTIFACT/$VERSION/$ARTIFACT-$SNAPSHOT_VALUE.zip"
 
-      - name: Download Reports Scheduler artifact (latest snapshot from ci.opensearch.org)
+      - name: Download Reports Scheduler artifact
         shell: bash
         run: |
-          set -euo pipefail
-
           BASE="https://ci.opensearch.org/ci/dbc/snapshots/maven"
-          GROUP="org.opensearch.plugin"
+          GROUP_PATH="org/opensearch/plugin"
           ARTIFACT="opensearch-reports-scheduler"
           VERSION="${{ env.PLUGIN_VERSION }}-SNAPSHOT"
-
-          GROUP_PATH="${GROUP//./\/}"
-          DIR_URL="$BASE/$GROUP_PATH/$ARTIFACT/$VERSION"
-
-          SNAPSHOT_VALUE="$(
-            curl -fsSL "$DIR_URL/maven-metadata.xml" \
-              | gawk '
-                  /<snapshotVersion>/ {in=1; ext=""; val=""; next}
-                  in && /<extension>/ {gsub(/.*<extension>|<\/extension>.*/,""); ext=$0}
-                  in && /<value>/     {gsub(/.*<value>|<\/value>.*/,""); val=$0}
-                  in && /<\/snapshotVersion>/ {
-                    if (ext=="zip" && val!="") { print val; exit }
-                    in=0
-                  }
-                '
-          )"
-
-          FILE="$ARTIFACT-$SNAPSHOT_VALUE.zip"
+          
+          METADATA_URL="$BASE/$GROUP_PATH/$ARTIFACT/$VERSION/maven-metadata.xml"
+          SNAPSHOT_VALUE=$(curl -fsSL "$METADATA_URL" | grep -A1 '<extension>zip</extension>' | grep '<value>' | sed 's/.*<value>\(.*\)<\/value>.*/\1/')
+          
           mkdir -p plugin-artifacts
-          curl -fL --retry 5 --retry-delay 2 -o plugin-artifacts/reports-scheduler.zip "$DIR_URL/$FILE"
+          curl -fL --retry 5 -o plugin-artifacts/reports-scheduler.zip "$BASE/$GROUP_PATH/$ARTIFACT/$VERSION/$ARTIFACT-$SNAPSHOT_VALUE.zip"
 
       - name: Download OpenSearch
         uses: peternied/download-file@v2
