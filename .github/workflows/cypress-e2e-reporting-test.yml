@@ -47,19 +47,65 @@ jobs:
         shell: bash
         working-directory: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
 
-      - name: Download Job Scheduler artifact
-        uses: suisei-cn/actions-download-file@v1.4.0
-        with:
-          url: https://aws.oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=org.opensearch.plugin&a=opensearch-job-scheduler&v=${{ env.PLUGIN_VERSION }}-SNAPSHOT&p=zip
-          target: plugin-artifacts/
-          filename: job-scheduler.zip
+      - name: Download Job Scheduler artifact (latest snapshot from ci.opensearch.org)
+        shell: bash
+        run: |
+          set -euo pipefail
 
-      - name: Download Reports Scheduler artifact
-        uses: suisei-cn/actions-download-file@v1.4.0
-        with:
-          url: https://aws.oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=org.opensearch.plugin&a=opensearch-reports-scheduler&v=${{ env.PLUGIN_VERSION }}-SNAPSHOT&p=zip
-          target: plugin-artifacts/
-          filename: reports-scheduler.zip
+          BASE="https://ci.opensearch.org/ci/dbc/snapshots/maven"
+          GROUP="org.opensearch.plugin"
+          ARTIFACT="opensearch-job-scheduler"
+          VERSION="${{ env.PLUGIN_VERSION }}-SNAPSHOT"
+
+          GROUP_PATH="${GROUP//./\/}"
+          DIR_URL="$BASE/$GROUP_PATH/$ARTIFACT/$VERSION"
+
+          SNAPSHOT_VALUE="$(
+            curl -fsSL "$DIR_URL/maven-metadata.xml" \
+              | awk '
+                  /<snapshotVersion>/ {in=1; ext=""; val=""; next}
+                  in && /<extension>/ {gsub(/.*<extension>|<\/extension>.*/,""); ext=$0}
+                  in && /<value>/     {gsub(/.*<value>|<\/value>.*/,""); val=$0}
+                  in && /<\/snapshotVersion>/ {
+                    if (ext=="zip" && val!="") { print val; exit }
+                    in=0
+                  }
+                '
+          )"
+
+          FILE="$ARTIFACT-$SNAPSHOT_VALUE.zip"
+          mkdir -p plugin-artifacts
+          curl -fL --retry 5 --retry-delay 2 -o plugin-artifacts/job-scheduler.zip "$DIR_URL/$FILE"
+
+      - name: Download Reports Scheduler artifact (latest snapshot from ci.opensearch.org)
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          BASE="https://ci.opensearch.org/ci/dbc/snapshots/maven"
+          GROUP="org.opensearch.plugin"
+          ARTIFACT="opensearch-reports-scheduler"
+          VERSION="${{ env.PLUGIN_VERSION }}-SNAPSHOT"
+
+          GROUP_PATH="${GROUP//./\/}"
+          DIR_URL="$BASE/$GROUP_PATH/$ARTIFACT/$VERSION"
+
+          SNAPSHOT_VALUE="$(
+            curl -fsSL "$DIR_URL/maven-metadata.xml" \
+              | awk '
+                  /<snapshotVersion>/ {in=1; ext=""; val=""; next}
+                  in && /<extension>/ {gsub(/.*<extension>|<\/extension>.*/,""); ext=$0}
+                  in && /<value>/     {gsub(/.*<value>|<\/value>.*/,""); val=$0}
+                  in && /<\/snapshotVersion>/ {
+                    if (ext=="zip" && val!="") { print val; exit }
+                    in=0
+                  }
+                '
+          )"
+
+          FILE="$ARTIFACT-$SNAPSHOT_VALUE.zip"
+          mkdir -p plugin-artifacts
+          curl -fL --retry 5 --retry-delay 2 -o plugin-artifacts/reports-scheduler.zip "$DIR_URL/$FILE"
 
       - name: Download OpenSearch
         uses: peternied/download-file@v2
