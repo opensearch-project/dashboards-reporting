@@ -45,8 +45,10 @@ jobs:
           command: |
             chown -R 1000:1000 `pwd`
             cd ./OpenSearch-Dashboards/
-            su `id -un 1000` -c "source $NVM_DIR/nvm.sh && nvm install && node -v && yarn -v &&
-                                 cd ./plugins/${{ env.PLUGIN_NAME }} &&
+            su `id -un 1000` -c "source $NVM_DIR/nvm.sh && nvm install && nvm use && \
+                                 npm i -g corepack && corepack install && \
+                                 node -v && yarn -v && \
+                                 cd ./plugins/${{ env.PLUGIN_NAME }} && \
                                  whoami && yarn osd bootstrap --single-version=loose && yarn test --coverage"
 
       - name: Upload coverage
@@ -60,8 +62,10 @@ jobs:
         run: |
           chown -R 1000:1000 `pwd`
           cd ./OpenSearch-Dashboards/
-          su `id -un 1000` -c "source $NVM_DIR/nvm.sh && nvm install && node -v && yarn -v &&
-                               cd ./plugins/${{ env.PLUGIN_NAME }} &&
+          su `id -un 1000` -c "source $NVM_DIR/nvm.sh && nvm install && nvm use && \
+                               npm i -g corepack && corepack install && \
+                               node -v && yarn -v && \
+                               cd ./plugins/${{ env.PLUGIN_NAME }} && \
                                whoami && yarn build && mv -v ./build/*.zip ./build/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}.zip"
 
       - name: Upload Artifact For Linux
