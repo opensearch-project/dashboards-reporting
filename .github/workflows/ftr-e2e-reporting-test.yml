@@ -133,6 +133,20 @@ jobs:
           fi
         working-directory: OpenSearch-Dashboards
 
+      - name: Wait for OpenSearch Dashboards to be ready
+        run: |
+          echo "Waiting for OpenSearch Dashboards to respond..."
+          for i in {1..60}; do
+            if curl -s -o /dev/null -w "%{http_code}" http://localhost:5601/api/status | grep -q "200"; then
+              echo "OpenSearch Dashboards is ready!"
+              exit 0
+            fi
+            echo "Attempt $i: OpenSearch Dashboards not ready yet, waiting..."
+            sleep 5
+          done
+          echo "OpenSearch Dashboards failed to become ready"
+          exit 1
+
       - name: Upload Dashboards logs
         uses: actions/upload-artifact@v4.4.0
         if: failure()
