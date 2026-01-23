@@ -6,7 +6,7 @@ env:
   PLUGIN_NAME: reportsDashboards
   ARTIFACT_NAME: reports-dashboards
   OPENSEARCH_DASHBOARDS_VERSION: 'main'
-  OPENSEARCH_PLUGIN_VERSION: '3.0.0.0-beta1'
+  OPENSEARCH_PLUGIN_VERSION: '3.5.0.0'
 
 jobs:
   Get-CI-Image-Tag:
@@ -45,7 +45,7 @@ jobs:
           command: |
             chown -R 1000:1000 `pwd`
             cd ./OpenSearch-Dashboards/
-            su `id -un 1000` -c "source $NVM_DIR/nvm.sh && nvm use && node -v && yarn -v &&
+            su `id -un 1000` -c "source $NVM_DIR/nvm.sh && nvm install \$(cat .nvmrc) && node -v && yarn -v &&
                                  cd ./plugins/${{ env.PLUGIN_NAME }} &&
                                  whoami && yarn osd bootstrap --single-version=loose && yarn test --coverage"
 
@@ -60,7 +60,7 @@ jobs:
         run: |
           chown -R 1000:1000 `pwd`
           cd ./OpenSearch-Dashboards/
-          su `id -un 1000` -c "source $NVM_DIR/nvm.sh && nvm use && node -v && yarn -v &&
+          su `id -un 1000` -c "source $NVM_DIR/nvm.sh && nvm install \$(cat .nvmrc) && node -v && yarn -v &&
                                cd ./plugins/${{ env.PLUGIN_NAME }} &&
                                whoami && yarn build && mv -v ./build/*.zip ./build/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}.zip"
 
