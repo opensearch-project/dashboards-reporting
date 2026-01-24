@@ -133,7 +133,7 @@ jobs:
         working-directory: OpenSearch-Dashboards
         shell: bash
 
-      - name: Boodstrap Opensearch Dashboards
+      - name: Bootstrap Opensearch Dashboards
         run: |
           yarn osd bootstrap --single-version=loose
         working-directory: OpenSearch-Dashboards
@@ -163,7 +163,7 @@ jobs:
           name: dashboard.logs
           path: OpenSearch-Dashboards/dashboard.log
 
-      - name: Checkout Dashboards Functioanl Test Repo
+      - name: Checkout Dashboards Functional Test Repo
         uses: actions/checkout@v4
         with:
           path: opensearch-dashboards-functional-test

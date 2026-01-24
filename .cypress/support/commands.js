@@ -42,10 +42,20 @@ Cypress.Commands.overwrite('visit', (originalFn, url, options) => {
     }
     // Add query parameters - select the default OpenSearch Dashboards tenant
     options.qs = { security_tenant: 'private' };
-    return originalFn(url, options);
-  } else {
-    return originalFn(url, options);
   }
+
+  // Dismiss the new discover experience banner before page load
+  // Reference: https://github.com/opensearch-project/OpenSearch-Dashboards/pull/9943
+  const existingOnBeforeLoad = options?.onBeforeLoad;
+  options = options || {};
+  options.onBeforeLoad = (win) => {
+    win.localStorage.setItem('openSearchDashboards.hideNewDiscoverBanner', 'true');
+    if (existingOnBeforeLoad) {
+      existingOnBeforeLoad(win);
+    }
+  };
+
+  return originalFn(url, options);
 });
 
 // Be able to add default options to cy.request(), https://github.com/cypress-io/cypress/issues/726
