@@ -40,8 +40,8 @@ jobs:
 
       - name: Set env
         run: |
-          opensearch_version=$(jq -r '.opensearchDashboards.version' package.json)
-          plugin_version=$(jq -r '.version' package.json)
+          opensearch_version=$(node -p "require('./opensearch_dashboards.json').opensearchDashboardsVersion")
+          plugin_version=$(node -p "require('./opensearch_dashboards.json').version")
           echo "OPENSEARCH_VERSION=$opensearch_version" >> $GITHUB_ENV
           echo "PLUGIN_VERSION=$plugin_version" >> $GITHUB_ENV
         shell: bash
