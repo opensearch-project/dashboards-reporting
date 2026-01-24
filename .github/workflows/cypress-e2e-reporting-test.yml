@@ -140,6 +140,7 @@ jobs:
 
       - name: Run Opensearch Dashboards with Dashboards Reporting Plugin Installed
         run: |
+          echo "home.disableWelcomeScreen: true" >> config/opensearch_dashboards.yml
           nohup yarn start --no-base-path --no-watch | tee dashboard.log &
         working-directory: OpenSearch-Dashboards
 
