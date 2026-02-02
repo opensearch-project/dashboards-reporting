@@ -32,7 +32,7 @@ export var metaData = {
 };
 
 // Get the selected columns by the user.
-export const getSelectedFields = async (columns) => {
+export const getSelectedFields = async (columns, timeFieldName?: string) => {
   const selectedFields = [];
   let fields_exist = false;
   for (let column of columns) {
@@ -43,6 +43,10 @@ export const getSelectedFields = async (columns) => {
       fields_exist = false;
       selectedFields.push('_source');
     }
+  }
+  // Automatically add timeFieldName to selected fields if it exists and user has selected specific fields
+  if (fields_exist && timeFieldName && !selectedFields.includes(timeFieldName)) {
+    selectedFields.unshift(timeFieldName);
   }
   metaData.fields_exist = fields_exist;
   metaData.selectedFields = selectedFields;
