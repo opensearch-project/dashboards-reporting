@@ -4,10 +4,8 @@
  */
 
 import React from 'react';
-import { render } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { ReportDefinitions } from '../report_definitions_table';
-import { configure, mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
 
 const pagination = {
   initialPageSize: 10,
@@ -15,7 +13,6 @@ const pagination = {
 };
 
 describe('<ReportDefinitions /> panel', () => {
-  configure({ adapter: new Adapter() });
   test('render component', () => {
     let reportDefinitionsTableContent = [
       {
@@ -64,7 +61,6 @@ describe('<ReportDefinitions /> panel', () => {
         assign: jest.fn(),
       },
     });
-    let promise = Promise.resolve();
     let reportDefinitionsTableContent = [
       {
         reportName: 'test report name',
@@ -86,14 +82,21 @@ describe('<ReportDefinitions /> panel', () => {
       },
     ];
 
-    const component = mount(
+    render(
       <ReportDefinitions
         pagination={pagination}
         reportDefinitionsTableContent={reportDefinitionsTableContent}
       />
     );
 
-    const nameLink = component.find('button').at(3);
-    nameLink.simulate('click');
+    await waitFor(() => {
+      const buttons = screen.getAllByRole('button');
+      expect(buttons.length).toBeGreaterThan(3);
+    });
+
+    const buttons = screen.getAllByRole('button');
+    await act(async () => {
+      fireEvent.click(buttons[3]);
+    });
   });
 });
