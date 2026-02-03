@@ -154,9 +154,7 @@ async function generateReportData(
   }
 
   const reqBody = buildRequestBody(report, allowLeadingWildcards, 0);
-  logger.info(
-    `[Reporting ${params.report_format} module] DSL request body: ${JSON.stringify(reqBody)}`
-  );
+  
   if (total > maxResultSize) {
     await getOpenSearchDataByScroll();
   } else {

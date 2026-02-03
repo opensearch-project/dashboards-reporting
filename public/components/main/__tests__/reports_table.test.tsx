@@ -4,12 +4,9 @@
  */
 
 import React from 'react';
-import { render } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { ReportsTable } from '../reports_table';
 import httpClientMock from '../../../../test/httpMockClient';
-import { configure, mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import { act } from 'react-dom/test-utils';
 
 const pagination = {
   initialPageSize: 10,
@@ -17,7 +14,6 @@ const pagination = {
 };
 
 describe('<ReportsTable /> panel', () => {
-  configure({ adapter: new Adapter() });
   test('render component', () => {
     let reportsTableItems = [
       {
@@ -54,7 +50,6 @@ describe('<ReportsTable /> panel', () => {
   });
 
   test('click on generate button', async () => {
-    const promise = Promise.resolve();
     let reportsTableItems = [
       {
         id: '1',
@@ -69,7 +64,7 @@ describe('<ReportsTable /> panel', () => {
       },
     ];
 
-    const component = mount(
+    render(
       <ReportsTable
         reportsTableItems={reportsTableItems}
         httpClient={httpClientMock}
@@ -77,9 +72,14 @@ describe('<ReportsTable /> panel', () => {
       />
     );
 
-    const generateClick = component.find('button').at(6);
-    // console.log(generateClick.debug());
-    generateClick.simulate('click');
-    await act(() => promise);
+    await waitFor(() => {
+      const buttons = screen.getAllByRole('button');
+      expect(buttons.length).toBeGreaterThan(6);
+    });
+
+    const buttons = screen.getAllByRole('button');
+    await act(async () => {
+      fireEvent.click(buttons[6]);
+    });
   });
 });

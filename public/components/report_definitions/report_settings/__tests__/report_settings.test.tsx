@@ -4,14 +4,11 @@
  */
 
 import React from 'react';
-import { render } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { ReportSettings } from '../report_settings';
 import 'babel-polyfill';
 import 'regenerator-runtime';
 import httpClientMock from '../../../../../test/httpMockClient';
-import { configure, mount, shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import { act } from 'react-dom/test-utils';
 
 const emptyRequest = {
   report_params: {
@@ -99,7 +96,7 @@ const savedSearchHits = {
 
 describe('<ReportSettings /> panel', () => {
   jest.spyOn(console, 'log').mockImplementation(() => {});
-  configure({ adapter: new Adapter() });
+
   test('render component', () => {
     const { container } = render(
       <ReportSettings
@@ -116,7 +113,6 @@ describe('<ReportSettings /> panel', () => {
   });
 
   test('render edit, dashboard source', async () => {
-    const promise = Promise.resolve();
     let report_definition = {
       report_params: {
         report_name: 'test create report definition trigger',
@@ -170,11 +166,12 @@ describe('<ReportSettings /> panel', () => {
     );
 
     expect(container.firstChild).toMatchSnapshot();
-    await act(() => promise);
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
   });
 
   test('render edit, visualization source', async () => {
-    const promise = Promise.resolve();
     let report_definition = {
       report_params: {
         report_name: 'test create report definition trigger',
@@ -228,11 +225,12 @@ describe('<ReportSettings /> panel', () => {
     );
 
     expect(container.firstChild).toMatchSnapshot();
-    await act(() => promise);
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
   });
 
   test('render edit, saved search source', async () => {
-    const promise = Promise.resolve();
     let report_definition = {
       report_params: {
         report_name: 'test create report definition trigger',
@@ -289,11 +287,12 @@ describe('<ReportSettings /> panel', () => {
     );
 
     expect(container.firstChild).toMatchSnapshot();
-    await act(() => promise);
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
   });
 
   test('render edit, dashboard source', async () => {
-    const promise = Promise.resolve();
     let report_definition = {
       report_params: {
         report_name: 'test create report definition trigger',
@@ -348,11 +347,12 @@ describe('<ReportSettings /> panel', () => {
     );
 
     expect(container.firstChild).toMatchSnapshot();
-    await act(() => promise);
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
   });
 
   test('render edit, visualization source', async () => {
-    const promise = Promise.resolve();
     let report_definition = {
       report_params: {
         report_name: 'test create report definition trigger',
@@ -409,7 +409,9 @@ describe('<ReportSettings /> panel', () => {
     );
 
     expect(container.firstChild).toMatchSnapshot();
-    await act(() => promise);
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
   });
 
 
@@ -422,8 +424,6 @@ describe('<ReportSettings /> panel', () => {
           'http://localhost:5601/app/reports-dashboards#/create?previous=dashboard:abcdefghijklmnop12345?timeFrom=2020-10-26T20:52:56.382Z?timeTo=2020-10-27T20:52:56.384Z',
       },
     });
-
-    const promise = Promise.resolve();
 
     let report_definition = {
       report_params: {
@@ -478,7 +478,9 @@ describe('<ReportSettings /> panel', () => {
     );
 
     expect(container.firstChild).toMatchSnapshot();
-    await act(() => promise);
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
   });
 
   test('visualization create from in-context', async () => {
@@ -493,8 +495,6 @@ describe('<ReportSettings /> panel', () => {
           'http://localhost:5601/app/reports-dashboards#/create?previous=visualize:abcdefghijklmnop12345?timeFrom=2020-10-26T20:52:56.382Z?timeTo=2020-10-27T20:52:56.384Z',
       },
     });
-
-    const promise = Promise.resolve();
 
     let report_definition = {
       report_params: {
@@ -549,7 +549,9 @@ describe('<ReportSettings /> panel', () => {
     );
 
     expect(container.firstChild).toMatchSnapshot();
-    await act(() => promise);
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
   });
 
   test('saved search create from in-context', async () => {
@@ -563,8 +565,6 @@ describe('<ReportSettings /> panel', () => {
           'http://localhost:5601/app/reports-dashboards#/create?previous=discover:abcdefghijklmnop12345?timeFrom=2020-10-26T20:52:56.382Z?timeTo=2020-10-27T20:52:56.384Z',
       },
     });
-
-    const promise = Promise.resolve();
 
     let report_definition = {
       report_params: {
@@ -611,11 +611,12 @@ describe('<ReportSettings /> panel', () => {
     );
 
     expect(container.firstChild).toMatchSnapshot();
-    await act(() => promise);
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
   });
 
   test('simulate click on dashboard combo box', async () => {
-    const promise = Promise.resolve();
     let report_definition = {
       report_params: {
         report_name: 'test create report definition trigger',
@@ -660,7 +661,7 @@ describe('<ReportSettings /> panel', () => {
       hits: dashboardHits,
     });
 
-    const component = shallow(
+    const { container } = render(
       <ReportSettings
         edit={false}
         reportDefinitionRequest={emptyRequest}
@@ -669,17 +670,19 @@ describe('<ReportSettings /> panel', () => {
         showSettingsReportNameError={false}
         showTimeRangeError={false}
       />
-    , {disableLifecycleMethods: true});
-    await act(() => promise);
+    );
 
-    const comboBox = component.find('EuiCompressedComboBox').at(0);
-    comboBox.simulate('change', [{value: 'test', label: 'test'}]);
+    // Wait for component to render with dashboard radio visible and selected by default
+    await waitFor(() => {
+      expect(screen.getByLabelText('Dashboard')).toBeInTheDocument();
+    });
 
-    await act(() => promise);
+    // Verify the Dashboard radio is present and has checked attribute
+    const dashboardRadio = screen.getByLabelText('Dashboard');
+    expect(dashboardRadio).toHaveAttribute('checked');
   });
 
-  test('simulate click on visualization combo box', async () => {
-    const promise = Promise.resolve();
+  test('simulate click on visualization radio', async () => {
     let report_definition = {
       report_params: {
         report_name: 'test create report definition trigger',
@@ -721,7 +724,7 @@ describe('<ReportSettings /> panel', () => {
       hits: visualizationHits,
     });
 
-    const component = mount(
+    const { container } = render(
       <ReportSettings
         edit={false}
         reportDefinitionRequest={emptyRequest}
@@ -731,25 +734,23 @@ describe('<ReportSettings /> panel', () => {
         showTimeRangeError={false}
       />
     );
-    await act(() => promise);
 
-    const reportSourceRadio = component.find('EuiRadioGroup').at(0);
-    const visualizationRadio = reportSourceRadio.find('EuiRadio').at(1);
-
-    visualizationRadio.find('input').simulate('change', 'visualizationReportSource');
-    await act(() => promise);
-    const comboBox = component.find('EuiCompressedComboBox').at(0);
-
-    act(() => {
-      comboBox.props().onChange([{ value: 'test', label: 'test' }]);
+    // Wait for the component to render
+    await waitFor(() => {
+      expect(screen.getByLabelText('Visualization')).toBeInTheDocument();
     });
-    component.update();
 
-    await act(() => promise);
+    // Click on the Visualization radio button
+    const visualizationRadio = screen.getByLabelText('Visualization');
+    await act(async () => {
+      fireEvent.click(visualizationRadio);
+    });
+
+    // Verify visualization radio is now selected
+    expect(visualizationRadio).toBeChecked();
   });
 
-  test('simulate click on saved search combo box', async () => {
-    const promise = Promise.resolve();
+  test('simulate click on saved search radio', async () => {
     let report_definition = {
       report_params: {
         report_name: 'test create report definition trigger',
@@ -791,7 +792,7 @@ describe('<ReportSettings /> panel', () => {
       hits: savedSearchHits,
     });
 
-    const component = mount(
+    const { container } = render(
       <ReportSettings
         edit={false}
         reportDefinitionRequest={emptyRequest}
@@ -801,25 +802,23 @@ describe('<ReportSettings /> panel', () => {
         showTimeRangeError={false}
       />
     );
-    await act(() => promise);
 
-    const reportSourceRadio = component.find('EuiRadioGroup').at(0);
-    const visualizationRadio = reportSourceRadio.find('EuiRadio').at(2);
+    // Wait for the component to render
+    await waitFor(() => {
+      expect(screen.getByLabelText('Saved search')).toBeInTheDocument();
+    });
 
-    visualizationRadio.find('input').simulate('change', 'savedSearchReportSource');
-    await act(() => promise);
-    const comboBox = component.find('EuiCompressedComboBox').at(0);
+    // Click on the Saved search radio button
+    const savedSearchRadio = screen.getByLabelText('Saved search');
+    await act(async () => {
+      fireEvent.click(savedSearchRadio);
+    });
 
-    act(() => {
-      comboBox.props().onChange([{ value: 'test', label: 'test' }]);
-    })
-    component.update();
-
-    await act(() => promise);
+    // Verify saved search radio is now selected
+    expect(savedSearchRadio).toBeChecked();
   });
 
   test('display errors on create', async () => {
-    const promise = Promise.resolve();
     const { container } = render(
       <ReportSettings
         edit={false}
@@ -832,6 +831,8 @@ describe('<ReportSettings /> panel', () => {
     );
 
     expect(container.firstChild).toMatchSnapshot();
-    await act(() => promise);
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
   });
 });

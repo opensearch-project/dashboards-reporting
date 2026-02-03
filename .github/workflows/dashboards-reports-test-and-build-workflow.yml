@@ -6,7 +6,6 @@ env:
   PLUGIN_NAME: reportsDashboards
   ARTIFACT_NAME: reports-dashboards
   OPENSEARCH_DASHBOARDS_VERSION: 'main'
-  OPENSEARCH_PLUGIN_VERSION: '3.0.0.0-beta1'
 
 jobs:
   Get-CI-Image-Tag:
@@ -37,6 +36,15 @@ jobs:
         with:
           path: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
 
+      - name: Set env
+        run: |
+          opensearch_version=$(node -p "require('./opensearch_dashboards.json').opensearchDashboardsVersion")
+          plugin_version=$(node -p "require('./opensearch_dashboards.json').version")
+          echo "OPENSEARCH_VERSION=$opensearch_version" >> $GITHUB_ENV
+          echo "PLUGIN_VERSION=$plugin_version" >> $GITHUB_ENV
+        shell: bash
+        working-directory: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
+
       - name: OpenSearch Dashboards Plugin Bootstrap and test
         uses: nick-fields/retry@v1
         with:
@@ -45,8 +53,10 @@ jobs:
           command: |
             chown -R 1000:1000 `pwd`
             cd ./OpenSearch-Dashboards/
-            su `id -un 1000` -c "source $NVM_DIR/nvm.sh && nvm use && node -v && yarn -v &&
-                                 cd ./plugins/${{ env.PLUGIN_NAME }} &&
+            su `id -un 1000` -c "source $NVM_DIR/nvm.sh && nvm install && nvm use && \
+                                 npm i -g corepack && corepack install && \
+                                 node -v && yarn -v && \
+                                 cd ./plugins/${{ env.PLUGIN_NAME }} && \
                                  whoami && yarn osd bootstrap --single-version=loose && yarn test --coverage"
 
       - name: Upload coverage
@@ -60,15 +70,17 @@ jobs:
         run: |
           chown -R 1000:1000 `pwd`
           cd ./OpenSearch-Dashboards/
-          su `id -un 1000` -c "source $NVM_DIR/nvm.sh && nvm use && node -v && yarn -v &&
-                               cd ./plugins/${{ env.PLUGIN_NAME }} &&
-                               whoami && yarn build && mv -v ./build/*.zip ./build/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}.zip"
+          su `id -un 1000` -c "source $NVM_DIR/nvm.sh && nvm install && nvm use && \
+                               npm i -g corepack && corepack install && \
+                               node -v && yarn -v && \
+                               cd ./plugins/${{ env.PLUGIN_NAME }} && \
+                               whoami && yarn build && mv -v ./build/*.zip ./build/${{ env.ARTIFACT_NAME }}-${{ env.PLUGIN_VERSION }}.zip"
 
       - name: Upload Artifact For Linux
         uses: actions/upload-artifact@v4.4.0
         with:
           name: dashboards-reports-linux
-          path: ./OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}/build/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}.zip
+          path: ./OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}/build/${{ env.ARTIFACT_NAME }}-${{ env.PLUGIN_VERSION }}.zip
 
   windows-mac-builds:
     runs-on: ${{ matrix.os }}
@@ -109,6 +121,15 @@ jobs:
         with:
           path: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
 
+      - name: Set env
+        run: |
+          opensearch_version=$(node -p "require('./opensearch_dashboards.json').opensearchDashboardsVersion")
+          plugin_version=$(node -p "require('./opensearch_dashboards.json').version")
+          echo "OPENSEARCH_VERSION=$opensearch_version" >> $GITHUB_ENV
+          echo "PLUGIN_VERSION=$plugin_version" >> $GITHUB_ENV
+        shell: bash
+        working-directory: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
+
       - name: OpenSearch Dashboards Plugin Bootstrap
         uses: nick-fields/retry@v1
         with:
@@ -126,10 +147,10 @@ jobs:
       - name: Build Artifact
         run: |
           cd ./OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }} && yarn build
-          mv ./build/*.zip ./build/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}-${{ runner.os }}.zip
+          mv ./build/*.zip ./build/${{ env.ARTIFACT_NAME }}-${{ env.PLUGIN_VERSION }}-${{ runner.os }}.zip
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4.4.0
         with:
           name: dashboards-reports-${{ runner.os }}
-          path: ./OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}/build/${{ env.ARTIFACT_NAME }}-${{ env.OPENSEARCH_PLUGIN_VERSION }}-${{ runner.os }}.zip
+          path: ./OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}/build/${{ env.ARTIFACT_NAME }}-${{ env.PLUGIN_VERSION }}-${{ runner.os }}.zip
