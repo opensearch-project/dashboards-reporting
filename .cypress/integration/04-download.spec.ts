@@ -27,10 +27,14 @@ describe('Cypress', () => {
     // click first entry in dashboards page
     cy.get('tr.euiTableRow:nth-child(1) > td:nth-child(2) > div:nth-child(2) > a:nth-child(1)').click({ force: true });
 
+    // wait for page to load and reporting button to be injected by MutationObserver
+    cy.get('#downloadReport', { timeout: 30000 }).should('be.visible');
+
     // click Reporting in-context menu
     cy.get('#downloadReport > span:nth-child(1) > span:nth-child(1)').click({ force: true });
 
-    // download PDF
+    // wait for popover menu to appear and download PDF
+    cy.get('#generatePDF', { timeout: 10000 }).should('be.visible');
     cy.get('#generatePDF').click({ force: true });
 
     cy.get('#reportGenerationProgressModal');
@@ -43,9 +47,14 @@ describe('Cypress', () => {
     // click first entry in dashboards page
     cy.get('tr.euiTableRow:nth-child(1) > td:nth-child(2) > div:nth-child(2) > a:nth-child(1)').click({ force: true });
 
+    // wait for page to load and reporting button to be injected by MutationObserver
+    cy.get('#downloadReport', { timeout: 30000 }).should('be.visible');
+
     // click Reporting in-context menu
     cy.get('#downloadReport > span:nth-child(1) > span:nth-child(1)').click({ force: true });
 
+    // wait for popover menu to appear and download PNG
+    cy.get('#generatePNG', { timeout: 10000 }).should('be.visible');
     cy.get('#generatePNG').click({ force: true });
 
     cy.get('#reportGenerationProgressModal');
@@ -62,9 +71,14 @@ describe('Cypress', () => {
     // click first entry
     cy.get('li.euiListGroupItem:nth-child(1) > button:nth-child(1)').click({ force: true });
 
+    // wait for page to load and reporting button to be injected by MutationObserver
+    cy.get('#downloadReport', { timeout: 30000 }).should('be.visible');
+
     // open reporting menu
     cy.get('#downloadReport').click({ force: true });
 
+    // wait for popover menu to appear
+    cy.get('#generateCSV', { timeout: 10000 }).should('be.visible');
     cy.get('#generateCSV').click({ force: true });
   });
 
