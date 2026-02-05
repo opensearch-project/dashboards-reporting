@@ -94,9 +94,6 @@ async function populateMetaData(
   metaData.searchSourceJSON =
     ssInfos._source.search.kibanaSavedObjectMeta.searchSourceJSON;
 
-  // Get the list of selected columns in the saved search.Otherwise select all the fields under the _source
-  await getSelectedFields(ssInfos._source.search.columns);
-
   // Get index name
   for (const item of ssInfos._source.references) {
     if (item.name === JSON.parse(metaData.searchSourceJSON).indexRefName) {
@@ -124,6 +121,10 @@ async function populateMetaData(
       metaData.dateFields = dateFields;
     }
   }
+
+  // Get the list of selected columns in the saved search. Otherwise select all the fields under the _source
+  // Pass timeFieldName to automatically include timestamp in reports with selected fields
+  await getSelectedFields(ssInfos._source.search.columns, metaData.timeFieldName);
 }
 
 /**

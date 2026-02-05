@@ -209,12 +209,12 @@ describe('test create saved search report', () => {
     );
 
     expect(dataUrl).toEqual(
-      'category,customer_gender\n' +
-        'c1,Male\n' +
-        'c2,Male\n' +
-        'c3,Male\n' +
-        'c4,Male\n' +
-        'c5,Male'
+      'order_date,category,customer_gender\n' +
+        '04/26/2023 4:34:32.000 am,c1,Male\n' +
+        '04/26/2023 4:34:32.000 am,c2,Male\n' +
+        '04/26/2023 4:34:32.000 am,c3,Male\n' +
+        '04/26/2023 4:34:32.000 am,c4,Male\n' +
+        '04/26/2023 4:34:32.000 am,c5,Male'
     );
   }, 20000);
 
@@ -388,18 +388,18 @@ describe('test create saved search report', () => {
     );
 
     expect(dataUrl).toEqual(
-      'category,customer_gender\n' +
-        'c1,Male\n' +
-        'c2,Male\n' +
-        'c3,Male\n' +
-        'c4,Male\n' +
-        'c5,Male\n' +
-        'c6,Female\n' +
-        'c7,Female\n' +
-        'c8,Female\n' +
-        'c9,Female\n' +
-        'c10,Female\n' +
-        'c11,Male'
+      'order_date,category,customer_gender\n' +
+        '04/26/2023 4:34:32.000 am,c1,Male\n' +
+        '04/26/2023 4:34:32.000 am,c2,Male\n' +
+        '04/26/2023 4:34:32.000 am,c3,Male\n' +
+        '04/26/2023 4:34:32.000 am,c4,Male\n' +
+        '04/26/2023 4:34:32.000 am,c5,Male\n' +
+        '04/26/2023 4:34:32.000 am,c6,Female\n' +
+        '04/26/2023 4:34:32.000 am,c7,Female\n' +
+        '04/26/2023 4:34:32.000 am,c8,Female\n' +
+        '04/26/2023 4:34:32.000 am,c9,Female\n' +
+        '04/26/2023 4:34:32.000 am,c10,Female\n' +
+        '04/26/2023 4:34:32.000 am,c11,Male'
     );
   }, 20000);
 
@@ -491,7 +491,7 @@ describe('test create saved search report', () => {
       mockTimezone
     );
 
-    expect(dataUrl).toEqual('category,customer_gender\n' + 'c1,Male');
+    expect(dataUrl).toEqual('order_date,category,customer_gender\n' + '04/26/2023 4:34:32.000 am,c1,Male');
   }, 20000);
 
   test('create report with limit greater than max result size', async () => {
@@ -653,13 +653,13 @@ describe('test create saved search report', () => {
     );
 
     expect(dataUrl).toEqual(
-      'category,customer_gender\n' +
-        'c1,Male\n' +
-        'c2,Male\n' +
-        'c3,Male\n' +
-        'c4,Male\n' +
-        'c5,Male\n' +
-        'c6,Female'
+      'order_date,category,customer_gender\n' +
+        '04/26/2023 4:34:32.000 am,c1,Male\n' +
+        '04/26/2023 4:34:32.000 am,c2,Male\n' +
+        '04/26/2023 4:34:32.000 am,c3,Male\n' +
+        '04/26/2023 4:34:32.000 am,c4,Male\n' +
+        '04/26/2023 4:34:32.000 am,c5,Male\n' +
+        '04/26/2023 4:34:32.000 am,c6,Female'
     );
   }, 20000);
 
@@ -766,13 +766,13 @@ describe('test create saved search report', () => {
     );
 
     expect(dataUrl).toEqual(
-      'category,customer_gender\n' +
-        'c1,Male\n' +
-        'c2,Male\n' +
-        'c3,Male\n' +
-        'c4,Male\n' +
-        'c5,Male\n' +
-        'c6,Female'
+      'order_date,category,customer_gender\n' +
+        '04/26/2023 4:34:32.000 am,c1,Male\n' +
+        '04/26/2023 4:34:32.000 am,c2,Male\n' +
+        '04/26/2023 4:34:32.000 am,c3,Male\n' +
+        '04/26/2023 4:34:32.000 am,c4,Male\n' +
+        '04/26/2023 4:34:32.000 am,c5,Male\n' +
+        '04/26/2023 4:34:32.000 am,c6,Female'
     );
   }, 20000);
 
@@ -834,10 +834,10 @@ describe('test create saved search report', () => {
     );
 
     expect(dataUrl).toEqual(
-      'category,customer_gender\n' +
-        '",c1","Ma,le"\n' +
-        '"c2,","M,ale"\n' +
-        '",,c3","Male,,,"'
+      'order_date,category,customer_gender\n' +
+        '04/26/2023 4:34:32.000 am,",c1","Ma,le"\n' +
+        '04/26/2023 4:34:32.000 am,"c2,","M,ale"\n' +
+        '04/26/2023 4:34:32.000 am,",,c3","Male,,,"'
     );
   }, 20000);
 
@@ -899,10 +899,10 @@ describe('test create saved search report', () => {
     );
 
     expect(dataUrl).toEqual(
-      'category|customer_gender\n' +
-        ',c1|Ma,le\n' +
-        'c2,|M,ale\n' +
-        ',,c3|Male,,,'
+      'order_date|category|customer_gender\n' +
+        '04/26/2023 4:34:32.000 am|,c1|Ma,le\n' +
+        '04/26/2023 4:34:32.000 am|c2,|M,ale\n' +
+        '04/26/2023 4:34:32.000 am|,,c3|Male,,,'
     );
   }, 20000);
 
@@ -993,9 +993,9 @@ describe('test create saved search report', () => {
     );
 
     expect(dataUrl).toEqual(
-      'geoip\\.country_iso_code,geoip\\.location\\.lon,geoip\\.location\\.lat,customer\\.name,customer\\.address\\.city,customer\\.address\\.postcode,products\\.created_on,products\\.price,products\\.category,geoip\\.city_name\n' +
-        'GB,-0.1,51.5,John Doe,London,SW1A 1AA,"2023-04-26T04:34:32Z,2023-05-01T08:22:00Z","100,50","Electronics,Books", \n' +
-        'US,-74,40.8,Jane Smith,New York,10001,2023-06-10T14:30:00Z,150,Furniture,New York'
+      'order_date,geoip\\.country_iso_code,geoip\\.location\\.lon,geoip\\.location\\.lat,customer\\.name,customer\\.address\\.city,customer\\.address\\.postcode,products\\.created_on,products\\.price,products\\.category,geoip\\.city_name\n' +
+        '04/26/2023 4:34:32.000 am,GB,-0.1,51.5,John Doe,London,SW1A 1AA,"2023-04-26T04:34:32Z,2023-05-01T08:22:00Z","100,50","Electronics,Books", \n' +
+        ' ,US,-74,40.8,Jane Smith,New York,10001,2023-06-10T14:30:00Z,150,Furniture,New York'
     );
   }, 20000);
 
@@ -1085,12 +1085,12 @@ describe('test create saved search report', () => {
     );
 
     expect(dataUrl).toEqual(
-      'category,customer_gender\n' +
-        `c1,'=Male\n` +
-        `c2,Male=\n` +
-        `c3,"'+Ma,le"\n` +
-        `",-c4",Male\n` +
-        `",,,@c5",Male`
+      'order_date,category,customer_gender\n' +
+        `04/26/2023 4:34:32.000 am,c1,'=Male\n` +
+        `04/26/2023 4:34:32.000 am,c2,Male=\n` +
+        `04/26/2023 4:34:32.000 am,c3,"'+Ma,le"\n` +
+        `04/26/2023 4:34:32.000 am,",-c4",Male\n` +
+        `04/26/2023 4:34:32.000 am,",,,@c5",Male`
     );
   }, 20000);
 
@@ -1183,12 +1183,12 @@ describe('test create saved search report', () => {
     );
 
     expect(dataUrl).toEqual(
-      'category,customer_gender\n' +
-        'c1,=Male\n' +
-        'c2,Male=\n' +
-        'c3,"+Ma,le"\n' +
-        '",-c4",Male\n' +
-        '",,,@c5",Male'
+      'order_date,category,customer_gender\n' +
+        '04/26/2023 4:34:32.000 am,c1,=Male\n' +
+        '04/26/2023 4:34:32.000 am,c2,Male=\n' +
+        '04/26/2023 4:34:32.000 am,c3,"+Ma,le"\n' +
+        '04/26/2023 4:34:32.000 am,",-c4",Male\n' +
+        '04/26/2023 4:34:32.000 am,",,,@c5",Male'
     );
   }, 20000);
 });
@@ -1251,7 +1251,7 @@ test('create report for data set contains null field value', async () => {
   );
 
   expect(dataUrl).toEqual(
-    'category,customer_gender\n' + 'c1,Ma\n' + 'c2,le\n' + 'c3, '
+    'order_date,category,customer_gender\n' + '04/26/2023 4:34:32.000 am,c1,Ma\n' + '04/26/2023 4:34:32.000 am,c2,le\n' + '04/26/2023 4:34:32.000 am,c3, '
   );
 }, 20000);
 
@@ -1349,12 +1349,12 @@ test('create report for data set with metadata fields', async () => {
   );
 
   expect(dataUrl).toEqual(
-    'category,customer_gender,_index,_id\n' +
-      'c1,Male,nameofindex,someid\n' +
-      'c2,Male,nameofindex,someid\n' +
-      'c3,Male,nameofindex,someid\n' +
-      'c4,Male,nameofindex,someid\n' +
-      'c5,Male,nameofindex,someid'
+    'order_date,category,customer_gender,_index,_id\n' +
+      '04/26/2023 4:34:32.000 am,c1,Male,nameofindex,someid\n' +
+      '04/26/2023 4:34:32.000 am,c2,Male,nameofindex,someid\n' +
+      '04/26/2023 4:34:32.000 am,c3,Male,nameofindex,someid\n' +
+      '04/26/2023 4:34:32.000 am,c4,Male,nameofindex,someid\n' +
+      '04/26/2023 4:34:32.000 am,c5,Male,nameofindex,someid'
   );
 }, 20000);
 
