@@ -333,11 +333,15 @@ function traverse(
       continue;
     }
 
-    for (const flatKey of Object.keys(flatData)) {
-      if (flatKey === key || flatKey.startsWith(key + '.')) {
-        result[flatKey] = flatData[flatKey];
-      }
-    }
+    const matchingKeys = Object.keys(flatData).filter(
+      (flatKey) => flatKey === key || flatKey.startsWith(key + '.')
+    );
+
+    matchingKeys.sort();
+
+    matchingKeys.forEach((matchingKey) => {
+      result[matchingKey] = flatData[matchingKey];
+    });
   }
   return result;
 }
