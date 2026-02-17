@@ -180,18 +180,34 @@ describe('test traverse preserves selected field order', () => {
       _source: {
         dateFields: [],
         fields_exist: true,
-        selectedFields: ['customer_last_name', 'category', 'customer_first_name', 'price'],
+        selectedFields: [
+          'customer_last_name',
+          'category',
+          'customer_first_name',
+          'price',
+        ],
       },
     };
 
     const params = { excel: false, limit: 1000 };
-    const result = getOpenSearchData(arrayHits, report, params, 'MM/DD/YYYY', 'UTC');
+    const result = getOpenSearchData(
+      arrayHits,
+      report,
+      params,
+      'MM/DD/YYYY',
+      'UTC'
+    );
 
     expect(result).toBeDefined();
     expect(result.length).toBe(1);
 
     const keys = Object.keys(result[0]);
-    expect(keys).toEqual(['customer_last_name', 'category', 'customer_first_name', 'price']);
+    expect(keys).toEqual([
+      'customer_last_name',
+      'category',
+      'customer_first_name',
+      'price',
+    ]);
   });
 
   test('should expand nested fields in order after parent field', () => {
@@ -215,12 +231,23 @@ describe('test traverse preserves selected field order', () => {
       _source: {
         dateFields: [],
         fields_exist: true,
-        selectedFields: ['customer_name', 'geoip.location', 'category', 'geoip.city_name'],
+        selectedFields: [
+          'customer_name',
+          'geoip.location',
+          'category',
+          'geoip.city_name',
+        ],
       },
     };
 
     const params = { excel: false, limit: 1000 };
-    const result = getOpenSearchData(arrayHits, report, params, 'MM/DD/YYYY', 'UTC');
+    const result = getOpenSearchData(
+      arrayHits,
+      report,
+      params,
+      'MM/DD/YYYY',
+      'UTC'
+    );
 
     expect(result).toBeDefined();
     expect(result.length).toBe(1);
@@ -256,18 +283,34 @@ describe('test traverse preserves selected field order', () => {
       _source: {
         dateFields: [],
         fields_exist: true,
-        selectedFields: ['customer_id', 'products.category', 'total', 'products.price'],
+        selectedFields: [
+          'customer_id',
+          'products.category',
+          'total',
+          'products.price',
+        ],
       },
     };
 
     const params = { excel: false, limit: 1000 };
-    const result = getOpenSearchData(arrayHits, report, params, 'MM/DD/YYYY', 'UTC');
+    const result = getOpenSearchData(
+      arrayHits,
+      report,
+      params,
+      'MM/DD/YYYY',
+      'UTC'
+    );
 
     expect(result).toBeDefined();
     expect(result.length).toBe(1);
 
     const keys = Object.keys(result[0]);
-    expect(keys).toEqual(['customer_id', 'products.category', 'total', 'products.price']);
+    expect(keys).toEqual([
+      'customer_id',
+      'products.category',
+      'total',
+      'products.price',
+    ]);
     expect(result[0]['products.category']).toBe('Books,Electronics');
     expect(result[0]['products.price']).toBe('50,100');
   });
@@ -299,7 +342,13 @@ describe('test traverse preserves selected field order', () => {
     };
 
     const params = { excel: false, limit: 1000 };
-    const result = getOpenSearchData(arrayHits, report, params, 'MM/DD/YYYY', 'UTC');
+    const result = getOpenSearchData(
+      arrayHits,
+      report,
+      params,
+      'MM/DD/YYYY',
+      'UTC'
+    );
 
     expect(result).toBeDefined();
     expect(result.length).toBe(2);
@@ -307,7 +356,7 @@ describe('test traverse preserves selected field order', () => {
     // Check both rows have same key order
     const keys1 = Object.keys(result[0]);
     const keys2 = Object.keys(result[1]);
-    
+
     expect(keys1).toEqual(['field_b', 'field_a', 'field_c']);
     expect(keys2).toEqual(['field_b', 'field_a', 'field_c']);
   });
