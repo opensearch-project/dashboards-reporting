@@ -71,7 +71,17 @@ describe('Cypress', () => {
     // click first entry
     cy.get('li.euiListGroupItem:nth-child(1) > button:nth-child(1)').click({ force: true });
 
-    // wait for page to load and reporting button to be injected by MutationObserver
+    cy.wait(5000);
+    // change time range to 15 months to ensure data exists when opening saved search
+    cy.get('[data-test-subj="superDatePickerShowDatesButton"]').click({ force: true });
+    cy.wait(1000);
+    cy.get('[data-test-subj="superDatePickerRelativeDateInputUnitSelector"]').select('M', { force: true });
+    cy.wait(500);
+    cy.get('[data-test-subj="querySubmitButton"]').click({ force: true });
+    cy.wait(5000);
+
+
+    // wait for reporting button to be injected by MutationObserver
     cy.get('#downloadReport', { timeout: 30000 }).should('be.visible');
 
     // open reporting menu

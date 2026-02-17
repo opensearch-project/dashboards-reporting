@@ -106,7 +106,7 @@ export const buildRequestBody = (
 
   if (sorting.length > 0) {
     const sorts: Sort[] = sorting.map((element: string[]) => {
-      return esb.sort(element[0], element[1]);
+      return esb.sort(element[0], element[1]).unmappedType('date');
     });
     esbSearchQuery.sorts(sorts);
   }
