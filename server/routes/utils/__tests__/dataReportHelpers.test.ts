@@ -160,3 +160,204 @@ describe('test getOpenSearchData with null datetime fields', () => {
     expect(processedData['attributes.time']).toBeUndefined();
   });
 });
+
+describe('test traverse preserves selected field order', () => {
+  test('should preserve exact field order from selectedFields', () => {
+    const arrayHits = [
+      {
+        hits: [
+          hit({
+            customer_first_name: 'John',
+            customer_last_name: 'Doe',
+            category: 'Electronics',
+            price: 100,
+          }),
+        ],
+      },
+    ];
+
+    const report = {
+      _source: {
+        dateFields: [],
+        fields_exist: true,
+        selectedFields: [
+          'customer_last_name',
+          'category',
+          'customer_first_name',
+          'price',
+        ],
+      },
+    };
+
+    const params = { excel: false, limit: 1000 };
+    const result = getOpenSearchData(
+      arrayHits,
+      report,
+      params,
+      'MM/DD/YYYY',
+      'UTC'
+    );
+
+    expect(result).toBeDefined();
+    expect(result.length).toBe(1);
+
+    const keys = Object.keys(result[0]);
+    expect(keys).toEqual([
+      'customer_last_name',
+      'category',
+      'customer_first_name',
+      'price',
+    ]);
+  });
+
+  test('should expand nested fields in order after parent field', () => {
+    const arrayHits = [
+      {
+        hits: [
+          hit({
+            customer_name: 'John',
+            geoip: {
+              city_name: 'Seattle',
+              country_iso_code: 'US',
+              location: { lon: -122.33, lat: 47.61 },
+            },
+            category: 'Books',
+          }),
+        ],
+      },
+    ];
+
+    const report = {
+      _source: {
+        dateFields: [],
+        fields_exist: true,
+        selectedFields: [
+          'customer_name',
+          'geoip.location',
+          'category',
+          'geoip.city_name',
+        ],
+      },
+    };
+
+    const params = { excel: false, limit: 1000 };
+    const result = getOpenSearchData(
+      arrayHits,
+      report,
+      params,
+      'MM/DD/YYYY',
+      'UTC'
+    );
+
+    expect(result).toBeDefined();
+    expect(result.length).toBe(1);
+
+    const keys = Object.keys(result[0]);
+    // geoip.location should expand to lat, lon alphabetically, then category, then city_name
+    expect(keys).toEqual([
+      'customer_name',
+      'geoip.location.lat',
+      'geoip.location.lon',
+      'category',
+      'geoip.city_name',
+    ]);
+  });
+
+  test('should handle array fields and preserve order', () => {
+    const arrayHits = [
+      {
+        hits: [
+          hit({
+            customer_id: '123',
+            products: [
+              { price: 50, category: 'Books' },
+              { price: 100, category: 'Electronics' },
+            ],
+            total: 150,
+          }),
+        ],
+      },
+    ];
+
+    const report = {
+      _source: {
+        dateFields: [],
+        fields_exist: true,
+        selectedFields: [
+          'customer_id',
+          'products.category',
+          'total',
+          'products.price',
+        ],
+      },
+    };
+
+    const params = { excel: false, limit: 1000 };
+    const result = getOpenSearchData(
+      arrayHits,
+      report,
+      params,
+      'MM/DD/YYYY',
+      'UTC'
+    );
+
+    expect(result).toBeDefined();
+    expect(result.length).toBe(1);
+
+    const keys = Object.keys(result[0]);
+    expect(keys).toEqual([
+      'customer_id',
+      'products.category',
+      'total',
+      'products.price',
+    ]);
+    expect(result[0]['products.category']).toBe('Books,Electronics');
+    expect(result[0]['products.price']).toBe('50,100');
+  });
+
+  test('should maintain order across multiple rows', () => {
+    const arrayHits = [
+      {
+        hits: [
+          hit({
+            field_a: 'A1',
+            field_c: 'C1',
+            field_b: 'B1',
+          }),
+          hit({
+            field_b: 'B2',
+            field_a: 'A2',
+            field_c: 'C2',
+          }),
+        ],
+      },
+    ];
+
+    const report = {
+      _source: {
+        dateFields: [],
+        fields_exist: true,
+        selectedFields: ['field_b', 'field_a', 'field_c'],
+      },
+    };
+
+    const params = { excel: false, limit: 1000 };
+    const result = getOpenSearchData(
+      arrayHits,
+      report,
+      params,
+      'MM/DD/YYYY',
+      'UTC'
+    );
+
+    expect(result).toBeDefined();
+    expect(result.length).toBe(2);
+
+    // Check both rows have same key order
+    const keys1 = Object.keys(result[0]);
+    const keys2 = Object.keys(result[1]);
+
+    expect(keys1).toEqual(['field_b', 'field_a', 'field_c']);
+    expect(keys2).toEqual(['field_b', 'field_a', 'field_c']);
+  });
+});

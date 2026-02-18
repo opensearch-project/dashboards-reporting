@@ -106,7 +106,7 @@ export const buildRequestBody = (
 
   if (sorting.length > 0) {
     const sorts: Sort[] = sorting.map((element: string[]) => {
-      return esb.sort(element[0], element[1]);
+      return esb.sort(element[0], element[1]).unmappedType('date');
     });
     esbSearchQuery.sorts(sorts);
   }
@@ -333,11 +333,15 @@ function traverse(
       continue;
     }
 
-    for (const flatKey of Object.keys(flatData)) {
-      if (flatKey === key || flatKey.startsWith(key + '.')) {
-        result[flatKey] = flatData[flatKey];
-      }
-    }
+    const matchingKeys = Object.keys(flatData).filter(
+      (flatKey) => flatKey === key || flatKey.startsWith(key + '.')
+    );
+
+    matchingKeys.sort();
+
+    matchingKeys.forEach((matchingKey) => {
+      result[matchingKey] = flatData[matchingKey];
+    });
   }
   return result;
 }
