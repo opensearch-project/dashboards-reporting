@@ -5,7 +5,7 @@ on: [pull_request, push]
 env:
   PLUGIN_NAME: reportsDashboards
   ARTIFACT_NAME: reports-dashboards
-  OPENSEARCH_DASHBOARDS_VERSION: '2.19.0'
+  OPENSEARCH_DASHBOARDS_VERSION: '2.19'
 
 jobs:
   Get-CI-Image-Tag:

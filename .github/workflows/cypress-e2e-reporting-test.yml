@@ -6,7 +6,7 @@ env:
   CI: 1
   # avoid warnings like "tput: No value for $TERM and no -T specified"
   TERM: xterm
-  OPENSEARCH_DASHBOARDS_VERSION: '2.x'
+  OPENSEARCH_DASHBOARDS_VERSION: '2.19'
   OPENSEARCH_VERSION: '2.14.0'
   OPENSEARCH_PLUGIN_VERSION: '2.14.0.0'
   PLUGIN_NAME: dashboards-reporting
