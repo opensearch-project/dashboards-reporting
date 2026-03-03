@@ -7,8 +7,6 @@ env:
   # avoid warnings like "tput: No value for $TERM and no -T specified"
   TERM: xterm
   OPENSEARCH_DASHBOARDS_VERSION: '2.19'
-  OPENSEARCH_VERSION: '2.14.0'
-  OPENSEARCH_PLUGIN_VERSION: '2.14.0.0'
   PLUGIN_NAME: dashboards-reporting
 
 jobs:
@@ -17,8 +15,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-latest ]
-        jdk: [ 11 ]
+        os: [ubuntu-latest]
+        jdk: [21]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -27,19 +25,55 @@ jobs:
         with:
           java-version: ${{ matrix.jdk }}
 
-      - name: Download Job Scheduler artifact
-        uses: suisei-cn/actions-download-file@v1.4.0
+      - name: Checkout OpenSearch Dashboards
+        uses: actions/checkout@v4
         with:
-          url: https://aws.oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=org.opensearch.plugin&a=opensearch-job-scheduler&v=${{ env.OPENSEARCH_PLUGIN_VERSION }}&p=zip
-          target: plugin-artifacts/
-          filename: job-scheduler.zip
+          path: OpenSearch-Dashboards
+          repository: opensearch-project/OpenSearch-Dashboards
+          ref: ${{ env.OPENSEARCH_DASHBOARDS_VERSION }}
+          fetch-depth: 0
+
+      - name: Checkout Dashboards Reporting Plugin in OpenSearch Dashboards Plugins Dir
+        uses: actions/checkout@v4
+        with:
+          path: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
+
+      - name: Set env
+        run: |
+          opensearch_version=$(node -p "require('./opensearch_dashboards.json').opensearchDashboardsVersion")
+          plugin_version=$(node -p "require('./opensearch_dashboards.json').version")
+          echo "OPENSEARCH_VERSION=$opensearch_version" >> $GITHUB_ENV
+          echo "PLUGIN_VERSION=$plugin_version" >> $GITHUB_ENV
+        shell: bash
+        working-directory: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
+
+      - name: Download Job Scheduler artifact
+        shell: bash
+        run: |
+          BASE="https://ci.opensearch.org/ci/dbc/snapshots/maven"
+          GROUP_PATH="org/opensearch/plugin"
+          ARTIFACT="opensearch-job-scheduler"
+          VERSION="${{ env.PLUGIN_VERSION }}-SNAPSHOT"
+          
+          METADATA_URL="$BASE/$GROUP_PATH/$ARTIFACT/$VERSION/maven-metadata.xml"
+          SNAPSHOT_VALUE=$(curl -fsSL "$METADATA_URL" | grep -A1 '<extension>zip</extension>' | grep '<value>' | sed 's/.*<value>\(.*\)<\/value>.*/\1/')
+          
+          mkdir -p plugin-artifacts
+          curl -fL --retry 5 -o plugin-artifacts/job-scheduler.zip "$BASE/$GROUP_PATH/$ARTIFACT/$VERSION/$ARTIFACT-$SNAPSHOT_VALUE.zip"
 
       - name: Download Reports Scheduler artifact
-        uses: suisei-cn/actions-download-file@v1.4.0
-        with:
-          url: https://aws.oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=org.opensearch.plugin&a=opensearch-reports-scheduler&v=${{ env.OPENSEARCH_PLUGIN_VERSION }}&p=zip
-          target: plugin-artifacts/
-          filename: reports-scheduler.zip
+        shell: bash
+        run: |
+          BASE="https://ci.opensearch.org/ci/dbc/snapshots/maven"
+          GROUP_PATH="org/opensearch/plugin"
+          ARTIFACT="opensearch-reports-scheduler"
+          VERSION="${{ env.PLUGIN_VERSION }}-SNAPSHOT"
+          
+          METADATA_URL="$BASE/$GROUP_PATH/$ARTIFACT/$VERSION/maven-metadata.xml"
+          SNAPSHOT_VALUE=$(curl -fsSL "$METADATA_URL" | grep -A1 '<extension>zip</extension>' | grep '<value>' | sed 's/.*<value>\(.*\)<\/value>.*/\1/')
+          
+          mkdir -p plugin-artifacts
+          curl -fL --retry 5 -o plugin-artifacts/reports-scheduler.zip "$BASE/$GROUP_PATH/$ARTIFACT/$VERSION/$ARTIFACT-$SNAPSHOT_VALUE.zip"
 
       - name: Download OpenSearch
         uses: peternied/download-file@v2
@@ -56,7 +90,7 @@ jobs:
         run: |
           /bin/bash -c "yes | ./opensearch-${{ env.OPENSEARCH_VERSION }}-SNAPSHOT/bin/opensearch-plugin install file:$(pwd)/plugin-artifacts/job-scheduler.zip"
         shell: bash
-    
+
       - name: Install Reports Scheduler
         run: |
           /bin/bash -c "yes | ./opensearch-${{ env.OPENSEARCH_VERSION }}-SNAPSHOT/bin/opensearch-plugin install file:$(pwd)/plugin-artifacts/reports-scheduler.zip"
@@ -77,22 +111,6 @@ jobs:
         if: always()
         run: cat ./opensearch-${{ env.OPENSEARCH_VERSION }}-SNAPSHOT/logs/opensearch.log
         shell: bash
-
-      - name: Checkout OpenSearch Dashboards
-        uses: actions/checkout@v2
-        with:
-          path: OpenSearch-Dashboards
-          repository: opensearch-project/OpenSearch-Dashboards
-          ref: ${{ env.OPENSEARCH_DASHBOARDS_VERSION }}
-          fetch-depth: 0
-          filter: |
-            cypress
-            test
-
-      - name: Checkout Dashboards Reporting Plugin in OpenSearch Dashboards Plugins Dir
-        uses: actions/checkout@v2
-        with:
-            path: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
 
       - id: tool-versions
         run: |
@@ -115,29 +133,38 @@ jobs:
         working-directory: OpenSearch-Dashboards
         shell: bash
 
-      - name: Boodstrap Opensearch Dashboards
+      - name: Bootstrap Opensearch Dashboards
         run: |
           yarn osd bootstrap --single-version=loose
         working-directory: OpenSearch-Dashboards
 
       - name: Run Opensearch Dashboards with Dashboards Reporting Plugin Installed
         run: |
-          nohup yarn start --no-base-path --no-watch --home.disableWelcomeScreen=true --home.disableExperienceModal=true | tee dashboard.log &
+          echo "home.disableWelcomeScreen: true" >> config/opensearch_dashboards.yml
+          echo "home.disableExperienceModal: true" >> config/opensearch_dashboards.yml
+          nohup yarn start --no-base-path --no-watch | tee dashboard.log &
         working-directory: OpenSearch-Dashboards
 
-      - name : Check If OpenSearch Dashboards Is Ready
+      - name: Check If OpenSearch Dashboards Is Ready
         if: ${{ runner.os == 'Linux' }}
         run: |
-          if timeout 600 grep -q "bundles compiled successfully after" <(tail -n0 -f dashboard.log); then
+          if timeout 1200 grep -q "bundles compiled successfully after" <(tail -n0 -f dashboard.log); then
             echo "OpenSearch Dashboards compiled successfully."
           else
-            echo "Timeout for 600 seconds reached. OpenSearch Dashboards did not finish compiling."
+            echo "Timeout for 1200 seconds reached. OpenSearch Dashboards did not finish compiling."
             exit 1
           fi
         working-directory: OpenSearch-Dashboards
 
-      - name: Checkout Dashboards Functioanl Test Repo
-        uses: actions/checkout@v2
+      - name: Upload Dashboards logs
+        uses: actions/upload-artifact@v4.4.0
+        if: failure()
+        with:
+          name: dashboard.logs
+          path: OpenSearch-Dashboards/dashboard.log
+
+      - name: Checkout Dashboards Functional Test Repo
+        uses: actions/checkout@v4
         with:
           path: opensearch-dashboards-functional-test
           repository: opensearch-project/opensearch-dashboards-functional-test
