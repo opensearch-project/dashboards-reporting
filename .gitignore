@@ -10,6 +10,3 @@ yarn-error.log
 .eslintcache
 package-lock.json
 /target/
-.cypress/screenshots
-.cypress/videos
-.cypress/downloads
