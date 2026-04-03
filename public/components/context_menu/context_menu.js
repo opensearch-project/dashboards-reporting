@@ -270,28 +270,14 @@ const checkURLParams = async () => {
   }
 };
 
-const isDiscoverNavMenu = (navMenu) => {
-  return (
-    (navMenu[0].children.length === 5 || navMenu[0].children.length === 6) &&
-    ($('[data-test-subj="breadcrumb first"]').prop('title') === 'Discover' ||
-      $('[data-test-subj="breadcrumb first last"]').prop('title') ===
-        'Discover')
-  );
-};
+const isDiscoverNavMenu = () =>
+  /\/app\/(discover|data-explorer)/.test(window.location.href);
 
-const isDashboardNavMenu = (navMenu) => {
-  return (
-    (navMenu[0].children.length === 4 || navMenu[0].children.length === 6) &&
-    $('[data-test-subj="breadcrumb first"]').prop('title') === 'Dashboards'
-  );
-};
+const isDashboardNavMenu = () =>
+  /\/app\/dashboards/.test(window.location.href);
 
-const isVisualizationNavMenu = (navMenu) => {
-  return (
-    navMenu[0].children.length === 3 &&
-    $('[data-test-subj="breadcrumb first"]').prop('title') === 'Visualize'
-  );
-};
+const isVisualizationNavMenu = () =>
+  /\/app\/visualize/.test(window.location.href);
 
 function locationHashChanged() {
   const observer = new MutationObserver(function (mutations) {
@@ -301,9 +287,9 @@ function locationHashChanged() {
     if (
       navMenu &&
       navMenu.length &&
-      (isDiscoverNavMenu(navMenu) ||
-        isDashboardNavMenu(navMenu) ||
-        isVisualizationNavMenu(navMenu))
+      (isDiscoverNavMenu() ||
+        isDashboardNavMenu() ||
+        isVisualizationNavMenu())
     ) {
       try {
         if ($('#downloadReport').length) {
