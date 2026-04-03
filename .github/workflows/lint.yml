@@ -26,14 +26,13 @@ jobs:
           fetch-depth: 0
 
       - name: Get node and yarn versions
-        working-directory: ${{ env.WORKING_DIR }}
         id: versions_step
         run: |
-          echo "::set-output name=node_version::$(cat ./OpenSearch-Dashboards/.nvmrc | cut -d"." -f1)"
-          echo "::set-output name=yarn_version::$(node -p "(require('./OpenSearch-Dashboards/package.json').engines.yarn).match(/[.0-9]+/)[0]")"
+          echo "node_version=$(cat ./OpenSearch-Dashboards/.node-version)" >> $GITHUB_OUTPUT
+          echo "yarn_version=$(jq -r '.engines.yarn' ./OpenSearch-Dashboards/package.json)" >> $GITHUB_OUTPUT
 
       - name: Setup node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ steps.versions_step.outputs.node_version }}
           registry-url: 'https://registry.npmjs.org'
