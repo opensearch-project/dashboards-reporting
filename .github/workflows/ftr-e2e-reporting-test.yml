@@ -134,9 +134,22 @@ jobs:
         working-directory: OpenSearch-Dashboards
         shell: bash
 
+      - name: Yarn Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            OpenSearch-Dashboards/**/target
+            OpenSearch-Dashboards/**/node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('OpenSearch-Dashboards/**/yarn.lock') }}
+
       - name: Bootstrap Opensearch Dashboards
         run: |
           yarn osd bootstrap --single-version=loose
+        working-directory: OpenSearch-Dashboards
+
+      - name: Compile OpenSearch Dashboards
+        run: |
+          node scripts/build_opensearch_dashboards_platform_plugins --no-examples --workers=10 --verbose
         working-directory: OpenSearch-Dashboards
 
       - name: Run Opensearch Dashboards with Dashboards Reporting Plugin Installed
@@ -150,10 +163,12 @@ jobs:
         if: ${{ runner.os == 'Linux' }}
         run: |
           timeout 600 bash -c 'while [ ! -f dashboard.log ]; do sleep 1; done'
-          if timeout 1200 grep -q "bundles compiled successfully after" <(tail -f dashboard.log); then
+          if timeout 1200 grep -q "bundles compiled successfully after" <(tail -n +1 -f dashboard.log); then
             echo "OpenSearch Dashboards compiled successfully."
           else
             echo "Timeout for 1200 seconds reached. OpenSearch Dashboards did not finish compiling."
+            echo "Last 100 lines of dashboard.log for debugging:"
+            tail -100 dashboard.log
             exit 1
           fi
         working-directory: OpenSearch-Dashboards
@@ -182,7 +197,7 @@ jobs:
       - name: Get Cypress version
         id: cypress_version
         run: |
-          echo "::set-output name=cypress_version::$(cat ./package.json | jq '.dependencies.cypress' | tr -d '"')"
+          echo "cypress_version=$(cat ./package.json | jq '.dependencies.cypress' | tr -d '"')" >> $GITHUB_OUTPUT
         working-directory: opensearch-dashboards-functional-test
 
       - name: Run Cypress tests
