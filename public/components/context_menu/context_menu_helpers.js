@@ -49,17 +49,16 @@ export const contextMenuCreateReportDefinition = (baseURI) => {
   const timeRanges = getTimeFieldsFromUrl();
 
   // check report source
-  if (/\/app\/dashboards/.test(baseURI)) {
+  if (/\/app\/data-explorer\/dashboards/.test(baseURI)) {
     reportSource = 'dashboard:';
-  } else if (/\/app\/visualize/.test(baseURI)) {
+  } else if (/\/app\/data-explorer\/visualize/.test(baseURI)) {
     reportSource = 'visualize:';
-  } else if (/\/app\/discover/.test(baseURI)) {
+  } else if (/\/app\/data-explorer\/discover/.test(baseURI)) {
     reportSource = 'discover:';
   }
   reportSource += reportSourceId.toString();
-  window.location.assign(
-    `reports-dashboards#/create?previous=${reportSource}?timeFrom=${timeRanges.time_from.toISOString()}?timeTo=${timeRanges.time_to.toISOString()}`
-  );
+  applicationService.getApplication().navigateToApp(PLUGIN_ID, { path: `#/create?previous=${reportSource}?timeFrom=${timeRanges.time_from.toISOString()}?timeTo=${timeRanges.time_to.toISOString()}`});
+
 };
 
 export const displayLoadingModal = () => {
