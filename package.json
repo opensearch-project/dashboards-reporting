@@ -70,7 +70,6 @@
     "@cypress/request": "^3.0.0",
     "@babel/traverse": "^7.23.2",
     "debug": "^4.3.4",
-    "browserify-sign": "^4.2.2",
     "braces": "^3.0.3",
     "micromatch": "^4.0.8",
     "**/eslint/cross-spawn": "^7.0.5",
