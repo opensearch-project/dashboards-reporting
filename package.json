@@ -41,13 +41,11 @@
     "@types/set-interval-async": "^1.0.0",
     "@types/showdown": "^2.0.6",
     "elastic-builder": "^2.7.1",
-    "eslint-plugin-babel": "^5.3.1",
     "eslint-plugin-no-unsanitized": "^3.0.2",
     "eslint-plugin-prefer-object-spread": "^1.2.1",
     "identity-obj-proxy": "^3.0.0",
     "jest-dom": "^4.0.0",
-    "replace-in-file": "^6.3.5",
-    "ts-jest": "^29.1.0"
+    "replace-in-file": "^6.3.5"
   },
   "resolutions": {
     "trim": "^1.0.0",
@@ -74,7 +72,6 @@
     "browserify-sign": "^4.2.2",
     "braces": "^3.0.3",
     "micromatch": "^4.0.8",
-    "**/eslint/cross-spawn": "^7.0.5",
     "@babel/helpers": "^7.26.10",
     "@babel/runtime": "^7.26.10",
     "pbkdf2": "^3.1.3",
