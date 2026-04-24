@@ -17,7 +17,8 @@
     "noUnusedParameters": false,
     "alwaysStrict": false,
     "noImplicitUseStrict": false,
-    "types": ["jest", "node"]
+    "types": ["jest", "node"],
+    "rootDir": "."
   },
   "include": [
     "test/**/*",
