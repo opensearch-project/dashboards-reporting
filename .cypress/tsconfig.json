@@ -2,7 +2,10 @@
   "compilerOptions": {
     "allowJs": true,
     "baseUrl": "../node_modules",
-    "types": ["cypress"]
+    "types": ["cypress"],
+    "rootDir": ".",
+    "skipLibCheck": true,
+    "ignoreDeprecations": "6.0"
   },
   "include": ["**/*.*"]
 }
