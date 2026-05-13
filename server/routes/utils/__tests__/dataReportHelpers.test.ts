@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { getOpenSearchData } from '../dataReportHelpers';
+import { getOpenSearchData, convertToCSV } from '../dataReportHelpers';
 
 jest.mock('../excelBuilder', () => ({
   ExcelBuilder: jest.fn().mockImplementation(() => ({
@@ -359,5 +359,23 @@ describe('test traverse preserves selected field order', () => {
 
     expect(keys1).toEqual(['field_b', 'field_a', 'field_c']);
     expect(keys2).toEqual(['field_b', 'field_a', 'field_c']);
+  });
+});
+
+describe('convertToCSV', () => {
+  test('should prepend UTF-8 BOM to CSV output', async () => {
+    const dataset = [[{ name: 'test', value: 'hello' }]];
+    const result = await convertToCSV(dataset, ',');
+    expect(result.charCodeAt(0)).toBe(0xfeff);
+    expect(result.startsWith('\uFEFF')).toBe(true);
+  });
+
+  test('should contain correct CSV content after BOM', async () => {
+    const dataset = [[{ name: "it's", city: 'Zürich' }]];
+    const result = await convertToCSV(dataset, ',');
+    const csvContent = result.substring(1); // skip BOM
+    expect(csvContent).toContain('name');
+    expect(csvContent).toContain("it's");
+    expect(csvContent).toContain('Zürich');
   });
 });
