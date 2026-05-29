@@ -3,12 +3,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import Showdown from 'showdown';
+import MarkdownIt from 'markdown-it';
 
-export const converter = new Showdown.Converter({
-  tables: true,
-  simplifiedAutoLink: true,
-  strikethrough: true,
-  tasklists: true,
-  noHeaderId: true,
+const md = new MarkdownIt({
+  html: false,
+  linkify: true,
+  breaks: false,
 });
+
+export const converter = {
+  makeHtml: (markdown: string): string => md.render(markdown ?? ''),
+};
