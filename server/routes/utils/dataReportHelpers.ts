@@ -231,7 +231,8 @@ export const convertToCSV = async (dataset, csvSeparator) => {
   await converter.json2csvAsync(dataset[0], options).then((csv) => {
     convertedData = csv;
   });
-  return convertedData;
+  // Prepend UTF-8 BOM so Excel correctly detects encoding
+  return '\uFEFF' + convertedData;
 };
 
 function flattenHits(
