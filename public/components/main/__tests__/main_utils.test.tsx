@@ -26,46 +26,46 @@ import httpClientMock from '../../../../test/httpMockClient';
 
 describe('main_utils tests', () => {
   global.URL.createObjectURL = jest.fn();
-  let mockElement = document.createElement('a');
+  const mockElement = document.createElement('a');
   mockElement.download = 'string';
   mockElement.click = function name() {};
   sinon.stub(document, 'createElement').returns(mockElement);
 
-  test('test humanReadableDate', () => {
+  test('humanReadableDate', () => {
     const readableDate = new Date(2018, 11, 24, 10, 33, 30);
     const humanReadable = humanReadableDate(readableDate);
 
     expect(humanReadable).toBe('Mon Dec 24 2018 @ 10:33:30 AM');
   });
 
-  test('test extractFileName', () => {
+  test('extractFileName', () => {
     const fullFile = 'test_file_name_extracted_correctly.pdf';
     const fileName = extractFilename(fullFile);
 
     expect(fileName).toBe('test_file_name_extracted_correctly');
   });
 
-  test('test extractFileFormat', () => {
+  test('extractFileFormat', () => {
     const fullFile = 'test_file_format_extracted_correctly.png';
     const fileFormat = extractFileFormat(fullFile);
 
     expect(fileFormat).toBe('png');
   });
 
-  test('test getFileFormatPrefix', () => {
+  test('getFileFormatPrefix', () => {
     const fileFormat = 'pdf';
     const fileFormatPrefix = getFileFormatPrefix(fileFormat);
 
     expect(fileFormatPrefix).toBe('data:pdf;base64,');
   });
 
-  test('test addReportsTableContent', () => {
+  test('addReportsTableContent', () => {
     const reportsTableItems = addReportsTableContent(reportTableMockResponse);
 
     expect(reportsTableItems).toStrictEqual(mockReportsTableItems);
   });
 
-  test('test addReportDefinitionsTableContent', () => {
+  test('addReportDefinitionsTableContent', () => {
     const reportDefinitionsTableItems = addReportDefinitionsTableContent(
       reportDefinitionsTableMockResponse
     );
@@ -75,14 +75,14 @@ describe('main_utils tests', () => {
     );
   });
 
-  test('test removeDuplicatePdfFileFormat', () => {
+  test('removeDuplicatePdfFileFormat', () => {
     const duplicateFormat = 'test_duplicate_remove.pdf.pdf';
     const duplicateRemoved = removeDuplicatePdfFileFormat(duplicateFormat);
 
     expect(duplicateRemoved).toBe('test_duplicate_remove.pdf');
   });
 
-  test('test readStreamToFile csv compile', () => {
+  test('readStreamToFile csv', () => {
     const stream =
       'category,customer_gender\n' +
       'c1,Male\n' +
@@ -94,33 +94,59 @@ describe('main_utils tests', () => {
     const fileFormat = 'csv';
     const fileName = 'test_data_report.csv';
     readStreamToFile(stream, fileFormat, fileName);
+    expect(global.URL.createObjectURL).toHaveBeenCalled();
   });
 
-  test('test readStreamToFile pdf compile', () => {
+  test('readStreamToFile xlsx creates blob URL without fetch', async () => {
+    const mockCreateObjectURL = jest.fn().mockReturnValue('blob:mock-url');
+    global.URL.createObjectURL = mockCreateObjectURL;
+
+    const stream =
+      'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,dGVzdA==';
+    const fileFormat = 'xlsx';
+    const fileName = 'test_data_report.xlsx';
+
+    await readStreamToFile(stream, fileFormat, fileName);
+
+    expect(mockCreateObjectURL).toHaveBeenCalled();
+    const blob = mockCreateObjectURL.mock.calls[0][0];
+    expect(blob).toBeInstanceOf(Blob);
+    expect(blob.type).toBe(
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    );
+    expect(blob.size).toBe(4);
+  });
+
+  test('readStreamToFile pdf', () => {
     const stream = 'data:pdf;base64,zxvniaorbguw40absdoanlsdf';
     const fileFormat = 'pdf';
     const fileName = 'test_pdf_report.pdf';
     readStreamToFile(stream, fileFormat, fileName);
+    expect(global.URL.createObjectURL).not.toHaveBeenCalled();
   });
 
-  test('test generateReport compile', () => {
+  test('generateReportFromDefinitionId', () => {
     const reportDefinitionId = '1';
-    generateReportFromDefinitionId(reportDefinitionId, httpClientMock);
+    expect(
+      generateReportFromDefinitionId(reportDefinitionId, httpClientMock)
+    ).toBeDefined();
   });
 
-  test('test generateReportById compile', () => {
+  test('generateReportById', () => {
     const reportId = '1';
     const handleSuccessToast = jest.fn();
     const handleErrorToast = jest.fn();
-    generateReportById(
-      reportId,
-      httpClientMock,
-      handleSuccessToast,
-      handleErrorToast
-    );
+    expect(
+      generateReportById(
+        reportId,
+        httpClientMock,
+        handleSuccessToast,
+        handleErrorToast
+      )
+    ).toBeDefined();
   });
 
-  test('test generateReportById timeout error handling', async () => {
+  test('generateReportById timeout error handling', async () => {
     expect.assertions(1);
     const reportId = '1';
     const handleSuccessToast = jest.fn();
