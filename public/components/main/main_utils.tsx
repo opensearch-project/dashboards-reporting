@@ -118,14 +118,19 @@ export const removeDuplicatePdfFileFormat = (filename: string) => {
   return filename.substring(0, filename.length - 4);
 };
 
-async function getDataReportURL(stream: string, fileFormat: string): Promise<string> {
-  if (fileFormat == 'xlsx') {
-    const response = await fetch(stream);
-    const blob = await response.blob();
-    return URL.createObjectURL(blob);
-  }
+function dataURItoBlob(dataURI: string): Blob {
+  const [header, base64Data] = dataURI.split(',');
+  const mimeType = header.match(/:(.*?);/)?.[1] || 'application/octet-stream';
+  const bytes = Uint8Array.from(atob(base64Data), (c) => c.charCodeAt(0));
+  return new Blob([bytes], { type: mimeType });
+}
 
-  const blob = new Blob([stream]);
+async function getDataReportURL(
+  stream: string,
+  fileFormat: string
+): Promise<string> {
+  const blob =
+    fileFormat === 'xlsx' ? dataURItoBlob(stream) : new Blob([stream]);
   return URL.createObjectURL(blob);
 }
 
