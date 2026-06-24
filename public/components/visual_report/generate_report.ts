@@ -7,7 +7,6 @@ import createDOMPurify from 'dompurify';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { createWorker } from 'tesseract.js';
-import { v1 as uuidv1 } from 'uuid';
 import { ReportSchemaType } from '../../../server/model';
 import { uiSettingsService } from '../utils/settings_service';
 import { reportingStyle } from './assets/report_styles';
@@ -24,7 +23,7 @@ const waitForSelector = (selector: string, timeout = 30000) => {
       if (document.querySelector(selector)) {
         return resolve(document.querySelector(selector));
       }
-      const observer = new MutationObserver((mutations) => {
+      const observer = new MutationObserver((_mutations) => {
         if (document.querySelector(selector)) {
           resolve(document.querySelector(selector));
           observer.disconnect();
@@ -80,7 +79,7 @@ const addReportHeader = (doc: Document, header: string) => {
   </div>`;
   const headerContainer = document.createElement('div');
   headerContainer.className = 'reportWrapper';
-  headerContainer.innerHTML = headerHtml;
+  headerContainer.innerHTML = headerHtml; // eslint-disable-line no-unsanitized/property
   const body = doc.getElementsByTagName('body')[0];
   body.insertBefore(headerContainer, body.children[0]);
 };
@@ -95,7 +94,7 @@ const addReportFooter = (doc: Document, footer: string) => {
   </div>`;
   const footerContainer = document.createElement('div');
   footerContainer.className = 'reportWrapper';
-  footerContainer.innerHTML = footerHtml;
+  footerContainer.innerHTML = footerHtml; // eslint-disable-line no-unsanitized/property
   const body = doc.getElementsByTagName('body')[0];
   body.appendChild(footerContainer);
 };
@@ -103,7 +102,7 @@ const addReportFooter = (doc: Document, footer: string) => {
 const addReportStyle = (doc: Document, style: string) => {
   const styleElement = document.createElement('style');
   styleElement.className = 'reportInjectedStyles';
-  styleElement.innerHTML = style;
+  styleElement.innerHTML = style; // eslint-disable-line no-unsanitized/property
   doc.getElementsByTagName('head')[0].appendChild(styleElement);
   doc.body.style.paddingTop = '0px';
 };
@@ -118,8 +117,8 @@ export const generateReport = async (id: string, forceDelay = 15000) => {
   );
   const format =
     report.report_definition.report_params.core_params.report_format;
-  const reportSource = report.report_definition.report_params
-    .report_source as unknown as VISUAL_REPORT_TYPE;
+  const reportSource = (report.report_definition.report_params
+    .report_source as unknown) as VISUAL_REPORT_TYPE;
   const headerInput = report.report_definition.report_params.core_params.header;
   const footerInput = report.report_definition.report_params.core_params.footer;
   const header = headerInput
@@ -130,7 +129,7 @@ export const generateReport = async (id: string, forceDelay = 15000) => {
     : '';
   const fileName =
     report.report_definition.report_params.report_name +
-    `_${new Date().toISOString()}_${uuidv1()}.${format}`;
+    `_${new Date().toISOString()}_${crypto.randomUUID()}.${format}`;
 
   await timeout(1000);
   switch (reportSource) {
@@ -179,15 +178,23 @@ export const generateReport = async (id: string, forceDelay = 15000) => {
    *
    * If `#opensearch-dashboards-body` is not found, it will fall back to `scrollWidth`.
    */
-  const innerBodyDims = document.getElementById('opensearch-dashboards-body')?.getBoundingClientRect();
+  const innerBodyDims = document
+    .getElementById('opensearch-dashboards-body')
+    ?.getBoundingClientRect();
   const width = innerBodyDims?.width || document.documentElement.scrollWidth;
   const height = document.documentElement.scrollHeight;
 
-  const documentBackgroundColor: string = (window.getComputedStyle(document.documentElement) as CSSStyleDeclaration).backgroundColor;
+  const documentBackgroundColor: string = (window.getComputedStyle(
+    document.documentElement
+  ) as CSSStyleDeclaration).backgroundColor;
   const bgColor = documentBackgroundColor.startsWith('#')
     ? documentBackgroundColor
-    // convert rgb() and rgba() to hex
-    : '#' + documentBackgroundColor.split(/[,()]/, 4).slice(1).map(v => parseInt(v).toString(16)).join('');
+    : '#' +
+      documentBackgroundColor
+        .split(/[,()]/, 4)
+        .slice(1)
+        .map((v) => parseInt(v, 10).toString(16))
+        .join('');
 
   /* ToDo: `html2canvas` doesn't copy stylesheets when `foreignObjectRendering` is false. As a result
    *       `@font-family` definitions are lost; find a way to get them from the document and add
@@ -208,7 +215,7 @@ export const generateReport = async (id: string, forceDelay = 15000) => {
     removeContainer: false,
     allowTaint: true,
     foreignObjectRendering: useForeignObjectRendering,
-    onclone: function (documentClone) {
+    onclone(documentClone) {
       removeNonReportElements(documentClone, reportSource);
       // When the left nav is docked, the body element gets left-padded; this forces it to left-align
       documentClone.body.style.padding = '0px';
@@ -250,7 +257,7 @@ export const generateReport = async (id: string, forceDelay = 15000) => {
         await worker.loadLanguage('eng');
         await worker.initialize('eng');
         const {
-          data: { text, pdf },
+          data: { text: _text, pdf },
         } = await worker
           .recognize(canvas.toDataURL(), { pdfTitle: fileName }, { pdf: true })
           .catch((e) => console.error('recognize', e));
@@ -274,7 +281,7 @@ export const generateReport = async (id: string, forceDelay = 15000) => {
         const pdf = new jsPDF(orient, 'px', [canvas.width, canvas.height]);
         pdf.setFillColor(bgColor);
         // `+ 10` to fill in any uncolored areas that appear on the right and bottom edges of the PDF
-        pdf.rect(0, 0, canvas.width + 10, canvas.height + 10, "F");
+        pdf.rect(0, 0, canvas.width + 10, canvas.height + 10, 'F');
         pdf.addImage(canvas, 'JPEG', 0, 0, canvas.width, canvas.height);
         pdf.save(fileName);
       }

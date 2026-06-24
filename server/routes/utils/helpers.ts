@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import crypto from 'crypto';
 import { OpenSearchDashboardsResponseFactory } from '../../../../../src/core/server';
-import { v1 as uuidv1 } from 'uuid';
 import {
   ILegacyClusterClient,
   ILegacyScopedClusterClient,
@@ -27,14 +27,17 @@ export function parseOpenSearchErrorResponse(error: any) {
     try {
       const opensearchErrorResponse = JSON.parse(error.response);
       return opensearchErrorResponse.error.reason || error.response;
-    } catch (parsingError) {
+    } catch (_parsingError) {
       return error.response;
     }
   }
   return error.message;
 }
 
-export function errorResponse(response: OpenSearchDashboardsResponseFactory, error: any) {
+export function errorResponse(
+  response: OpenSearchDashboardsResponseFactory,
+  error: any
+) {
   return response.custom({
     statusCode: error.statusCode || 500,
     body: parseOpenSearchErrorResponse(error),
@@ -47,7 +50,7 @@ export function errorResponse(response: OpenSearchDashboardsResponseFactory, err
  * @param timeCreated   timestamp when this is being created
  */
 export function getFileName(itemName: string, timeCreated: Date): string {
-  return `${itemName}_${timeCreated.toISOString()}_${uuidv1()}`;
+  return `${itemName}_${timeCreated.toISOString()}_${crypto.randomUUID()}`;
 }
 
 /**

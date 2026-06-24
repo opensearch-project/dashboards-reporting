@@ -9,7 +9,7 @@ env:
 
 jobs:
   Get-CI-Image-Tag:
-    uses: opensearch-project/opensearch-build/.github/workflows/get-ci-image-tag.yml@main
+    uses: opensearch-project/opensearch-build/.github/workflows/get-ci-image-tag.yml@761e093b8c1349cc07f21c1d681d3b30bf9e1999 # main
     with:
       product: opensearch-dashboards
 
@@ -25,14 +25,14 @@ jobs:
 
     steps:
       - name: Checkout OpenSearch Dashboards
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           repository: opensearch-project/Opensearch-Dashboards
           ref: ${{ env.OPENSEARCH_DASHBOARDS_VERSION }}
           path: OpenSearch-Dashboards
 
       - name: Checkout Plugin
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           path: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
 
@@ -46,7 +46,7 @@ jobs:
         working-directory: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
 
       - name: OpenSearch Dashboards Plugin Bootstrap and test
-        uses: nick-fields/retry@v1
+        uses: nick-fields/retry@39da88d5f7d15a96aed861dbabbe8b7443e3182a # v1
         with:
           timeout_minutes: 30
           max_attempts: 3
@@ -60,7 +60,7 @@ jobs:
                                  whoami && yarn osd bootstrap --single-version=loose && yarn test --coverage"
 
       - name: Upload coverage
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@29386c70ef20e286228c72b668a06fd0e8399192 # v1
         with:
           flags: dashboards-report
           directory: ./OpenSearch-Dashboards/plugins/
@@ -77,7 +77,7 @@ jobs:
                                whoami && yarn build && mv -v ./build/*.zip ./build/${{ env.ARTIFACT_NAME }}-${{ env.PLUGIN_VERSION }}.zip"
 
       - name: Upload Artifact For Linux
-        uses: actions/upload-artifact@v4.4.0
+        uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
         with:
           name: dashboards-reports-linux
           path: ./OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}/build/${{ env.ARTIFACT_NAME }}-${{ env.PLUGIN_VERSION }}.zip
@@ -94,14 +94,14 @@ jobs:
         run: git config --system core.longpaths true
 
       - name: Checkout OpenSearch Dashboards
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           repository: opensearch-project/Opensearch-Dashboards
           ref: ${{ env.OPENSEARCH_DASHBOARDS_VERSION }}
           path: OpenSearch-Dashboards
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@3235b876344d2a9aa001b8d1453c930bba69e610 # v3
         with:
           node-version-file: 'OpenSearch-Dashboards/.nvmrc'
           registry-url: 'https://registry.npmjs.org'
@@ -117,7 +117,7 @@ jobs:
       - run: yarn -v
 
       - name: Checkout Plugin
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           path: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
 
@@ -131,14 +131,14 @@ jobs:
         working-directory: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
 
       - name: OpenSearch Dashboards Plugin Bootstrap
-        uses: nick-fields/retry@v1
+        uses: nick-fields/retry@39da88d5f7d15a96aed861dbabbe8b7443e3182a # v1
         with:
           timeout_minutes: 30
           max_attempts: 3
           command: cd OpenSearch-Dashboards && yarn osd bootstrap --single-version=loose
 
       - name: Test
-        uses: nick-fields/retry@v1
+        uses: nick-fields/retry@39da88d5f7d15a96aed861dbabbe8b7443e3182a # v1
         with:
           timeout_minutes: 30
           max_attempts: 3
@@ -150,7 +150,7 @@ jobs:
           mv ./build/*.zip ./build/${{ env.ARTIFACT_NAME }}-${{ env.PLUGIN_VERSION }}-${{ runner.os }}.zip
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v4.4.0
+        uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
         with:
           name: dashboards-reports-${{ runner.os }}
           path: ./OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}/build/${{ env.ARTIFACT_NAME }}-${{ env.PLUGIN_VERSION }}-${{ runner.os }}.zip

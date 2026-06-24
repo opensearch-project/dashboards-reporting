@@ -2,7 +2,6 @@ name: 'Install Dashboards with Plugin via Binary'
 
 on: [push, pull_request]
 env:
-  OPENSEARCH_VERSION: '2.14.0'
   CI: 1
   # avoid warnings like "tput: No value for $TERM and no -T specified"
   TERM: xterm
@@ -16,9 +15,9 @@ jobs:
         os: [ubuntu-latest]
         # TODO: add windows support when OSD core is stable on windows
     runs-on: ${{ matrix.os }}
-    steps:  
+    steps:
       - name: Checkout Branch
-        uses: actions/checkout@v3
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Set env
         run: |
@@ -29,27 +28,27 @@ jobs:
         shell: bash
 
       - name: Run Opensearch
-        uses: derek-ho/start-opensearch@v2
+        uses: derek-ho/start-opensearch@47c6a62637ce79510d7f67ac150639a4510cf694 # v9
         with:
           opensearch-version: ${{ env.OPENSEARCH_VERSION }}
           security-enabled: false
 
       - name: Run Dashboard
         id: setup-dashboards
-        uses: derek-ho/setup-opensearch-dashboards@v2
+        uses: derek-ho/setup-opensearch-dashboards@eee8e92484c4b05a68f363bb662e704f1d2295bc # v2
         with:
           plugin_name: dashboards-reporting
           built_plugin_name: reportsDashboards
           built_plugin_suffix: ${{ env.OPENSEARCH_VERSION }}
           install_zip: true
-          
+
       - name: Start the binary
-        run: | 
+        run: |
           nohup ./bin/opensearch-dashboards &
         working-directory: ${{ steps.setup-dashboards.outputs.dashboards-binary-directory }}
         shell: bash
 
-      - name: Health check 
+      - name: Health check
         run: |
           timeout 300 bash -c 'while [[ "$(curl http://localhost:5601/api/status | jq -r '.status.overall.state')" != "green" ]]; do sleep 5; done'
         shell: bash

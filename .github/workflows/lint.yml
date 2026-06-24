@@ -4,7 +4,7 @@ on: [pull_request]
 
 env:
   PLUGIN_NAME: dashboards-reporting
-  OPENSEARCH_DASHBOARDS_VERSION: "2.x"
+  OPENSEARCH_DASHBOARDS_VERSION: 'main'
 
 jobs:
   build:
@@ -13,30 +13,29 @@ jobs:
 
     steps:
       - name: Checkout OpenSearch Dashboards
-        uses: actions/checkout@v2
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           repository: opensearch-project/Opensearch-Dashboards
           ref: ${{ env.OPENSEARCH_DASHBOARDS_VERSION }}
           path: OpenSearch-Dashboards
 
       - name: Checkout dashboards reporting
-        uses: actions/checkout@v2
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           path: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
           fetch-depth: 0
 
       - name: Get node and yarn versions
-        working-directory: ${{ env.WORKING_DIR }}
         id: versions_step
         run: |
-          echo "::set-output name=node_version::$(cat ./OpenSearch-Dashboards/.nvmrc | cut -d"." -f1)"
-          echo "::set-output name=yarn_version::$(node -p "(require('./OpenSearch-Dashboards/package.json').engines.yarn).match(/[.0-9]+/)[0]")"
+          echo "node_version=$(cat ./OpenSearch-Dashboards/.node-version)" >> $GITHUB_OUTPUT
+          echo "yarn_version=$(jq -r '.engines.yarn' ./OpenSearch-Dashboards/package.json)" >> $GITHUB_OUTPUT
 
       - name: Setup node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: ${{ steps.versions_step.outputs.node_version }}
-          registry-url: "https://registry.npmjs.org"
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Install correct yarn version for OpenSearch Dashboards
         run: |
@@ -49,7 +48,7 @@ jobs:
         run: yarn osd bootstrap --single-version=loose
 
       - name: Get list of changed files using GitHub Action
-        uses: lots0logs/gh-action-get-changed-files@2.2.2
+        uses: lots0logs/gh-action-get-changed-files@6cb5164a823dbf3318b7c8032a333b4b7ed425b2 # 2.2.2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -76,4 +75,4 @@ jobs:
           else
             echo "No matched files to lint."
           fi
-        working-directory: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}      
+        working-directory: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
