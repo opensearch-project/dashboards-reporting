@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import crypto from 'crypto';
+import { v1 as uuidv1 } from 'uuid';
 import { ReportSchemaType } from '../../model';
 import { BACKEND_REPORT_STATE } from '../../model/backendModel';
 import { ILegacyScopedClusterClient } from '../../../../../src/core/server';
@@ -25,7 +25,7 @@ export const saveReport = async (
     beginTimeMs: timeFrom,
     endTimeMs: timeTo,
     reportDefinitionDetails: {
-      id: crypto.randomUUID(),
+      id: uuidv1(),
       lastUpdatedTimeMs: timePending,
       createdTimeMs: timePending,
       reportDefinition: {

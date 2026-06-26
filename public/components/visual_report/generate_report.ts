@@ -7,6 +7,7 @@ import createDOMPurify from 'dompurify';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { createWorker } from 'tesseract.js';
+import { v1 as uuidv1 } from 'uuid';
 import { ReportSchemaType } from '../../../server/model';
 import { uiSettingsService } from '../utils/settings_service';
 import { reportingStyle } from './assets/report_styles';
@@ -129,7 +130,7 @@ export const generateReport = async (id: string, forceDelay = 15000) => {
     : '';
   const fileName =
     report.report_definition.report_params.report_name +
-    `_${new Date().toISOString()}_${crypto.randomUUID()}.${format}`;
+    `_${new Date().toISOString()}_${uuidv1()}.${format}`;
 
   await timeout(1000);
   switch (reportSource) {

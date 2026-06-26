@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import crypto from 'crypto';
+import { v1 as uuidv1 } from 'uuid';
 import { OpenSearchDashboardsResponseFactory } from '../../../../../src/core/server';
 import {
   ILegacyClusterClient,
@@ -50,7 +50,7 @@ export function errorResponse(
  * @param timeCreated   timestamp when this is being created
  */
 export function getFileName(itemName: string, timeCreated: Date): string {
-  return `${itemName}_${timeCreated.toISOString()}_${crypto.randomUUID()}`;
+  return `${itemName}_${timeCreated.toISOString()}_${uuidv1()}`;
 }
 
 /**
