@@ -3,12 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import Showdown from 'showdown';
+import { marked } from 'marked';
 
-export const converter = new Showdown.Converter({
-  tables: true,
-  simplifiedAutoLink: true,
-  strikethrough: true,
-  tasklists: true,
-  noHeaderId: true,
-});
+export const converter = {
+  makeHtml: (text: string) => marked(text, { gfm: true }) as string,
+};
