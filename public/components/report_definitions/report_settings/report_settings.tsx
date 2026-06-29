@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+/* eslint-disable eqeqeq, @typescript-eslint/no-shadow, import/order, @typescript-eslint/consistent-type-definitions, prefer-const, dot-notation */
+
 import createDOMPurify from 'dompurify';
 import React, { useEffect, useState } from 'react';
 import { i18n } from '@osd/i18n';
@@ -31,7 +33,6 @@ import {
   REPORT_SOURCE_TYPES,
   SAVED_SEARCH_FORMAT_OPTIONS,
 } from './report_settings_constants';
-import Showdown from 'showdown';
 import ReactMde from 'react-mde';
 import 'react-mde/lib/styles/css/react-mde-all.css';
 import {
@@ -727,7 +728,7 @@ export function ReportSettings(props: ReportSettingProps) {
     reportSourceId === 'dashboardReportSource' ? (
       <div>
         <EuiFormRow
-        id="reportSourceDashboardSelect"
+          id="reportSourceDashboardSelect"
           label={i18n.translate(
             'opensearch.reports.reportSettingProps.selectDashboard',
             { defaultMessage: 'Select dashboard' }
@@ -808,7 +809,10 @@ export function ReportSettings(props: ReportSettingProps) {
               color="primary"
               title={i18n.translate(
                 'opensearch.reports.reportSettingProps.form.savedSearchLargeRecordLimitWarning',
-                { defaultMessage: 'Generating reports with a large number of records can cause memory issues' }
+                {
+                  defaultMessage:
+                    'Generating reports with a large number of records can cause memory issues',
+                }
               )}
               iconType="iInCircle"
               size="s"
