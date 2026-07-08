@@ -182,9 +182,9 @@
     "@types/tough-cookie" "*"
 
 "@types/node@*":
-  version "26.0.1"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-26.0.1.tgz#4a60e2c7a6d68bd261e265f8983bfe1601263ce3"
-  integrity sha512-fc3KiUoBt6kie0N9bIW3E47vZsuaMf0PM2AaUpLCLT0s/LvX1nxAim6Fc049cNxODPpGm6qRAuUOB86SkRuPQw==
+  version "26.1.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-26.1.0.tgz#aa85f0727fc5611347091c478341c63650903439"
+  integrity sha512-O0A1G3xPGy4w7AgQdAQYUlQ+BKk2Oovw8eRpofyp5KdBZULnbe+WqaOVNrm705SHphCiG4XHsACrSmPu1f+Kgw==
   dependencies:
     undici-types "~8.3.0"
 
@@ -772,10 +772,10 @@ decimal.js@^10.4.3:
   resolved "https://registry.yarnpkg.com/decimal.js/-/decimal.js-10.6.0.tgz#e649a43e3ab953a72192ff5983865e509f37ed9a"
   integrity sha512-YpgQiITW3JXGntzdUmyUR1V812Hn8T1YVXhCu+wO3OpS4eU9l4YdD3qjyiKdV6mvV29zapkMeD390UVEf2lkUg==
 
-deeks@2.6.1:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/deeks/-/deeks-2.6.1.tgz#ee852ab76d5b4ca4bcfda34ba55660c40b92f505"
-  integrity sha512-PZrpz5xLo2JPZa3L+kqMMMdZU5pRwMysTM1xd6pLhNtgQw4Iq3wbF2QWaQTVh+HRq9Yg4rcjDIJ+scfGLxmsjQ==
+deeks@3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/deeks/-/deeks-3.2.1.tgz#b8a83dc949b1ee278dc8f5e72bddd03ac3565bcc"
+  integrity sha512-D/o0k3pCG1aI1cxb/dDiWmtMc4Rh7ZQBybXpfMsw9Rbtqwg8kUA9SpYkWcw0pAUjZSnPm8MluctiS0o68r69jQ==
 
 define-data-property@^1.1.4:
   version "1.1.4"
@@ -791,7 +791,7 @@ delayed-stream@~1.0.0:
   resolved "https://registry.yarnpkg.com/delayed-stream/-/delayed-stream-1.0.0.tgz#df3ae199acadfb7d440aaae0b29e2272b24ec619"
   integrity sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==
 
-doc-path@3.1.0:
+doc-path@3.1.0, doc-path@4.1.4:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/doc-path/-/doc-path-3.1.0.tgz#4e1b5ba445d02e6b8f5bc122e8af43e659463d14"
   integrity sha512-Pv2hLQbUM8du5681lTWIYk0OtVBmNhMAeZNGeFhMMJBIR89Nw4XesBwee1Xtlfk83n71tn0Y6VsJOn4d3qIiTw==
@@ -1433,13 +1433,13 @@ jsesc@^3.0.2:
   resolved "https://registry.yarnpkg.com/jsesc/-/jsesc-3.1.0.tgz#74d335a234f67ed19907fdadfac7ccf9d409825d"
   integrity sha512-/sM3dO2FOzXjKQhJuo0Q173wf2KOo8t4I8vHy6lF9poUp7bKT0/NHE8fPX23PwfhnykfqnC2xRxOnVw5XuGIaA==
 
-json-2-csv@^3.20.0:
-  version "3.20.0"
-  resolved "https://registry.yarnpkg.com/json-2-csv/-/json-2-csv-3.20.0.tgz#8d9a7ad8a296016dbeb43eb76c03e66ac26d9136"
-  integrity sha512-IbqUB+yaycVNB/q2fiY5kyRjy5kRiEXqvNvGlxM5L0Bfi0RdvklVHc4t9MfeYF1GsZVpZWDBs9LdWmSjsQ8jvg==
+json-2-csv@^5.5.11:
+  version "5.5.11"
+  resolved "https://registry.yarnpkg.com/json-2-csv/-/json-2-csv-5.5.11.tgz#3ad21d2d6f665524f2e837d96ca9af9645c0998f"
+  integrity sha512-kVuwgVL7rfad9ETf02ZZxJPuMR5ZSUn139+T34BfmVxYhb/IsAIm/LzEeQ8YLJmXfuQ5z7LUAFrgPZZM6VLJPw==
   dependencies:
-    deeks "2.6.1"
-    doc-path "3.1.0"
+    deeks "3.2.1"
+    doc-path "4.1.4"
 
 json-schema@0.4.0:
   version "0.4.0"
