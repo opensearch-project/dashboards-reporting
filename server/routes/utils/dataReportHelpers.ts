@@ -4,7 +4,7 @@
  */
 
 import esb, { Sort } from 'elastic-builder';
-import converter from 'json-2-csv';
+import { json2csv } from 'json-2-csv';
 import _ from 'lodash';
 import moment from 'moment-timezone';
 import {
@@ -15,36 +15,40 @@ import {
 } from '../../../../../src/plugins/data/common';
 import { ExcelBuilder } from './excelBuilder';
 
-export var metaData = {
-  saved_search_id: <string>null,
-  report_format: <string>null,
-  start: <string>null,
-  end: <string>null,
-  fields: <string>null,
-  type: <string>null,
-  timeFieldName: <string>null,
-  sorting: <string>null,
-  fields_exist: <boolean>false,
-  selectedFields: <any>[],
-  paternName: <string>null,
-  searchSourceJSON: <any>[],
-  dateFields: <any>[],
+export const metaData = {
+  saved_search_id: null as string,
+  report_format: null as string,
+  start: null as string,
+  end: null as string,
+  fields: null as string,
+  type: null as string,
+  timeFieldName: null as string,
+  sorting: null as string,
+  fields_exist: false as boolean,
+  selectedFields: [] as any[],
+  paternName: null as string,
+  searchSourceJSON: [] as any[],
+  dateFields: [] as any[],
 };
 
 // Get the selected columns by the user.
-export const getSelectedFields = async (columns) => {
+export const getSelectedFields = async (columns, timeFieldName?: string) => {
   const selectedFields = [];
-  let fields_exist = false;
-  for (let column of columns) {
+  let fieldsExist = false;
+  for (const column of columns) {
     if (column !== '_source') {
-      fields_exist = true;
+      fieldsExist = true;
       selectedFields.push(column);
     } else {
-      fields_exist = false;
+      fieldsExist = false;
       selectedFields.push('_source');
     }
   }
-  metaData.fields_exist = fields_exist;
+  // Automatically add timeFieldName to selected fields if it exists and user has selected specific fields
+  if (fieldsExist && timeFieldName && !selectedFields.includes(timeFieldName)) {
+    selectedFields.unshift(timeFieldName);
+  }
+  metaData.fields_exist = fieldsExist;
   metaData.selectedFields = selectedFields;
 };
 
@@ -53,14 +57,14 @@ export const getSelectedFields = async (columns) => {
 export const buildRequestBody = (
   report: any,
   allowLeadingWildcards: boolean,
-  is_count: number
+  isCount: number
 ) => {
-  let esbBoolQuery = esb.boolQuery();
+  const esbBoolQuery = esb.boolQuery();
   const searchSourceJSON = report._source.searchSourceJSON;
   const savedObjectQuery: Query = JSON.parse(searchSourceJSON).query;
   const savedObjectFilter: Filter = JSON.parse(searchSourceJSON).filter;
   const savedObjectConfig: OpenSearchQueryConfig = {
-    allowLeadingWildcards: allowLeadingWildcards,
+    allowLeadingWildcards,
     queryStringOptions: {},
     ignoreFilterIfFieldNotInIndex: false,
   };
@@ -80,12 +84,12 @@ export const buildRequestBody = (
         .lte(report._source.end + 1)
     );
   }
-  if (is_count) {
+  if (isCount) {
     return esb.requestBodySearch().query(esbBoolQuery);
   }
 
   // Add sorting to the query
-  let esbSearchQuery = esb
+  const esbSearchQuery = esb
     .requestBodySearch()
     .query(esbBoolQuery)
     .version(true);
@@ -96,13 +100,13 @@ export const buildRequestBody = (
   // clear why, this list can get unnested in the case of one sort, [["field", "asc"]] becomes
   // ["field", "asc"]. The true root cause remains a mystery, so we work around it.
   // See: https://github.com/opensearch-project/dashboards-reporting/issues/371
-  if (sorting.length > 0 && typeof sorting[0] === "string") {
-    sorting = [(sorting as unknown as string[])];
+  if (sorting.length > 0 && typeof sorting[0] === 'string') {
+    sorting = [(sorting as unknown) as string[]];
   }
 
   if (sorting.length > 0) {
     const sorts: Sort[] = sorting.map((element: string[]) => {
-      return esb.sort(element[0], element[1]);
+      return esb.sort(element[0], element[1]).unmappedType('date');
     });
     esbSearchQuery.sorts(sorts);
   }
@@ -134,17 +138,16 @@ export const getOpenSearchData = (
   dateFormat: string,
   timezone: string
 ) => {
-  let hits: any = [];
-  for (let valueRes of arrayHits) {
-    for (let data of valueRes.hits) {
+  const hits: any = [];
+  for (const valueRes of arrayHits) {
+    for (const data of valueRes.hits) {
       const fields = data.fields;
       // get all the fields of type date and format them to excel format
-      let tempKeyElement: string[] = [];
-      for (let dateField of report._source.dateFields) {
-        let keys;
-        keys = dateField.split('.');
+      const tempKeyElement: string[] = [];
+      for (const dateField of report._source.dateFields) {
+        const keys = dateField.split('.');
         const dateValue = data._source[dateField];
-        const fieldDateValue = fields !== undefined ? fields[dateField] : undefined;
+        const fieldDateValue = fields?.[dateField];
         const isDateFieldPresent = isKeyPresent(data._source, dateField);
 
         if (isDateFieldPresent) {
@@ -156,12 +159,8 @@ export const getOpenSearchData = (
                 .utc(dateValue)
                 .tz(timezone)
                 .format(dateFormat);
-            } else if (
-              dateValue.length !== 0 &&
-              dateValue instanceof Array &&
-              fieldDateValue !== undefined
-            ) {
-              fieldDateValue.forEach((element, index) => {
+            } else if (dateValue?.length !== 0 && dateValue instanceof Array) {
+              fieldDateValue?.forEach((element, index) => {
                 data._source[keys][index] = moment
                   .utc(element)
                   .tz(timezone)
@@ -172,17 +171,15 @@ export const getOpenSearchData = (
             }
             // else to cover cases with nested date fields
           } else {
-            let keyElement = keys.shift();
+            const keyElement = keys.shift();
             // if conditions to determine if the date field's value is an array or a string
-            if (fieldDateValue !== undefined && typeof fieldDateValue === 'string') {
-              keys.push(moment.utc(fieldDateValue).tz(timezone).format(dateFormat));
-            } else if (
-              dateValue.length !== 0 &&
-              dateValue instanceof Array &&
-              fieldDateValue !== undefined
-            ) {
-              let tempArray: string[] = [];
-              fieldDateValue.forEach((index) => {
+            if (fieldDateValue && typeof fieldDateValue === 'string') {
+              keys.push(
+                moment.utc(fieldDateValue).tz(timezone).format(dateFormat)
+              );
+            } else if (dateValue?.length !== 0 && dateValue instanceof Array) {
+              const tempArray: string[] = [];
+              fieldDateValue?.forEach((index) => {
                 tempArray.push(
                   moment.utc(index).tz(timezone).format(dateFormat)
                 );
@@ -192,7 +189,7 @@ export const getOpenSearchData = (
               keys.push([]);
             }
             const nestedJSON = arrayToNestedJSON(keys);
-            let keyLength = Object.keys(data._source);
+            const keyLength = Object.keys(data._source);
             // to check if the nested field have anyother keys apart from date field
             if (tempKeyElement.includes(keyElement) || keyLength.length > 1) {
               data._source[keyElement] = {
@@ -206,12 +203,13 @@ export const getOpenSearchData = (
           }
         }
       }
-      delete data['fields'];
+      delete data.fields;
       if (report._source.fields_exist === true) {
-        let result = traverse(data, report._source.selectedFields);
+        const result = traverse(data, report._source.selectedFields);
         hits.push(params.excel ? sanitize(result) : result);
       } else {
-        hits.push(params.excel ? sanitize(data) : data);
+        const result = flattenHits(data);
+        hits.push(params.excel ? sanitize(result) : result);
       }
       // Truncate to expected limit size
       if (hits.length >= params.limit) {
@@ -223,31 +221,55 @@ export const getOpenSearchData = (
 };
 
 // Convert the data to Csv format
-export const convertToCSV = async (dataset, csvSeparator) => {
-  let convertedData: any = [];
+export const convertToCSV = (dataset, csvSeparator) => {
   const options = {
     delimiter: { field: csvSeparator, eol: '\n' },
     emptyFieldValue: ' ',
   };
-  await converter.json2csvAsync(dataset[0], options).then((csv) => {
-    convertedData = csv;
-  });
-  return convertedData;
+  return json2csv(dataset[0], options);
 };
 
-function flattenHits(hits: any, result: { [key: string]: any } = {}, prefix = '') {
-  Object.entries(hits).forEach(([key, value]) => {
-    if (
-      value !== null &&
-      typeof value === 'object' &&
-      !Array.isArray(value) &&
-      Object.keys(value).length > 0
-    ) {
-      flattenHits(value, result, `${prefix}${key}.`);
+function flattenHits(
+  input: any,
+  result: { [key: string]: any } = {},
+  prefix = ''
+): { [key: string]: any } {
+  for (const [key, value] of Object.entries(input)) {
+    const newPrefix = `${prefix}${key}.`;
+
+    if (value === null || typeof value !== 'object' || value instanceof Date) {
+      result[prefix.replace(/^_source\./, '') + key] = value;
+    } else if (Array.isArray(value)) {
+      if (
+        value.every(
+          (v) => typeof v === 'object' && v !== null && !Array.isArray(v)
+        )
+      ) {
+        const grouped: { [field: string]: any[] } = {};
+
+        for (const obj of value) {
+          const flat = flattenHits(obj, {}, '');
+          for (const [subKey, subVal] of Object.entries(flat)) {
+            if (!grouped[`${key}.${subKey}`]) {
+              grouped[`${key}.${subKey}`] = [];
+            }
+            grouped[`${key}.${subKey}`].push(subVal);
+          }
+        }
+
+        for (const [flatKey, flatVals] of Object.entries(grouped)) {
+          result[prefix.replace(/^_source\./, '') + flatKey] = flatVals.join(
+            ','
+          );
+        }
+      } else {
+        result[prefix.replace(/^_source\./, '') + key] = value.join(',');
+      }
     } else {
-      result[`${prefix.replace(/^_source\./, '')}${key}`] = value;
+      flattenHits(value, result, newPrefix);
     }
-  });
+  }
+
   return result;
 }
 
@@ -256,7 +278,7 @@ function flattenObject(obj = {}, parentKey = '', result: any = {}) {
     const newKey = parentKey ? `${parentKey}.${key}` : key;
 
     if (
-      typeof value == 'object' &&
+      typeof value === 'object' &&
       value !== null &&
       !Array.isArray(value) &&
       Object.keys(value).length > 0
@@ -295,45 +317,29 @@ export const convertToExcel = async (dataset: any) => {
   );
 };
 
-//Return only the selected fields
-function traverse(data: any, keys: string[], result: { [key: string]: any } = {}) {
-  // Flatten the data if necessary (ensure all nested fields are at the top level)
-  data = flattenHits(data);
-
-  keys.forEach((key) => {
-    const value = _.get(data, key, undefined);
-
-    if (value !== undefined) {
-      result[key] = value;
-    } else {
-      const flattenedValues: { [key: string]: any[] } = {};
-
-      Object.keys(data).forEach((dataKey) => {
-        if (dataKey.startsWith(key + '.')) {
-          result[dataKey] = data[dataKey];
-        }
-        const arrayValue = data[dataKey];
-        if (Array.isArray(arrayValue)) {
-          arrayValue.forEach((item) => {
-            if (typeof item === 'object' && item !== null) {
-              Object.keys(item).forEach((subKey) => {
-                const newKey = `${dataKey}.${subKey}`;
-                if (!flattenedValues[newKey]) {
-                  flattenedValues[newKey] = [];
-                }
-                flattenedValues[newKey].push(item[subKey]);
-              });
-            }
-          });
-        }
-      });
-
-      Object.keys(flattenedValues).forEach((newKey) => {
-        result[newKey] = flattenedValues[newKey];
-      });
+// Return only the selected fields
+function traverse(
+  data: any,
+  keys: string[],
+  result: { [key: string]: any } = {}
+): { [key: string]: any } {
+  const flatData = flattenHits(data);
+  for (const key of keys) {
+    if (flatData[key] !== undefined) {
+      result[key] = flatData[key];
+      continue;
     }
-  });
 
+    const matchingKeys = Object.keys(flatData).filter(
+      (flatKey) => flatKey === key || flatKey.startsWith(key + '.')
+    );
+
+    matchingKeys.sort();
+
+    matchingKeys.forEach((matchingKey) => {
+      result[matchingKey] = flatData[matchingKey];
+    });
+  }
   return result;
 }
 
