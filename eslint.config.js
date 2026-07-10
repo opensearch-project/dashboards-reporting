@@ -96,7 +96,10 @@ module.exports = [
           ],
         },
       ],
-      '@osd/eslint/require-license-header': ['error', { licenses: [LICENSE_HEADER] }],
+      '@osd/eslint/require-license-header': [
+        'error',
+        { licenses: [LICENSE_HEADER] },
+      ],
     },
   },
 ];
