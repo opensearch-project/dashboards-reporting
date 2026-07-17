@@ -416,14 +416,9 @@ describe('<ReportSettings /> panel', () => {
 
 
   test('dashboard create from in-context', async () => {
-    window = Object.create(window);
-    Object.defineProperty(window, 'location', {
-      configurable: true,
-      value: {
-        href:
-          'http://localhost:5601/app/reports-dashboards#/create?previous=dashboard:abcdefghijklmnop12345?timeFrom=2020-10-26T20:52:56.382Z?timeTo=2020-10-27T20:52:56.384Z',
-      },
-    });
+    window.location.assign(
+      'http://localhost:5601/app/reports-dashboards#/create?previous=dashboard:abcdefghijklmnop12345?timeFrom=2020-10-26T20:52:56.382Z?timeTo=2020-10-27T20:52:56.384Z'
+    );
 
     let report_definition = {
       report_params: {
@@ -484,17 +479,9 @@ describe('<ReportSettings /> panel', () => {
   });
 
   test('visualization create from in-context', async () => {
-    // @ts-ignore
-    delete window.location; // reset window.location.href for in-context testing
-
-    window = Object.create(window);
-    Object.defineProperty(window, 'location', {
-      configurable: true,
-      value: {
-        href:
-          'http://localhost:5601/app/reports-dashboards#/create?previous=visualize:abcdefghijklmnop12345?timeFrom=2020-10-26T20:52:56.382Z?timeTo=2020-10-27T20:52:56.384Z',
-      },
-    });
+    window.location.assign(
+      'http://localhost:5601/app/reports-dashboards#/create?previous=visualize:abcdefghijklmnop12345?timeFrom=2020-10-26T20:52:56.382Z?timeTo=2020-10-27T20:52:56.384Z'
+    );
 
     let report_definition = {
       report_params: {
@@ -555,16 +542,9 @@ describe('<ReportSettings /> panel', () => {
   });
 
   test('saved search create from in-context', async () => {
-    // @ts-ignore
-    delete window.location; // reset window.location.href for in-context testing
-
-    window = Object.create(window);
-    Object.defineProperty(window, 'location', {
-      value: {
-        href:
-          'http://localhost:5601/app/reports-dashboards#/create?previous=discover:abcdefghijklmnop12345?timeFrom=2020-10-26T20:52:56.382Z?timeTo=2020-10-27T20:52:56.384Z',
-      },
-    });
+    window.location.assign(
+      'http://localhost:5601/app/reports-dashboards#/create?previous=discover:abcdefghijklmnop12345?timeFrom=2020-10-26T20:52:56.382Z?timeTo=2020-10-27T20:52:56.384Z'
+    );
 
     let report_definition = {
       report_params: {

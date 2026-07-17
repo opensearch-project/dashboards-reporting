@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`<ReportSettings /> panel dashboard create from in-context 1`] = `
 <div
@@ -263,7 +263,7 @@ exports[`<ReportSettings /> panel dashboard create from in-context 1`] = `
                       value=""
                     />
                     <div
-                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; letter-spacing: normal; text-transform: none;"
                     />
                   </div>
                 </div>
@@ -1446,7 +1446,7 @@ exports[`<ReportSettings /> panel display errors on create 1`] = `
                       value=""
                     />
                     <div
-                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; letter-spacing: normal; text-transform: none;"
                     />
                   </div>
                 </div>
@@ -1574,45 +1574,17 @@ exports[`<ReportSettings /> panel display errors on create 1`] = `
                       <div
                         class="euiDatePickerRange euiDatePickerRange--inGroup"
                       >
-                        <div
-                          class="euiPopover euiPopover--anchorDownLeft euiPopover--displayBlock euiSuperDatePicker__startPopoverButton euiSuperDatePicker__startPopoverButton--compressed"
+                        <button
+                          class="euiSuperDatePicker__prettyFormat euiSuperDatePicker__prettyFormat--compressed"
+                          data-test-subj="superDatePickerShowDatesButton"
                         >
-                          <div
-                            class="euiPopover__anchor"
+                          Last 30 minutes
+                          <span
+                            class="euiSuperDatePicker__prettyFormatLink"
                           >
-                            <button
-                              class="euiDatePopoverButton euiDatePopoverButton--start euiDatePopoverButton-compressed"
-                              data-test-subj="superDatePickerstartDatePopoverButton"
-                              title="2020-10-26T20:52:56.382Z"
-                            >
-                              Oct 26, 2020 @ 20:52:56.382
-                            </button>
-                          </div>
-                        </div>
-                        <div
-                          class="euiText euiText--small euiDatePickerRange__delimeter"
-                        >
-                          <div
-                            class="euiTextColor euiTextColor--subdued"
-                          >
-                            →
-                          </div>
-                        </div>
-                        <div
-                          class="euiPopover euiPopover--anchorDownRight euiPopover--displayBlock"
-                        >
-                          <div
-                            class="euiPopover__anchor"
-                          >
-                            <button
-                              class="euiDatePopoverButton euiDatePopoverButton--end euiDatePopoverButton-compressed"
-                              data-test-subj="superDatePickerendDatePopoverButton"
-                              title="2020-10-27T20:52:56.384Z"
-                            >
-                              Oct 27, 2020 @ 20:52:56.384
-                            </button>
-                          </div>
-                        </div>
+                            Show dates
+                          </span>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -2636,7 +2608,7 @@ exports[`<ReportSettings /> panel render component 1`] = `
                       value=""
                     />
                     <div
-                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; letter-spacing: normal; text-transform: none;"
                     />
                   </div>
                 </div>
@@ -3258,7 +3230,7 @@ exports[`<ReportSettings /> panel render edit, dashboard source 1`] = `
                       value=""
                     />
                     <div
-                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; letter-spacing: normal; text-transform: none;"
                     />
                   </div>
                 </div>
@@ -3883,7 +3855,7 @@ exports[`<ReportSettings /> panel render edit, dashboard source 2`] = `
                       value=""
                     />
                     <div
-                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; letter-spacing: normal; text-transform: none;"
                     />
                   </div>
                 </div>
@@ -4508,7 +4480,7 @@ exports[`<ReportSettings /> panel render edit, saved search source 1`] = `
                       value=""
                     />
                     <div
-                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; letter-spacing: normal; text-transform: none;"
                     />
                   </div>
                 </div>
@@ -5133,7 +5105,7 @@ exports[`<ReportSettings /> panel render edit, visualization source 1`] = `
                       value=""
                     />
                     <div
-                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; letter-spacing: normal; text-transform: none;"
                     />
                   </div>
                 </div>
@@ -5758,7 +5730,7 @@ exports[`<ReportSettings /> panel render edit, visualization source 2`] = `
                       value=""
                     />
                     <div
-                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; letter-spacing: normal; text-transform: none;"
                     />
                   </div>
                 </div>
@@ -6379,7 +6351,7 @@ exports[`<ReportSettings /> panel saved search create from in-context 1`] = `
                       value=""
                     />
                     <div
-                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; letter-spacing: normal; text-transform: none;"
                     />
                   </div>
                 </div>
@@ -7562,7 +7534,7 @@ exports[`<ReportSettings /> panel visualization create from in-context 1`] = `
                       value=""
                     />
                     <div
-                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; letter-spacing: normal; text-transform: none;"
                     />
                   </div>
                 </div>

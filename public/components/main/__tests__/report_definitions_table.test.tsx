@@ -54,13 +54,6 @@ describe('<ReportDefinitions /> panel', () => {
   });
 
   test('test click on report definition row', async () => {
-    window = Object.create(window);
-    Object.defineProperty(window, 'location', {
-      configurable: true,
-      value: {
-        assign: jest.fn(),
-      },
-    });
     let reportDefinitionsTableContent = [
       {
         reportName: 'test report name',

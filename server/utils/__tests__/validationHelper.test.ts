@@ -145,7 +145,7 @@ describe('test input validation', () => {
     const client = mockOpenSearchClient(savedObjectIds);
     await expect(
       validateReport(client, createReportInput)
-    ).rejects.toThrowError(
+    ).rejects.toThrow(
       `saved object with id dashboard:${SAMPLE_SAVED_OBJECT_ID} does not exist`
     );
   });
@@ -195,7 +195,7 @@ describe('test input validation', () => {
     const client = mockOpenSearchClient(savedObjectIds);
     await expect(
       validateReportDefinition(client, createReportDefinitionInput)
-    ).rejects.toThrowError(
+    ).rejects.toThrow(
       `saved object with id dashboard:${SAMPLE_SAVED_OBJECT_ID} does not exist`
     );
   });
