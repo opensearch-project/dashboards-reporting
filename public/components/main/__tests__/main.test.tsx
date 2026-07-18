@@ -20,14 +20,7 @@ const chromeMock = {
 
 describe('<Main /> panel', () => {
   test('render component', (done) => {
-    window = Object.create(window);
-    Object.defineProperty(window, 'location', {
-      configurable: true,
-      value: {
-        assign: jest.fn(),
-        href: 'reports-dashboards#/',
-      },
-    });
+    window.location.assign('reports-dashboards#/');
 
     const { container } = render(
       <Main
@@ -42,15 +35,7 @@ describe('<Main /> panel', () => {
   });
 
   test('render component after create success', async () => {
-    delete window.location;
-
-    Object.defineProperty(window, 'location', {
-      configurable: true,
-      value: {
-        assign: jest.fn(),
-        href: 'reports-dashboards#/create=success',
-      },
-    });
+    window.location.assign('reports-dashboards#/create=success');
 
     const { container } = render(
       <Main
@@ -64,15 +49,7 @@ describe('<Main /> panel', () => {
   });
 
   test('render component after edit success', async () => {
-    delete window.location;
-
-    Object.defineProperty(window, 'location', {
-      configurable: true,
-      value: {
-        assign: jest.fn(),
-        href: 'reports-dashboards#/edit=success',
-      },
-    });
+    window.location.assign('reports-dashboards#/edit=success');
 
     const { container } = render(
       <Main
@@ -86,15 +63,7 @@ describe('<Main /> panel', () => {
   });
 
   test('render component after delete success', async () => {
-    delete window.location;
-
-    Object.defineProperty(window, 'location', {
-      configurable: true,
-      value: {
-        assign: jest.fn(),
-        href: 'reports-dashboards#/delete=success',
-      },
-    });
+    window.location.assign('reports-dashboards#/delete=success');
 
     const { container } = render(
       <Main

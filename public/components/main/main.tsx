@@ -233,7 +233,7 @@ export function Main(props) {
         refreshReportsDefinitionsTable();
       }, 1000);
     }
-    window.location.href = 'reports-dashboards#/';
+    window.location.assign('reports-dashboards#/');
   }, []);
 
   const refreshReportsTable = async () => {
