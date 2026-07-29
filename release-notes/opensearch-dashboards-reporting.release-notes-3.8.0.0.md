@@ -2,10 +2,6 @@
 
 Compatible with OpenSearch and OpenSearch Dashboards version 3.8.0
 
-### Enhancements
-
-* Onboard new backport-pr reusable GitHub workflow for dashboards-reporting ([#773](https://github.com/opensearch-project/dashboards-reporting/pull/773))
-
 ### Bug Fixes
 
 * Fix XLSX report download blocked by CSP connect-src directive by replacing fetch() with direct base64 decoding ([#762](https://github.com/opensearch-project/dashboards-reporting/pull/762))
@@ -17,3 +13,4 @@ Compatible with OpenSearch and OpenSearch Dashboards version 3.8.0
 * Pin GitHub Actions to commit SHAs to prevent supply chain attacks ([#752](https://github.com/opensearch-project/dashboards-reporting/pull/752))
 * Adopt ESLint 10 flat config format, replacing legacy .eslintrc.js and .eslintignore ([#784](https://github.com/opensearch-project/dashboards-reporting/pull/784))
 * Migrate Jest test suite to Jest 30 and jsdom 26 ([#787](https://github.com/opensearch-project/dashboards-reporting/pull/787))
+* Onboard new backport-pr reusable GitHub workflow for dashboards-reporting ([#773](https://github.com/opensearch-project/dashboards-reporting/pull/773))
