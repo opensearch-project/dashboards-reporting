@@ -48,6 +48,11 @@ export default function (router: IRouter, config: ReportingConfig) {
       const logger = context.reporting_plugin.logger;
       // input validation
       try {
+        //Since hostname is used with a port, if hostname is IPv6 format it will need to be 
+        //surrounded by brackets per protocol rules
+        if (hostname?.includes(":")) {
+          hostname = "[" + hostname + "]";
+        }
         reportDefinition.report_params.core_params.origin = `${protocol}://${hostname}:${port}${basePath}`;
         reportDefinition = await validateReportDefinition(
           context.core.opensearch.legacy.client,
