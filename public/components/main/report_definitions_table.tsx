@@ -13,6 +13,10 @@ import {
 } from '@elastic/eui';
 import { i18n } from '@osd/i18n';
 import { humanReadableDate } from './main_utils';
+import {
+  isResourceSharingAvailable,
+  REPORT_DEFINITION_RESOURCE_TYPE,
+} from '../utils/resource_sharing_service';
 
 const emptyMessageReportDefinitions = (
   <EuiEmptyPrompt
@@ -181,6 +185,33 @@ export function ReportDefinitions(props) {
       sortable: true,
       truncateText: false,
     },
+    ...(isResourceSharingAvailable()
+      ? [
+          {
+            // Resource-sharing SPI marker column: the centralized Share button
+            // is mounted here by security-dashboards-plugin when installed and
+            // resource sharing is enabled for report definitions.
+            field: 'id',
+            name: i18n.translate(
+              'opensearch.reports.reportDefinitionsTable.columns.share',
+              { defaultMessage: 'Access' }
+            ),
+            sortable: false,
+            width: '5%',
+            render: (id: string, item: any) => (
+              <div
+                data-resource-share-button
+                data-resource-id={id}
+                {...(item?.reportName
+                  ? { 'data-resource-name': item?.reportName }
+                  : {})}
+                data-resource-type={REPORT_DEFINITION_RESOURCE_TYPE}
+                data-resource-share-display="icon"
+              />
+            ),
+          },
+        ]
+      : []),
   ];
 
   const displayMessage =
