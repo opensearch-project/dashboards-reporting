@@ -213,7 +213,9 @@ export function ReportsTable(props) {
               <div
                 data-resource-share-button
                 data-resource-id={id}
-                {...(item?.reportName ? { 'data-resource-name': item?.reportName } : {})}
+                {...(item?.reportName
+                  ? { 'data-resource-name': item?.reportName }
+                  : {})}
                 data-resource-type={REPORT_INSTANCE_RESOURCE_TYPE}
                 data-resource-share-display="icon"
               />
