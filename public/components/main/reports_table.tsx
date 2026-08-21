@@ -205,14 +205,15 @@ export function ReportsTable(props) {
             field: 'id',
             name: i18n.translate(
               'opensearch.reports.reportsTable.reportsTableColumns.share',
-              { defaultMessage: 'Share' }
+              { defaultMessage: 'Access' }
             ),
             sortable: false,
             width: '5%',
-            render: (id: string) => (
+            render: (id: string, item: any) => (
               <div
                 data-resource-share-button
                 data-resource-id={id}
+                {...(item?.reportName ? { 'data-resource-name': item?.reportName } : {})}
                 data-resource-type={REPORT_INSTANCE_RESOURCE_TYPE}
                 data-resource-share-display="icon"
               />

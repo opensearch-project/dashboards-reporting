@@ -194,14 +194,15 @@ export function ReportDefinitions(props) {
             field: 'id',
             name: i18n.translate(
               'opensearch.reports.reportDefinitionsTable.columns.share',
-              { defaultMessage: 'Share' }
+              { defaultMessage: 'Access' }
             ),
             sortable: false,
             width: '5%',
-            render: (id: string) => (
+            render: (id: string, item: any) => (
               <div
                 data-resource-share-button
                 data-resource-id={id}
+                {...(item?.reportName ? { 'data-resource-name': item?.reportName } : {})}
                 data-resource-type={REPORT_DEFINITION_RESOURCE_TYPE}
                 data-resource-share-display="icon"
               />
