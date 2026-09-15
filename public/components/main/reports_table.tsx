@@ -94,13 +94,15 @@ export function ReportsTable(props) {
   const [sortDirection, setSortDirection] = useState('des');
   const [showLoading, setShowLoading] = useState(false);
   const [message, setMessage] = useState('');
-  const [resourceSharingAvailableTypes, setResourceSharingAvailableTypes] =
-    useState<string[]>([]);
+  const [resourceSharing, setResourceSharing] = useState<{
+    dataSourceId: string | undefined;
+    types: string[];
+  }>({ dataSourceId: undefined, types: [] });
 
   useEffect(() => {
     let cancelled = false;
     getResourceSharingAvailableTypes(dataSourceId).then((types) => {
-      if (!cancelled) setResourceSharingAvailableTypes(types);
+      if (!cancelled) setResourceSharing({ dataSourceId, types });
     });
     return () => {
       cancelled = true;
@@ -122,6 +124,13 @@ export function ReportsTable(props) {
     );
     handleLoading(false);
   };
+
+  // Guard against a stale value flashing the column during a data-source
+  // switch: only trust availability resolved for the currently selected
+  // data source.
+  const resourceSharingAvailable =
+    resourceSharing.dataSourceId === dataSourceId &&
+    resourceSharing.types.includes(REPORT_INSTANCE_RESOURCE_TYPE);
 
   const reportsTableColumns = [
     {
@@ -209,7 +218,7 @@ export function ReportsTable(props) {
           </EuiLink>
         ),
     },
-    ...(resourceSharingAvailableTypes.includes(REPORT_INSTANCE_RESOURCE_TYPE)
+    ...(resourceSharingAvailable
       ? [
           {
             // Resource-sharing SPI marker column: the centralized Share button
@@ -223,9 +232,7 @@ export function ReportsTable(props) {
             sortable: false,
             width: '5%',
             render: (id: string, item: any) =>
-              resourceSharingAvailableTypes.includes(
-                REPORT_INSTANCE_RESOURCE_TYPE
-              ) ? (
+              resourceSharingAvailable ? (
                 <div
                   data-resource-share-button
                   data-resource-id={id}

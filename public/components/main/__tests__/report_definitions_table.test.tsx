@@ -163,4 +163,44 @@ describe('<ReportDefinitions /> resource sharing Access column', () => {
     await act(async () => {});
     expect(container.querySelector('[data-resource-share-button]')).toBeNull();
   });
+
+  test('does not show the Access column using a stale result resolved for a previous data source', async () => {
+    // First render (dataSourceId="ds-a") resolves availability immediately.
+    (getResourceSharingAvailableTypes as jest.Mock).mockResolvedValueOnce([
+      'report-definition',
+    ]);
+    const { container, rerender } = render(
+      <ReportDefinitions
+        pagination={pagination}
+        reportDefinitionsTableContent={content}
+        dataSourceId="ds-a"
+      />
+    );
+    await waitFor(() => {
+      expect(
+        container.querySelector('[data-resource-share-button]')
+      ).not.toBeNull();
+    });
+
+    // Switch to a new data source ("ds-b") whose probe never resolves within
+    // this test, simulating an in-flight request. Without the dataSourceId
+    // equality guard, the Access column would keep showing based on the
+    // stale ds-a result above.
+    (getResourceSharingAvailableTypes as jest.Mock).mockImplementation(
+      () => new Promise(() => {})
+    );
+    rerender(
+      <ReportDefinitions
+        pagination={pagination}
+        reportDefinitionsTableContent={content}
+        dataSourceId="ds-b"
+      />
+    );
+
+    await waitFor(() => {
+      expect(
+        container.querySelector('[data-resource-share-button]')
+      ).toBeNull();
+    });
+  });
 });
