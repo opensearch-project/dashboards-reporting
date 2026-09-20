@@ -106,8 +106,17 @@ export default function (router: IRouter, config: ReportingConfig) {
       const logger = context.reporting_plugin.logger;
       // input validation
       try {
+        // Chromium does not always send the Origin header for same-origin
+        // requests (e.g. PUT from the in-app fetch on localhost), so fall
+        // back to the configured OSD origin like the create handler does.
+        // Without this fallback, validation rejects the body with
+        // `[report_params.core_params.origin]: expected value of type
+        // [string] but got [undefined]` and the request 400s.
         reportDefinition.report_params.core_params.origin =
-          request.headers.origin;
+          request.headers.origin ||
+          (request.headers.referer
+            ? new URL(request.headers.referer as string).origin
+            : `${protocol}://${hostname}:${port}${basePath}`);
         reportDefinition = await validateReportDefinition(
           context.core.opensearch.legacy.client,
           reportDefinition,

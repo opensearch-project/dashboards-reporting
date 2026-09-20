@@ -704,23 +704,29 @@ export function ReportSettings(props: ReportSettingProps) {
   };
 
   useEffect(() => {
-    let reportSourceOptions = {};
-    let editData = {};
-    if (edit) {
-      defaultConfigurationEdit(httpClientProps).then(async (response) => {
-        editData = response;
-      });
-    }
-    defaultConfigurationCreate(httpClientProps).then(async (response) => {
-      reportSourceOptions = response;
+    // Serialize the two fetches so editData is guaranteed to be populated
+    // before setDefaultEditValues runs. When run in parallel, the create-side
+    // dropdown fetches can finish before the edit-side fetch (common when
+    // security is disabled and there's no per-call auth overhead), causing
+    // the form to be hydrated from an empty editData — base_url stays '',
+    // and client-side validation then blocks Save.
+    const loadConfiguration = async () => {
+      let editData = {};
+      if (edit) {
+        editData = await defaultConfigurationEdit(httpClientProps);
+      }
+      const reportSourceOptions = await defaultConfigurationCreate(
+        httpClientProps
+      );
       // if coming from in-context menu
       if (window.location.href.indexOf('?') > -1) {
-        setInContextDefaultConfiguration(response);
+        setInContextDefaultConfiguration(reportSourceOptions);
       }
       if (edit) {
         setDefaultEditValues(editData, reportSourceOptions);
       }
-    });
+    };
+    loadConfiguration();
   }, []);
 
   const displayDashboardSelect =
