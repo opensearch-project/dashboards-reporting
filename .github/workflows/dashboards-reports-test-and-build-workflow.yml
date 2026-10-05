@@ -59,12 +59,14 @@ jobs:
                                  cd ./plugins/${{ env.PLUGIN_NAME }} && \
                                  whoami && yarn osd bootstrap --single-version=loose && yarn test --coverage"
 
-      - name: Upload coverage
-        uses: codecov/codecov-action@29386c70ef20e286228c72b668a06fd0e8399192 # v1
+      - name: Upload coverage report artifact
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
         with:
-          flags: dashboards-report
-          directory: ./OpenSearch-Dashboards/plugins/
-          token: ${{ secrets.CODECOV_TOKEN }}
+          name: jest-coverage-report
+          path: ./OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}/coverage
+          retention-days: 1
+          if-no-files-found: error
 
       - name: Build Artifact
         run: |
@@ -81,6 +83,31 @@ jobs:
         with:
           name: dashboards-reports-linux
           path: ./OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}/build/${{ env.ARTIFACT_NAME }}-${{ env.PLUGIN_VERSION }}.zip
+
+  upload-coverage:
+    needs: linux-build
+    name: Upload coverage to Codecov
+    if: ${{ !cancelled() && github.repository == 'opensearch-project/dashboards-reporting' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Plugin
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - name: Download coverage report
+        id: download-coverage
+        continue-on-error: true
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: jest-coverage-report
+          path: coverage
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
+        if: steps.download-coverage.outcome == 'success'
+        with:
+          flags: dashboards-report
+          directory: coverage
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   windows-mac-builds:
     runs-on: ${{ matrix.os }}

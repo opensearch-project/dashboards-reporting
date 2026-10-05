@@ -180,6 +180,14 @@ jobs:
           name: dashboard.logs
           path: OpenSearch-Dashboards/dashboard.log
 
+      - name: Install Cypress
+        run: |
+          # This will install Cypress in case the binary is missing which can happen on Windows and Mac
+          # If the binary exists, this will exit quickly so it should not be an expensive operation
+          npx cypress install
+        shell: bash
+        working-directory: OpenSearch-Dashboards/plugins/${{ env.PLUGIN_NAME }}
+
       - name: Get Cypress version
         id: cypress_version
         run: |

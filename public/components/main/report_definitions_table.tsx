@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   EuiLink,
   EuiInMemoryTable,
@@ -13,6 +13,10 @@ import {
 } from '@elastic/eui';
 import { i18n } from '@osd/i18n';
 import { humanReadableDate } from './main_utils';
+import {
+  getResourceSharingAvailableTypes,
+  REPORT_DEFINITION_RESOURCE_TYPE,
+} from '../utils/resource_sharing_service';
 
 const emptyMessageReportDefinitions = (
   <EuiEmptyPrompt
@@ -79,10 +83,24 @@ const reportDefinitionsSearch = {
 };
 
 export function ReportDefinitions(props) {
-  const { pagination, reportDefinitionsTableContent } = props;
+  const { pagination, reportDefinitionsTableContent, dataSourceId } = props;
 
   const [sortField, setSortField] = useState('lastUpdated');
   const [sortDirection, setSortDirection] = useState('des');
+  const [resourceSharing, setResourceSharing] = useState<{
+    dataSourceId: string | undefined;
+    types: string[];
+  }>({ dataSourceId: undefined, types: [] });
+
+  useEffect(() => {
+    let cancelled = false;
+    getResourceSharingAvailableTypes(dataSourceId).then((types) => {
+      if (!cancelled) setResourceSharing({ dataSourceId, types });
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [dataSourceId]);
 
   const sorting = {
     sort: {
@@ -105,11 +123,18 @@ export function ReportDefinitions(props) {
   };
 
   const navigateToDefinitionDetails = (name: any) => {
-    let id = getDefinitionTableItemId(name);
+    const id = getDefinitionTableItemId(name);
     window.location.assign(
       `reports-dashboards#/report_definition_details/${id}`
     );
   };
+
+  // Guard against a stale value flashing the column during a data-source
+  // switch: only trust availability resolved for the currently selected
+  // data source.
+  const resourceSharingAvailable =
+    resourceSharing.dataSourceId === dataSourceId &&
+    resourceSharing.types.includes(REPORT_DEFINITION_RESOURCE_TYPE);
 
   const reportDefinitionsColumns = [
     {
@@ -168,7 +193,7 @@ export function ReportDefinitions(props) {
         { defaultMessage: 'Last Updated' }
       ),
       render: (date) => {
-        let readable = humanReadableDate(date);
+        const readable = humanReadableDate(date);
         return <EuiText size="s">{readable}</EuiText>;
       },
     },
@@ -181,6 +206,34 @@ export function ReportDefinitions(props) {
       sortable: true,
       truncateText: false,
     },
+    ...(resourceSharingAvailable
+      ? [
+          {
+            // Resource-sharing SPI marker column: the centralized Share button
+            // is mounted here by security-dashboards-plugin when installed and
+            // resource sharing is enabled for report definitions.
+            field: 'id',
+            name: i18n.translate(
+              'opensearch.reports.reportDefinitionsTable.columns.share',
+              { defaultMessage: 'Access' }
+            ),
+            sortable: false,
+            width: '5%',
+            render: (id: string, item: any) =>
+              resourceSharingAvailable ? (
+                <div
+                  data-resource-share-button
+                  data-resource-id={id}
+                  {...(item?.reportName
+                    ? { 'data-resource-name': item?.reportName }
+                    : {})}
+                  data-resource-type={REPORT_DEFINITION_RESOURCE_TYPE}
+                  data-resource-share-display="icon"
+                />
+              ) : null,
+          },
+        ]
+      : []),
   ];
 
   const displayMessage =
