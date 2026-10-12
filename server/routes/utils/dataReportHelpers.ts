@@ -4,7 +4,7 @@
  */
 
 import esb, { Sort } from 'elastic-builder';
-import converter from 'json-2-csv';
+import { json2csv } from 'json-2-csv';
 import _ from 'lodash';
 import moment from 'moment-timezone';
 import {
@@ -224,15 +224,12 @@ export const getOpenSearchData = (
 
 // Convert the data to Csv format
 export const convertToCSV = async (dataset, csvSeparator) => {
-  let convertedData: any = [];
   const options = {
     delimiter: { field: csvSeparator, eol: '\n' },
     emptyFieldValue: ' ',
   };
-  await converter.json2csvAsync(dataset[0], options).then((csv) => {
-    convertedData = csv;
-  });
-  return convertedData;
+  // json-2-csv v5 exposes a synchronous json2csv(array, options) => string
+  return json2csv(dataset[0], options);
 };
 
 function flattenHits(hits: any, result: { [key: string]: any } = {}, prefix = '') {
