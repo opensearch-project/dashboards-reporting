@@ -24,10 +24,14 @@ describe('Cypress', () => {
     cy.wait(1000);
 
     // update the report name
-    cy.get('#reportSettingsName').type(' update name', { force: true });
+    // scrollIntoView() moves the field clear of the sticky euiHeaderBreadcrumbs,
+    // which otherwise covers it and flakes the cy.type() actionability check.
+    cy.get('#reportSettingsName').scrollIntoView().type(' update name', { force: true });
 
     // update report description
-    cy.get('#reportSettingsDescription').type(' update description');
+    cy.get('#reportSettingsDescription')
+      .scrollIntoView()
+      .type(' update description', { force: true });
 
     cy.get('#editReportDefinitionButton').click({ force: true });
 
