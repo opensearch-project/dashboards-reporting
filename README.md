@@ -1,12 +1,10 @@
 <img src="https://opensearch.org/assets/img/opensearch-logo-themed.svg" height="64px">
 
-- [OpenSearch Dashboards Reports](#opensearch-dashboards-reporting)
+- [OpenSearch Dashboards Reports](#opensearch-dashboards-reports)
 - [Code Summary](#code-summary)
-- [Documentation](#documentation)
+- [Documentation](#documentation--forum)
 - [Contributing](#contributing)
-- [Setup](#setup-&-build)
-- [Notifications Integration](#notifications-integration)
-- [Troubleshooting](#troubleshooting)
+- [Setup](#setup--build)
 - [Code of Conduct](#code-of-conduct)
 - [Security](#security)
 - [License](#license)
@@ -22,7 +20,7 @@ OpenSearch Dashboards Reports allows ‘Report Owner’ (engineers, including bu
 
 |                          |                                                                                                                    |
 | ------------------------ | ------------------------------------------------------------------------------------------------------------------ |
-| Test and build           | [![Observability Dashboards CI][dashboard-reports-build-badge]][dashboard-reports-build-link]                      |
+| Test and build           | [![Test and Build OpenSearch Dashboards Reports][dashboard-reports-build-badge]][dashboard-reports-build-link]                      |
 | Code coverage            | [![codecov][dashboard-reports-codecov-badge]][codecov-link]                                                        |
 | Distribution build tests | [![cypress tests][cypress-test-badge]][cypress-test-link] [![cypress code][cypress-code-badge]][cypress-code-link] |
 
@@ -30,7 +28,6 @@ OpenSearch Dashboards Reports allows ‘Report Owner’ (engineers, including bu
 
 |              |                                                                 |
 | ------------ | --------------------------------------------------------------- |
-| DCO Checker  | [![Developer certificate of origin][dco-badge]][dco-badge-link] |
 | Link Checker | [![Link Checker][link-check-badge]][link-check-link]            |
 
 ### Issues
@@ -44,8 +41,6 @@ OpenSearch Dashboards Reports allows ‘Report Owner’ (engineers, including bu
 | [![untriaged open][untriaged-badge]][untriaged-link]           |
 | [![nolabel open][nolabel-badge]][nolabel-link]                 |
 
-[dco-badge]: https://github.com/opensearch-project/dashboards-reporting/actions/workflows/dco.yml/badge.svg
-[dco-badge-link]: https://github.com/opensearch-project/dashboards-reporting/actions/workflows/dco.yml
 [link-check-badge]: https://github.com/opensearch-project/dashboards-reporting/actions/workflows/link-checker.yml/badge.svg
 [link-check-link]: https://github.com/opensearch-project/dashboards-reporting/actions/workflows/link-checker.yml
 [dashboard-reports-build-badge]: https://github.com/opensearch-project/dashboards-reporting/actions/workflows/dashboards-reports-test-and-build-workflow.yml/badge.svg
