@@ -17,6 +17,8 @@
     ".lock",
     ".snap",
     ".git",
+    ".github",
+    ".cypress",
     ".gitignore",
     ".whitesource",
     ".lintstagedrc",
