@@ -49,6 +49,41 @@ const waitForSelector = (selector: string, timeout = 30000) => {
   ]);
 };
 
+const waitForDataRender = (selector: string, timeout = 300000) => {
+  const elements = Array.from(document.querySelectorAll(selector))
+  return Promise.all(
+    elements.map(async (element) => {
+      return Promise.race([
+        new Promise((resolve) => {
+          if (element.getAttribute('data-render-complete') == "true") {
+            resolve(element);
+          };
+
+          const observer = new MutationObserver((mutation, observer) => {
+            resolve(mutation);
+            observer.disconnect();
+          });
+
+          observer.observe(element, {
+            attributeFilter: ['data-render-complete'],
+          });
+        }),
+        new Promise((resolve, reject) =>
+          setTimeout(
+            () =>
+              reject(
+                'Timed out waiting for element ' +
+                element +
+                ' while generating report.'
+              ),
+            timeout
+          )
+        ),
+      ]);
+    }),
+  );
+};
+
 const timeout = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
@@ -136,6 +171,7 @@ export const generateReport = async (id: string, forceDelay = 15000) => {
   switch (reportSource) {
     case VISUAL_REPORT_TYPE.dashboard:
       await waitForSelector(SELECTOR.dashboard);
+      await waitForDataRender(SELECTOR.visualizations);
       break;
     case VISUAL_REPORT_TYPE.visualization:
       await waitForSelector(SELECTOR.visualization);
